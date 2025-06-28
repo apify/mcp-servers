@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "Actor Initialization Fee",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.01
+    },
+    "image-generation-tool": {
+        "eventTitle": "Image Generation Tool Usage",
+        "eventDescription": "Flat fee per usage of the generate_image tool.",
+        "eventPriceUsd": 0.05
+    }
+}
