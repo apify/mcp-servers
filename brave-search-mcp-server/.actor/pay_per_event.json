@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "Actor Initialization Fee",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.10
+    },
+    "mcp-response": {
+        "eventTitle": "Price per Brave MCP Response",
+        "eventDescription": "Flat fee for each Model Context Protocol response, powered by Brave Search API.",
+        "eventPriceUsd": 0.05
+    }
+}
