@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "everart-mcp-server",
+	"title": "EvertArt MCP server",
+	"description": "The EverArt MCP Server manages content processing and delivery for EverArt, enabling efficient and scalable media handling.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/sse"
+}
