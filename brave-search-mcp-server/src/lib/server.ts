@@ -1,6 +1,6 @@
 // Source: https://github.com/supercorp-ai/supergateway
-import type { ChildProcessWithoutNullStreams} from 'node:child_process';
-import {spawn } from 'node:child_process';
+import type { ChildProcessWithoutNullStreams } from 'node:child_process';
+import { spawn } from 'node:child_process';
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
@@ -94,7 +94,6 @@ export async function stdioToSse(args: StdioToSseArgs) {
     // @ts-ignore
     app.post(messagePath, async (req, res) => {
         const body = req.body as { method: string };
-        await chargeMcpResponse(body);
         const sessionId = req.query.sessionId as string;
 
         if (!sessionId) {
@@ -104,6 +103,8 @@ export async function stdioToSse(args: StdioToSseArgs) {
         const session = sessions[sessionId];
         if (session?.transport?.handlePostMessage) {
             logger.info(`POST to SSE transport (session ${sessionId})`);
+
+            await chargeMcpResponse(body);
             await session.transport.handlePostMessage(req, res, body);
         } else {
             res.status(503).send(`No active SSE connection for session ${sessionId}`);

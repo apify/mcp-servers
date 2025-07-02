@@ -4,9 +4,9 @@
         "eventDescription": "Flat fee for starting an Actor run.",
         "eventPriceUsd": 0.10
     },
-    "mcp-response": {
-        "eventTitle": "Price per Brave MCP Response",
-        "eventDescription": "Flat fee for each Model Context Protocol response, powered by Brave Search API.",
+    "brave-tool-usage": {
+        "eventTitle": "Brave Search Tool Usage",
+        "eventDescription": "Charged per execution of Brave web or local search tools.",
         "eventPriceUsd": 0.05
     }
 }
