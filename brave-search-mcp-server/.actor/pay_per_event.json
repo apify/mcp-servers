@@ -2,7 +2,7 @@
     "actor-start": {
         "eventTitle": "Actor Initialization Fee",
         "eventDescription": "Flat fee for starting an Actor run.",
-        "eventPriceUsd": 0.10
+        "eventPriceUsd": 0.05
     },
     "brave-tool-usage": {
         "eventTitle": "Brave Search Tool Usage",

@@ -104,6 +104,11 @@ export async function stdioToSse(args: StdioToSseArgs) {
         if (session?.transport?.handlePostMessage) {
             logger.info(`POST to SSE transport (session ${sessionId})`);
 
+            // Introduce a delay to allow the Brave server to reset and avoid triggering a 429 (Too Many Requests) error during web_search.
+            await new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
+
             await chargeMcpResponse(body);
             await session.transport.handlePostMessage(req, res, body);
         } else {

@@ -3,7 +3,7 @@ import { Actor, log } from 'apify';
 import { getLogger } from './lib/getLogger.js';
 import { stdioToSse } from './lib/server.js';
 
-const MCP_COMMAND = 'npx -y @modelcontextprotocol/server-brave-search';
+const MCP_COMMAND = 'npx -y brave-search-mcp';
 
 // Check if the Actor is running in standby mode
 const STANDBY_MODE = process.env.APIFY_META_ORIGIN === 'STANDBY';
