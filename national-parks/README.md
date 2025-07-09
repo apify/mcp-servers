@@ -1,94 +1,135 @@
-## MCP server template
+# National Parks MCP Server
 
-A template for running and monetizing a [Model Context Protocol](https://modelcontextprotocol.io) server over [stdio](https://modelcontextprotocol.io/docs/concepts/transports#standard-input%2Foutput-stdio) on [Apify platform](https://docs.apify.com/platform).
-This allows you to run any stdio MCP server as a [standby Actor](https://docs.apify.com/platform/actors/development/programming-interface/standby) and connect via [SSE transport](https://modelcontextprotocol.io/docs/concepts/transports#server-sent-events-sse) with an [MCP client](https://modelcontextprotocol.io/clients).
+MCP Server for the National Park Service (NPS) API, providing real-time information about U.S. National Parks, including park details, alerts, and activities.
 
-## How to use
+**About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at mcp.apify.com.
 
-Change the `MCP_COMMAND` to spawn your stdio MCP server in `src/main.ts`, and don't forget to install the required MCP server in the `package.json` (using `npm install ...`).
-By default, this template runs a [Sequential Thinking MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking) server using the following command:
+## Tools
+
+1. `findParks`
+   - Search for national parks based on various criteria
+   - Inputs:
+     - `stateCode` (optional string): Filter parks by state code (e.g., "CA" for California). Multiple states can be comma-separated (e.g., "CA,OR,WA")
+     - `q` (optional string): Search term to filter parks by name or description
+     - `limit` (optional number): Maximum number of parks to return (default: 10, max: 50)
+     - `start` (optional number): Start position for results (useful for pagination)
+     - `activities` (optional string): Filter by available activities (e.g., "hiking,camping")
+   - Returns: Matching parks with detailed information
+
+2. `getParkDetails`
+   - Get comprehensive information about a specific national park
+   - Inputs:
+     - `parkCode` (string): The park code of the national park (e.g., "yose" for Yosemite, "grca" for Grand Canyon)
+   - Returns: Detailed park information including descriptions, hours, fees, contacts, and activities
+
+3. `getAlerts`
+   - Get current alerts for national parks including closures, hazards, and important information
+   - Inputs:
+     - `parkCode` (optional string): Filter alerts by park code (e.g., "yose" for Yosemite). Multiple parks can be comma-separated (e.g., "yose,grca")
+     - `limit` (optional number): Maximum number of alerts to return (default: 10, max: 50)
+     - `start` (optional number): Start position for results (useful for pagination)
+     - `q` (optional string): Search term to filter alerts by title or description
+   - Returns: Current alerts organized by park
+
+4. `getVisitorCenters`
+   - Get information about visitor centers and their operating hours
+   - Inputs:
+     - `parkCode` (optional string): Filter visitor centers by park code (e.g., "yose" for Yosemite). Multiple parks can be comma-separated (e.g., "yose,grca")
+     - `limit` (optional number): Maximum number of visitor centers to return (default: 10, max: 50)
+     - `start` (optional number): Start position for results (useful for pagination)
+     - `q` (optional string): Search term to filter visitor centers by name or description
+   - Returns: Visitor center information including location, hours, and contact details
+
+5. `getCampgrounds`
+   - Get information about available campgrounds and their amenities
+   - Inputs:
+     - `parkCode` (optional string): Filter campgrounds by park code (e.g., "yose" for Yosemite). Multiple parks can be comma-separated (e.g., "yose,grca")
+     - `limit` (optional number): Maximum number of campgrounds to return (default: 10, max: 50)
+     - `start` (optional number): Start position for results (useful for pagination)
+     - `q` (optional string): Search term to filter campgrounds by name or description
+   - Returns: Campground information including amenities, fees, and reservation details
+
+6. `getEvents`
+   - Find upcoming events at parks
+   - Inputs:
+     - `parkCode` (optional string): Filter events by park code (e.g., "yose" for Yosemite). Multiple parks can be comma-separated (e.g., "yose,grca")
+     - `limit` (optional number): Maximum number of events to return (default: 10, max: 50)
+     - `start` (optional number): Start position for results (useful for pagination)
+     - `dateStart` (optional string): Start date for filtering events (format: YYYY-MM-DD)
+     - `dateEnd` (optional string): End date for filtering events (format: YYYY-MM-DD)
+     - `q` (optional string): Search term to filter events by title or description
+   - Returns: Event information including dates, times, and descriptions
+
+## Example Usage
+
+### Finding Parks in a State
+
 ```
-npx @modelcontextprotocol/server-sequential-thinking
+Tell me about national parks in Colorado.
 ```
 
-Feel free to configure billing logic in `.actor/pay_per_event.json` and `src/billing.ts`.
+### Getting Details About a Specific Park
 
-[Push your Actor](https://docs.apify.com/academy/deploying-your-code/deploying) to the Apify platform, configure [standby mode](https://docs.apify.com/platform/actors/development/programming-interface/standby), and then connect to the Actor standby URL with your MCP client (e.g., `https://me--my-mcp-server.apify.actor/sse`).
-
-### Pay per event
-
-This template uses the [Pay Per Event (PPE)](https://docs.apify.com/platform/actors/publishing/monetize#pay-per-event-pricing-model) monetization model, which provides flexible pricing based on defined events.
-
-To charge users, define events in JSON format and save them on the Apify platform. Here is an example schema with the `tool-request` event:
-
-```json
-[
-    {
-        "tool-request": {
-            "eventTitle": "Price for completing a tool request",
-            "eventDescription": "Flat fee for completing a tool request.",
-            "eventPriceUsd": 0.05
-        }
-    }
-]
+```
+What's the entrance fee for Yellowstone National Park?
 ```
 
-In the Actor, trigger the event with:
+### Checking for Alerts or Closures
 
-```typescript
-await Actor.charge({ eventName: 'tool-request' });
+```
+Are there any closures or alerts at Yosemite right now?
 ```
 
-This approach allows you to programmatically charge users directly from your Actor, covering the costs of execution and related services.
+### Finding Visitor Centers
 
-To set up the PPE model for this Actor:
-
-- **Configure Pay Per Event**: establish the Pay Per Event pricing schema in the Actor's **Monetization settings**. First, set the **Pricing model** to `Pay per event` and add the schema. An example schema can be found in [pay_per_event.json](.actor/pay_per_event.json).
-
-## Resources
-
-- [What is Anthropic's Model Context Protocol?](https://blog.apify.com/what-is-model-context-protocol/)
-- [How to use MCP with Apify Actors](https://blog.apify.com/how-to-use-mcp/)
-- [Apify MCP server](https://mcp.apify.com)
-- [Apify MCP server documentation](https://docs.apify.com/platform/integrations/mcp)
-- [Apify MCP client](https://apify.com/jiri.spilka/tester-mcp-client)
-- [Model Context Protocol documentation](https://modelcontextprotocol.io)
-- [TypeScript tutorials in Academy](https://docs.apify.com/academy/node-js)
-- [Apify SDK documentation](https://docs.apify.com/sdk/js/)
-
-
-## Getting started
-
-For complete information [see this article](https://docs.apify.com/platform/actors/development#build-actor-locally). To run the Actor use the following command:
-
-```bash
-apify run
+```
+What visitor centers are available at Grand Canyon National Park?
 ```
 
-## Deploy to Apify
+### Looking for Campgrounds
 
-### Connect Git repository to Apify
+```
+Are there any campgrounds with electrical hookups in Zion National Park?
+```
 
-If you've created a Git repository for the project, you can easily connect to Apify:
+### Finding Upcoming Events
 
-1. Go to [Actor creation page](https://console.apify.com/actors/new)
-2. Click on **Link Git Repository** button
+```
+What events are happening at Acadia National Park next weekend?
+```
 
-### Push project on your local machine to Apify
+### Planning a Trip Based on Activities
 
-You can also deploy the project on your local machine to Apify without the need for the Git repository.
+```
+Which national parks in Utah have good hiking trails?
+```
 
-1. Log in to Apify. You will need to provide your [Apify API Token](https://console.apify.com/account/integrations) to complete this action.
+## License
 
-    ```bash
-    apify login
-    ```
+This MCP server is licensed under the MIT License. See the LICENSE file for details.
 
-2. Deploy your Actor. This command will deploy and build the Actor on the Apify Platform. You can find your newly created Actor under [Actors -> My Actors](https://console.apify.com/actors?tab=my).
+## Appendix: Popular National Parks and their codes
 
-    ```bash
-    apify push
-    ```
+| Park Name | Park Code |
+|-----------|-----------|
+| Yosemite | yose |
+| Grand Canyon | grca |
+| Yellowstone | yell |
+| Zion | zion |
+| Great Smoky Mountains | grsm |
+| Acadia | acad |
+| Olympic | olym |
+| Rocky Mountain | romo |
+| Joshua Tree | jotr |
+| Sequoia & Kings Canyon | seki |
+
+For a complete list, visit the [NPS website](https://www.nps.gov/findapark/index.htm).
+
+## 🚩 Claim this MCP server
+
+All credits to the original authors of <https://github.com/KyrieTangSheng/mcp-server-nationalparks>
+
+To claim this server, please write to [ai@apify.com](mailto:ai@apify.com).
 
 ## Documentation reference
 
