@@ -2,7 +2,7 @@
 	"actorSpecification": 1,
 	"name": "test-MCP-2",
 	"title": "TypeScript MCP server",
-	"description": "TypeScript Model Context Protocol server.",
+	"description": "MCP Server for the National Park Service (NPS) API, providing real-time information about U.S. National Parks, including park details, alerts, and activities.",
 	"version": "0.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
