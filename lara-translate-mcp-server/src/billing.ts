@@ -1,8 +1,24 @@
 import { Actor, log } from 'apify';
 
-export async function chargeMessageRequest(args: { method: string }): Promise<void> {
-    const { method } = args;
+// Make sure to change the price in the pay_per_event.json too
+// if you change the const
+const LARA_TOOL_USAGE_PRICE_USD = 0.01;
 
-    await Actor.charge({ eventName: 'mcp-response' });
-    log.info(`Charged for MCP response (method: ${method})`);
+export async function chargeMcpResponse(args: {
+    method: string;
+    params?: {
+        name: string;
+    };
+}): Promise<void> {
+    const { method, params } = args;
+    const toolName = params?.name;
+
+    if (method === 'tools/call') {
+        if (toolName === 'translate') {
+            await Actor.charge({ eventName: 'lara-tool-usage' });
+            log.info(`Charged $${LARA_TOOL_USAGE_PRICE_USD} for Lara tool usage: ${toolName}`);
+        }
+    } else {
+        log.info(`Not charging for non-Lara tool method: ${method}`);
+    }
 }

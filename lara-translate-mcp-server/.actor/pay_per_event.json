@@ -1,12 +1,12 @@
 {
     "actor-start": {
-        "eventTitle": "Price for Actor start",
-        "eventDescription": "Flat fee for starting an Actor run.",
-        "eventPriceUsd": 0.10 
+        "eventTitle": "Price for MCP start",
+        "eventDescription": "Flat fee for starting an MCP run.",
+        "eventPriceUsd": 0.01
     },
-    "mcp-response": {
-        "eventTitle": "Price for any MCP response",
-        "eventDescription": "Flat fee for any Model Context Protocol response, covering character processing and overhead.",
-        "eventPriceUsd": 0.25 
+    "lara-tool-usage": {
+        "eventTitle": "Lara Translate Tool Usage",
+        "eventDescription": "Minimal fee charged per execution of Lara Translated tool",
+        "eventPriceUsd": 0.01
     }
 }
