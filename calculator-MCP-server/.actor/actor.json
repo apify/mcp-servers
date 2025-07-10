@@ -2,7 +2,7 @@
     "actorSpecification": 1,
     "name": "calculator-MCP-server",
     "title": "Python MCP server",
-    "description": "Python Model Context Protocol (MCP) server.",
+    "description": "A Model Context Protocol server for calculating. This server enables LLMs to use calculator for precise numerical calculations.",
     "version": "0.0",
     "buildTag": "latest",
     "usesStandbyMode": true,
