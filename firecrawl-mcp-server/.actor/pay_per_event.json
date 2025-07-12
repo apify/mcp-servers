@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "Actor Initialization Fee",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.001
+    },
+    "firecrawl-scraping-tool": {
+        "eventTitle": "Scraping request",
+        "eventDescription": "Flat fee per scraping request on Firecrawl.",
+        "eventPriceUsd": 0.001
+    }
+}
