@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.001
+    },
+    "perplexity-request": {
+        "eventTitle": "Price for completing a Perplexity request",
+        "eventDescription": "Flat fee for completing a tool request.",
+        "eventPriceUsd": 0.001
+    }
+}
