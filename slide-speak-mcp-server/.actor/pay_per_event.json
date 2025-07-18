@@ -1,0 +1,22 @@
+{
+    "actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the Actor MCP Server",
+        "eventPriceUsd": 0.1
+    },
+    "resource-list": {
+        "eventTitle": "MCP resource listing",
+        "eventDescription": "Fee for listing available resources.",
+        "eventPriceUsd": 0.0001
+    },
+    "tool-list": {
+        "eventTitle": "MCP tool listing",
+        "eventDescription": "Fee for listing available tools.",
+        "eventPriceUsd": 0.0001
+    },
+    "tool-call": {
+        "eventTitle": "MCP tool call",
+        "eventDescription": "Fee for executing MCP tools.",
+        "eventPriceUsd": 0.01
+    }
+}
