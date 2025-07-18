@@ -16,7 +16,7 @@
     },
     "tool-call": {
         "eventTitle": "MCP tool call",
-        "eventDescription": "Fee for executing MCP tools.",
-        "eventPriceUsd": 0.01
+        "eventDescription": "Fee for executing SlideSpeak tools.",
+        "eventPriceUsd": 0.5
     }
 }
