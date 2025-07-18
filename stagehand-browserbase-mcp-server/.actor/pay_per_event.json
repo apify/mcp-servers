@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "browserbase-tool-usage": {
+        "eventTitle": "Price for the Browserbase tool usage",
+        "eventDescription": "Flat fee for Browserbase tool usage.",
+        "eventPriceUsd": 0.1
+    }
+}
