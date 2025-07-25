@@ -140,20 +140,33 @@ mcp-servers/
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details on:
+This project is developed and maintained by the Apify team. We don't expect code contributions to this repository, but we encourage the community to build and develop their own MCP servers.
 
-- How to report issues
-- How to suggest enhancements
-- How to submit code changes
-- Development setup and guidelines
+### Building your own MCP servers
 
-## 📄 License
+We encourage developers to create their own MCP servers! Here are some resources to get started:
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **[Python MCP server template](https://apify.com/templates/python-mcp-server)** - For Python-based MCP servers
+- **[TypeScript MCP server template](https://apify.com/templates/ts-mcp-server)** - For TypeScript-based MCP servers
+- **[MCP Documentation](https://modelcontextprotocol.io/)** - Official MCP specification and guides
+- **[Apify MCP Documentation](https://mcp.apify.com/)** - Learn about publishing MCP servers on Apify
 
-## 🔒 Security
+### Reporting issues
 
-We take security seriously. Please report any vulnerabilities to [security@apify.com](mailto:security@apify.com). See our [Security Policy](SECURITY.md) for more details.
+Before creating bug reports, please check the existing issues to avoid duplicates. When creating a new issue, please include:
+
+- A clear and descriptive title
+- A detailed description of the problem
+- Steps to reproduce the issue
+- Expected vs actual behavior
+- Environment information (OS, Node.js/Python version, etc.)
+- Any relevant error messages or logs
+
+### Claiming a server
+
+If you are the original developer of any MCP server in this collection and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
+
+For more detailed information about our development process, see our [Contributing Guide](CONTRIBUTING.md).
 
 ## 🌐 What is Apify MCP?
 
@@ -196,4 +209,4 @@ Learn how to build and monetize MCP servers on Apify:
 
 ---
 
-**Made with ❤️ by the Apify team**
+**Made with ❤️ and 🍺 by the Apify team**
