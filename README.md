@@ -6,6 +6,8 @@ A comprehensive collection of Model Context Protocol (MCP) servers published at 
 
 This monorepo contains a variety of MCP servers that extend the capabilities of AI applications by providing secure, controlled access to external tools and data sources. Each server is designed to be production-ready with proper error handling, logging, and monitoring.
 
+**Important:** These are **wrappers** around existing open-source MCP servers. We do not claim ownership of the original MCP server implementations. All credits go to the original developers.
+
 ## 📦 Available servers
 
 | Actor                                                                                                            | Actor badge                                                                                                                                                                                   |
@@ -17,6 +19,28 @@ This monorepo contains a variety of MCP servers that extend the capabilities of 
 | **[Lara Translate MCP Server](./lara-translate-mcp-server/)** - Multi-language translation services              | [![Lara Translate MCP Server](https://apify.com/actor-badge?actor=mcp-servers/lara-translate-mcp-server)](https://apify.com/mcp-servers/lara-translate-mcp-server)                      |
 | **[Calculator MCP Server](./calculator-MCP-server/)** - Mathematical computations and calculations               | [![Calculator MCP Server](https://apify.com/actor-badge?actor=mcp-servers/calculator-mcp-server)](https://apify.com/mcp-servers/calculator-mcp-server)                                  |
 | **[National Parks MCP Server](./national-parks/)** - Geographic and park information                             | [![National Parks MCP Server](https://apify.com/actor-badge?actor=mcp-servers/national-parks-mcp-server)](https://apify.com/mcp-servers/national-parks-mcp-server)                      |
+
+## 🙏 Credits and acknowledgments
+
+### Original developers
+
+All credits to the original authors of these MCP servers:
+
+- **Brave Search MCP Server**: [brave-search-mcp](https://github.com/brave/brave-search-mcp) by Brave Software
+- **Perplexity Sonar MCP Server**: [server-perplexity-ask](https://github.com/perplexity-ai/server-perplexity-ask) by Perplexity AI
+- **Firecrawl MCP Server**: [firecrawl-mcp](https://github.com/firecrawl/firecrawl-mcp) by Firecrawl
+- **Slide Speak MCP Server**: [slidespeak-mcp](https://github.com/slidespeak/slidespeak-mcp) by SlideSpeak
+- **Lara Translate MCP Server**: [lara-mcp](https://github.com/translated/lara-mcp) by Translated
+- **Calculator MCP Server**: [mcp-server-calculator](https://github.com/modelcontextprotocol/server-calculator) by MCP Community
+- **National Parks MCP Server**: [mcp-server-nationalparks](https://github.com/KyrieTangSheng/mcp-server-nationalparks) by KyrieTangSheng
+
+### Claim this MCP server
+
+🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
+
+### Apify MCP documentation
+
+For more information about MCP servers and how to use them, visit [mcp.apify.com](https://mcp.apify.com/).
 
 ## 🛠️ Quick start
 
@@ -74,6 +98,17 @@ Each server follows a consistent architecture:
 - **Error handling**: Comprehensive error handling and graceful degradation
 
 ## 🔧 Development
+
+### Templates
+
+When creating new MCP servers, you can use our pre-built templates:
+
+- **[Python MCP server template](https://apify.com/templates/python-mcp-server)** - For Python-based MCP servers
+- **[TypeScript MCP server template](https://apify.com/templates/ts-mcp-server)** - For TypeScript-based MCP servers
+
+**Template selection guide:**
+- For `stdio-based` MCP servers: Choose the template for the language the server is written in
+- For `remote` servers: You can select language based on your preference
 
 ### Project structure
 
