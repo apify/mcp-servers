@@ -8,25 +8,15 @@ This monorepo contains a variety of MCP servers that extend the capabilities of 
 
 ## 📦 Available servers
 
-### Search & Information
-- **[Brave Search MCP Server](./brave-search-mcp-server/)** - Web search capabilities powered by Brave Search
-- **[Perplexity MCP Server](./perplexity-mcp-server/)** - AI-powered search and information retrieval
-- **[Firecrawl MCP Server](./firecrawl-mcp-server/)** - Web crawling and content extraction
-
-### Creative & Media
-- **[EverArt MCP Server](./everart-mcp-server/)** - AI image generation and manipulation
-- **[Slide Speak MCP Server](./slide-speak-mcp-server/)** - Presentation and speech synthesis
-- **[Chart MCP Server](./chart-MCP-server/)** - Data visualization and chart generation
-
-### Translation & Language
-- **[Lara Translate MCP Server](./lara-translate-mcp-server/)** - Multi-language translation services
-
-### Data & Analytics
-- **[Calculator MCP Server](./calculator-MCP-server/)** - Mathematical computations and calculations
-- **[National Parks MCP Server](./national-parks/)** - Geographic and park information
-
-### Browser & Automation
-- **[Stagehand BrowserBase MCP Server](./stagehand-browserbase-mcp-server/)** - Web automation and browser control
+| Actor                                                                                                            | Actor badge                                                                                                                                                                                   |
+|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **[Brave Search MCP Server](./brave-search-mcp-server/)** - Web search capabilities powered by Brave Search      | [![Brave Search MCP Server](https://apify.com/actor-badge?actor=mcp-servers/brave-search-mcp-server)](https://apify.com/mcp-servers/brave-search-mcp-server)                                  |
+| **[Perplexity Sonar MCP Server](./perplexity-mcp-server/)** - AI-powered search and information retrieval        | [![Perplexity Soner MCP Server](https://apify.com/actor-badge?actor=mcp-servers/perplexity-sonar-mcp-server)](https://apify.com/mcp-servers/perplexity-sonar-mcp-server)                            |
+| **[Firecrawl MCP Server](./firecrawl-mcp-server/)** - Web crawling and content extraction                        | [![Firecrawl MCP Server](https://apify.com/actor-badge?actor=mcp-servers/firecrawl-mcp-server)](https://apify.com/actor/mcp-servers/firecrawl-mcp-server)                                     |
+| **[Slide Speak MCP Server](./slide-speak-mcp-server/)** - Presentation and speech synthesis                      | [![Slide Speak MCP Server](https://apify.com/actor-badge?actor=mcp-servers/slidespeak-mcp-server)](https://apify.com/mcp-servers/slidespeak-mcp-server)                               |
+| **[Lara Translate MCP Server](./lara-translate-mcp-server/)** - Multi-language translation services              | [![Lara Translate MCP Server](https://apify.com/actor-badge?actor=mcp-servers/lara-translate-mcp-server)](https://apify.com/mcp-servers/lara-translate-mcp-server)                      |
+| **[Calculator MCP Server](./calculator-MCP-server/)** - Mathematical computations and calculations               | [![Calculator MCP Server](https://apify.com/actor-badge?actor=mcp-servers/calculator-mcp-server)](https://apify.com/mcp-servers/calculator-mcp-server)                                  |
+| **[National Parks MCP Server](./national-parks/)** - Geographic and park information                             | [![National Parks MCP Server](https://apify.com/actor-badge?actor=mcp-servers/national-parks-mcp-server)](https://apify.com/mcp-servers/national-parks-mcp-server)                      |
 
 ## 🛠️ Quick start
 
@@ -132,21 +122,6 @@ We take security seriously. Please report any vulnerabilities to [security@apify
 - **Issues**: Report bugs and request features on GitHub
 - **Discussions**: Join community discussions
 - **Documentation**: Check individual server READMEs for detailed usage
-
-## 📊 Status
-
-| Server | Language | Status | Version |
-|--------|----------|--------|---------|
-| Brave Search | TypeScript | ✅ Active | Latest |
-| Calculator | Python | ✅ Active | Latest |
-| Chart | TypeScript | ✅ Active | Latest |
-| EverArt | TypeScript | ✅ Active | Latest |
-| Firecrawl | TypeScript | ✅ Active | Latest |
-| Lara Translate | TypeScript | ✅ Active | Latest |
-| National Parks | TypeScript | ✅ Active | Latest |
-| Perplexity | TypeScript | ✅ Active | Latest |
-| Slide Speak | Python | ✅ Active | Latest |
-| Stagehand BrowserBase | TypeScript | ✅ Active | Latest |
 
 ## 🙏 Acknowledgments
 
