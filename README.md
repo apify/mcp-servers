@@ -8,17 +8,36 @@ This monorepo contains a variety of MCP servers that extend the capabilities of 
 
 **Important:** These are **wrappers** around existing open-source MCP servers. We do not claim ownership of the original MCP server implementations. All credits go to the original developers.
 
+## 💰 Why publish MCP servers at Apify?
+
+### 🚀 Benefits for developers
+
+- **Monetization**: Earn revenue from your MCP servers through pay-per-use pricing
+- **Global reach**: Access to Apify's large user base of developers and businesses
+- **Production infrastructure**: Enterprise-grade hosting, scaling, and monitoring
+- **Built-in analytics**: Track usage, performance, and revenue
+- **Community exposure**: Get discovered by users through [Apify MCP server](https://mcp.apify.com) or by browsing the Apify Store
+
+### 🛠️ Technical advantages
+
+- **Standby mode**: Servers stay running for instant response times
+- **Auto-scaling**: Handles traffic spikes automatically
+- **Multi-transport support**: HTTP-streamable and SSE transport options
+- **OAuth integration**: Easy authentication for MCP clients
+- **Environment management**: Secure handling of API keys and secrets
+- **Docker support**: Containerized deployment for consistency
+
 ## 📦 Available servers
 
-| Actor                                                                                                            | Actor badge                                                                                                                                                                                   |
-|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **[Brave Search MCP Server](./brave-search-mcp-server/)** - Web search capabilities powered by Brave Search      | [![Brave Search MCP Server](https://apify.com/actor-badge?actor=mcp-servers/brave-search-mcp-server)](https://apify.com/mcp-servers/brave-search-mcp-server)                                  |
-| **[Perplexity Sonar MCP Server](./perplexity-mcp-server/)** - AI-powered search and information retrieval        | [![Perplexity Soner MCP Server](https://apify.com/actor-badge?actor=mcp-servers/perplexity-sonar-mcp-server)](https://apify.com/mcp-servers/perplexity-sonar-mcp-server)                            |
-| **[Firecrawl MCP Server](./firecrawl-mcp-server/)** - Web crawling and content extraction                        | [![Firecrawl MCP Server](https://apify.com/actor-badge?actor=mcp-servers/firecrawl-mcp-server)](https://apify.com/actor/mcp-servers/firecrawl-mcp-server)                                     |
-| **[Slide Speak MCP Server](./slide-speak-mcp-server/)** - Presentation and speech synthesis                      | [![Slide Speak MCP Server](https://apify.com/actor-badge?actor=mcp-servers/slidespeak-mcp-server)](https://apify.com/mcp-servers/slidespeak-mcp-server)                               |
-| **[Lara Translate MCP Server](./lara-translate-mcp-server/)** - Multi-language translation services              | [![Lara Translate MCP Server](https://apify.com/actor-badge?actor=mcp-servers/lara-translate-mcp-server)](https://apify.com/mcp-servers/lara-translate-mcp-server)                      |
-| **[Calculator MCP Server](./calculator-MCP-server/)** - Mathematical computations and calculations               | [![Calculator MCP Server](https://apify.com/actor-badge?actor=mcp-servers/calculator-mcp-server)](https://apify.com/mcp-servers/calculator-mcp-server)                                  |
-| **[National Parks MCP Server](./national-parks/)** - Geographic and park information                             | [![National Parks MCP Server](https://apify.com/actor-badge?actor=mcp-servers/national-parks-mcp-server)](https://apify.com/mcp-servers/national-parks-mcp-server)                      |
+| Actor | Description | Actor badge | Original author |
+|-------|-------------|-------------|-----------------|
+| **[Brave Search MCP Server](./brave-search-mcp-server/)** | Web search capabilities powered by Brave Search | [![Brave Search MCP Server](https://apify.com/actor-badge?actor=mcp-servers/brave-search-mcp-server)](https://apify.com/mcp-servers/brave-search-mcp-server) | [MCP Community](https://github.com/modelcontextprotocol/servers-archived/tree/main/src/brave-search) |
+| **[Perplexity Sonar MCP Server](./perplexity-mcp-server/)** | AI-powered search and information retrieval | [![Perplexity Soner MCP Server](https://apify.com/actor-badge?actor=mcp-servers/perplexity-sonar-mcp-server)](https://apify.com/mcp-servers/perplexity-sonar-mcp-server) | [Perplexity AI](https://github.com/ppl-ai/modelcontextprotocol) |
+| **[Firecrawl MCP Server](./firecrawl-mcp-server/)** | Web crawling and content extraction | [![Firecrawl MCP Server](https://apify.com/actor-badge?actor=mcp-servers/firecrawl-mcp-server)](https://apify.com/actor/mcp-servers/firecrawl-mcp-server) | [Mendable AI](https://github.com/mendableai/firecrawl-mcp-server) |
+| **[Slide Speak MCP Server](./slide-speak-mcp-server/)** | Presentation and speech synthesis | [![Slide Speak MCP Server](https://apify.com/actor-badge?actor=mcp-servers/slidespeak-mcp-server)](https://apify.com/mcp-servers/slidespeak-mcp-server) | [SlideSpeak](https://github.com/slidespeak/slidespeak-mcp) |
+| **[Lara Translate MCP Server](./lara-translate-mcp-server/)** | Multi-language translation services | [![Lara Translate MCP Server](https://apify.com/actor-badge?actor=mcp-servers/lara-translate-mcp-server)](https://apify.com/mcp-servers/lara-translate-mcp-server) | [Translated](https://github.com/translated/lara-mcp) |
+| **[Calculator MCP Server](./calculator-MCP-server/)** | Mathematical computations and calculations | [![Calculator MCP Server](https://apify.com/actor-badge?actor=mcp-servers/calculator-mcp-server)](https://apify.com/mcp-servers/calculator-mcp-server) | [Githejie](https://github.com/githejie/mcp-server-calculator) |
+| **[National Parks MCP Server](./national-parks/)** | Geographic and park information | [![National Parks MCP Server](https://apify.com/actor-badge?actor=mcp-servers/national-parks-mcp-server)](https://apify.com/mcp-servers/national-parks-mcp-server) | [KyrieTangSheng](https://github.com/KyrieTangSheng/mcp-server-nationalparks) |
 
 ## 🙏 Credits and acknowledgments
 
@@ -37,10 +56,6 @@ All credits to the original authors of these MCP servers:
 ### Claim this MCP server
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
-
-### Apify MCP documentation
-
-For more information about MCP servers and how to use them, visit [mcp.apify.com](https://mcp.apify.com/).
 
 ## 🛠️ Quick start
 
@@ -85,18 +100,6 @@ Configure your MCP client (like Claude Desktop) to use these servers:
   }
 }
 ```
-
-## 🏗️ Architecture
-
-Each server follows a consistent architecture:
-
-- **TypeScript servers**: Built with Node.js, TypeScript, and the MCP TypeScript SDK
-- **Python servers**: Built with Python and the MCP Python SDK
-- **Docker support**: All servers include Dockerfiles for containerized deployment
-- **Configuration**: Environment-based configuration with sensible defaults
-- **Logging**: Structured logging with configurable levels
-- **Error handling**: Comprehensive error handling and graceful degradation
-
 ## 🔧 Development
 
 ### Templates
@@ -152,6 +155,25 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 We take security seriously. Please report any vulnerabilities to [security@apify.com](mailto:security@apify.com). See our [Security Policy](SECURITY.md) for more details.
 
+## 🌐 What is Apify MCP?
+
+The Apify Model Context Protocol (MCP) Server at **[mcp.apify.com](https://mcp.apify.com)** instantly connects AI applications and agents to thousands of ready-built tools. It allows your AI assistant to use any [Apify Actor](https://apify.com/store) for web scraping, data extraction, and automation tasks in real time.
+
+**Key benefits:**
+- **Instant access** to 5,000+ Apify Actors and tools
+- **No setup required** - connect with just a URL
+- **OAuth support** for easy authentication
+- **Production-ready** with enterprise-grade reliability
+
+### 🎯 Try it now
+
+For the easiest setup and most powerful features, connect your AI assistant to our hosted server:
+
+**[`https://mcp.apify.com`](https://mcp.apify.com)**
+
+It supports OAuth, so you can connect from clients like Claude.ai or Visual Studio Code with just the URL.
+
+
 ## 🌟 Community
 
 - **Issues**: Report bugs and request features on GitHub
@@ -163,6 +185,14 @@ We take security seriously. Please report any vulnerabilities to [security@apify
 - Built on the [Model Context Protocol](https://modelcontextprotocol.io/)
 - Inspired by the [official MCP servers repository](https://github.com/modelcontextprotocol/servers)
 - Community contributions and feedback
+
+### 📈 References
+
+Learn how to build and monetize MCP servers on Apify:
+
+- **[Webinar: Building and Monetizing MCP Servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)**
+- **[How to build and monetize an AI agent on Apify](https://blog.apify.com/how-to-build-an-ai-agent/)**
+- **[What is MCP and why does it matter?](https://blog.apify.com/what-is-model-context-protocol/)**
 
 ---
 
