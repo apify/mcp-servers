@@ -1,31 +1,16 @@
 # MCP Servers Monorepo
 
-A comprehensive collection of Model Context Protocol (MCP) servers published at Apify, providing managed wrappers around existing MCP servers for enhanced functionality, reliability, and ease of use.
+A curated collection of production-ready Model Context Protocol (MCP) servers published on Apify. These are wrappers around open-source MCP servers — **credits go to the original developers**.
 
-## 🚀 Overview
+- **Monetize** your MCP servers via pay-per-use pricing
+- **Reach** a global developer and business audience
+- **Reliable** hosting, scaling, and monitoring
+- **Built-in analytics**
+- **Community exposure** via Apify MCP server and the Apify Store
+- **Standby mode** for instant responses
+- **Multi-transport** (http-streamable and SSE) support
+- **OAuth** for easy authentication
 
-This monorepo contains a variety of MCP servers that extend the capabilities of AI applications by providing secure, controlled access to external tools and data sources. Each server is designed to be production-ready with proper error handling, logging, and monitoring.
-
-**Important:** These are **wrappers** around existing open-source MCP servers. We do not claim ownership of the original MCP server implementations. All credits go to the original developers.
-
-## 💰 Why publish MCP servers at Apify?
-
-### 🚀 Benefits for developers
-
-- **Monetization**: Earn revenue from your MCP servers through pay-per-use pricing
-- **Global reach**: Access to Apify's large user base of developers and businesses
-- **Production infrastructure**: Enterprise-grade hosting, scaling, and monitoring
-- **Built-in analytics**: Track usage, performance, and revenue
-- **Community exposure**: Get discovered by users through [Apify MCP server](https://mcp.apify.com) or by browsing the Apify Store
-
-### 🛠️ Technical advantages
-
-- **Standby mode**: Servers stay running for instant response times
-- **Auto-scaling**: Handles traffic spikes automatically
-- **Multi-transport support**: HTTP-streamable and SSE transport options
-- **OAuth integration**: Easy authentication for MCP clients
-- **Environment management**: Secure handling of API keys and secrets
-- **Docker support**: Containerized deployment for consistency
 
 ## 📦 Available servers
 
@@ -39,23 +24,11 @@ This monorepo contains a variety of MCP servers that extend the capabilities of 
 | **[Calculator MCP Server](./calculator-MCP-server/)** | Mathematical computations and calculations | [![Calculator MCP Server](https://apify.com/actor-badge?actor=mcp-servers/calculator-mcp-server)](https://apify.com/mcp-servers/calculator-mcp-server) | [Githejie](https://github.com/githejie/mcp-server-calculator) |
 | **[National Parks MCP Server](./national-parks/)** | Geographic and park information | [![National Parks MCP Server](https://apify.com/actor-badge?actor=mcp-servers/national-parks-mcp-server)](https://apify.com/mcp-servers/national-parks-mcp-server) | [KyrieTangSheng](https://github.com/KyrieTangSheng/mcp-server-nationalparks) |
 
-## 🙏 Credits and acknowledgments
-
-### Original developers
-
-All credits to the original authors of these MCP servers:
-
-- **Brave Search MCP Server**: [brave-search-mcp](https://github.com/brave/brave-search-mcp) by Brave Software
-- **Perplexity Sonar MCP Server**: [server-perplexity-ask](https://github.com/perplexity-ai/server-perplexity-ask) by Perplexity AI
-- **Firecrawl MCP Server**: [firecrawl-mcp](https://github.com/firecrawl/firecrawl-mcp) by Firecrawl
-- **Slide Speak MCP Server**: [slidespeak-mcp](https://github.com/slidespeak/slidespeak-mcp) by SlideSpeak
-- **Lara Translate MCP Server**: [lara-mcp](https://github.com/translated/lara-mcp) by Translated
-- **Calculator MCP Server**: [mcp-server-calculator](https://github.com/modelcontextprotocol/server-calculator) by MCP Community
-- **National Parks MCP Server**: [mcp-server-nationalparks](https://github.com/KyrieTangSheng/mcp-server-nationalparks) by KyrieTangSheng
-
-### Claim this MCP server
+## 🙏 Credits
+These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, KyrieTangSheng, and others.
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
+
 
 ## 🛠️ Quick start
 
@@ -109,10 +82,6 @@ When creating new MCP servers, you can use our pre-built templates:
 - **[Python MCP server template](https://apify.com/templates/python-mcp-server)** - For Python-based MCP servers
 - **[TypeScript MCP server template](https://apify.com/templates/ts-mcp-server)** - For TypeScript-based MCP servers
 
-**Template selection guide:**
-- For `stdio-based` MCP servers: Choose the template for the language the server is written in
-- For `remote` servers: You can select language based on your preference
-
 ### Project structure
 
 ```
@@ -125,48 +94,14 @@ mcp-servers/
 │   └── README.md      # Server-specific documentation
 ├── LICENSE            # MIT License
 ├── CONTRIBUTING.md    # Contribution guidelines
-├── CODE_OF_CONDUCT.md # Community standards
-└── SECURITY.md        # Security policy
+├── README.md          # This file
 ```
 
-### Adding a new server
-
-1. Create a new directory with the server name
-2. Follow the existing server structure
-3. Implement the MCP server interface
-4. Add Docker support
-5. Include comprehensive documentation
-6. Add tests and examples
-
 ## 🤝 Contributing
+This monorepo is maintained by Apify.
+We encourage you to build your own MCP servers using our templates—see the official MCP documentation and Apify MCP docs.
 
-This project is developed and maintained by the Apify team. We don't expect code contributions to this repository, but we encourage the community to build and develop their own MCP servers.
-
-### Building your own MCP servers
-
-We encourage developers to create their own MCP servers! Here are some resources to get started:
-
-- **[Python MCP server template](https://apify.com/templates/python-mcp-server)** - For Python-based MCP servers
-- **[TypeScript MCP server template](https://apify.com/templates/ts-mcp-server)** - For TypeScript-based MCP servers
-- **[MCP Documentation](https://modelcontextprotocol.io/)** - Official MCP specification and guides
-- **[Apify MCP Documentation](https://mcp.apify.com/)** - Learn about publishing MCP servers on Apify
-
-### Reporting issues
-
-Before creating bug reports, please check the existing issues to avoid duplicates. When creating a new issue, please include:
-
-- A clear and descriptive title
-- A detailed description of the problem
-- Steps to reproduce the issue
-- Expected vs actual behavior
-- Environment information (OS, Node.js/Python version, etc.)
-- Any relevant error messages or logs
-
-### Claiming a server
-
-If you are the original developer of any MCP server in this collection and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
-
-For more detailed information about our development process, see our [Contributing Guide](CONTRIBUTING.md).
+To report issues or request features, open an issue with details.
 
 ## 🌐 What is Apify MCP?
 
@@ -185,19 +120,6 @@ For the easiest setup and most powerful features, connect your AI assistant to o
 **[`https://mcp.apify.com`](https://mcp.apify.com)**
 
 It supports OAuth, so you can connect from clients like Claude.ai or Visual Studio Code with just the URL.
-
-
-## 🌟 Community
-
-- **Issues**: Report bugs and request features on GitHub
-- **Discussions**: Join community discussions
-- **Documentation**: Check individual server READMEs for detailed usage
-
-## 🙏 Acknowledgments
-
-- Built on the [Model Context Protocol](https://modelcontextprotocol.io/)
-- Inspired by the [official MCP servers repository](https://github.com/modelcontextprotocol/servers)
-- Community contributions and feedback
 
 ### 📈 References
 

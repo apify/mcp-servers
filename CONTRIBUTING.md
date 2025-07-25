@@ -1,75 +1,51 @@
-# Contributing to MCP Servers
+# Contributing to MCP servers
+This project is maintained by the Apify team. While we don’t expect code contributions to this monorepo, we encourage the community to build and share their own MCP servers using our templates.
 
-This project is developed and maintained by the Apify team. We don't expect code contributions to this repository, but we encourage the community to build and develop their own MCP servers.
-
-## 🤝 How to contribute
-
-### Building your own MCP servers
-
-We encourage developers to create their own MCP servers! Here are some resources to get started:
+## 🚀 Build your own MCP server
 
 - **[Python MCP server template](https://apify.com/templates/python-mcp-server)** - For Python-based MCP servers
 - **[TypeScript MCP server template](https://apify.com/templates/ts-mcp-server)** - For TypeScript-based MCP servers
 - **[MCP Documentation](https://modelcontextprotocol.io/)** - Official MCP specification and guides
 - **[Apify MCP Documentation](https://mcp.apify.com/)** - Learn about publishing MCP servers on Apify
 
-### Reporting issues
 
-Before creating bug reports, please check the existing issues to avoid duplicates. When creating a new issue, please include:
+## 🐛 Reporting issues & suggestions
 
-- A clear and descriptive title
-- A detailed description of the problem
-- Steps to reproduce the issue
-- Expected vs actual behavior
-- Environment information (OS, Node.js/Python version, etc.)
-- Any relevant error messages or logs
+### Bug Reports:
 
-### Suggesting enhancements
+Before opening a new issue, check for duplicates. Please include:
 
-We welcome feature requests! When suggesting enhancements:
+- Clear and descriptive title
+- Server name and version
+- MCP client used
+- Steps to reproduce and environment details
+- Relevant error messages/logs
 
-- Describe the feature in detail
-- Explain why this feature would be useful
-- Provide examples of how it would work
-- Consider implementation complexity
+### Feature Requests:
 
-### Claiming a server
+- Describe the feature and its benefit
+- Provide example scenarios if possible
 
-If you are the original developer of any MCP server in this collection and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
+## 🤝 Claiming a server
+
+If you are the original developer of an MCP server in this collection and want to claim ownership or raise concerns, please email ai@apify.com.
 
 ## 🏗️ Project structure
 
-This monorepo contains multiple MCP servers:
+Each server lives in its own directory with all code, config, and docs
 
-- **TypeScript servers**: `*-mcp-server/` directories with Node.js/TypeScript implementations
-- **Python servers**: `*-mcp-server/` directories with Python implementations
-- **Shared resources**: Common configurations and utilities
-
-Each server should be self-contained with its own:
-- `package.json` or `requirements.txt`
-- `Dockerfile`
-- `README.md`
-- Tests and documentation
-
-## 🐛 Bug reports
-
-When reporting bugs, please include:
-
-- Server name and version
-- MCP client being used
-- Complete error messages
-- Steps to reproduce
-- Environment details
+- TypeScript servers: *-mcp-server/ with package.json
+- Python servers: *-mcp-server/ with requirements.txt
+- Common utilities and configs are shared at the root
 
 ## 🚀 Getting help
 
-- Check existing issues and discussions
-- Join our community channels
-- Review the documentation for each server
-- Visit [mcp.apify.com](https://mcp.apify.com) for comprehensive MCP resources
+- Review documentation for each server
+- Check open issues and discussions
+- Visit mcp.apify.com for more resources
 
 ## 📄 License
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+All contributions are under the MIT License.
 
-Thank you for your interest in our MCP servers! 🎉 
+Thank you for your interest in MCP servers! 🎉
