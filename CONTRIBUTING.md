@@ -5,8 +5,9 @@ This project is maintained by the Apify team. While we don’t expect code contr
 
 - **[Python MCP server template](https://apify.com/templates/python-mcp-server)** - For Python-based MCP servers
 - **[TypeScript MCP server template](https://apify.com/templates/ts-mcp-server)** - For TypeScript-based MCP servers
-- **[MCP Documentation](https://modelcontextprotocol.io/)** - Official MCP specification and guides
-- **[Apify MCP Documentation](https://mcp.apify.com/)** - Learn about publishing MCP servers on Apify
+- **[Apify MCP Server](https://mcp.apify.com/)** - Apify MCP server URL
+- **[Apify MCP documentation](https://docs.apify.com/platform/integrations/mcp)** – Step-by-step documentation for using Apify MCP server
+- **[MCP documentation](https://modelcontextprotocol.io/)** - Official MCP specification and guides
 
 
 ## 🐛 Reporting issues & suggestions
