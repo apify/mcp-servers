@@ -1,0 +1,62 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# TypeScript files
+*.ts text
+*.tsx text
+
+# JavaScript files
+*.js text
+*.jsx text
+*.mjs text
+
+# Python files
+*.py text
+*.pyw text
+
+# Documentation
+*.md text
+*.txt text
+*.rst text
+
+# Configuration files
+*.json text
+*.yaml text
+*.yml text
+*.toml text
+*.ini text
+*.cfg text
+*.conf text
+
+# Docker files
+Dockerfile text
+*.dockerfile text
+
+# Shell scripts
+*.sh text
+*.bash text
+*.zsh text
+
+# Git files
+.gitignore text
+.gitattributes text
+
+# Binary files (should not be modified)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar.gz binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+# Logs
+*.log text
+
+# Environment files
+.env* text 
