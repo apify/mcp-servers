@@ -1,6 +1,7 @@
 // Source: https://github.com/supercorp-ai/supergateway
 import util from 'node:util';
-import { Logger } from '../lib/types.js';
+
+import type { Logger } from '../lib/types.js';
 
 const defaultFormatArgs = (args: unknown[]) => args;
 
@@ -11,7 +12,7 @@ const log =
         }: {
             formatArgs?: typeof defaultFormatArgs;
         } = { formatArgs: defaultFormatArgs },
-        // eslint-disable-next-line no-console
+         
     ) =>
     (...args: unknown[]) =>
         console.log('[MCP]', ...formatArgs(args));
@@ -23,7 +24,7 @@ const logStderr =
         }: {
             formatArgs?: typeof defaultFormatArgs;
         } = { formatArgs: defaultFormatArgs },
-        // eslint-disable-next-line no-console
+         
     ) =>
     (...args: unknown[]) =>
         console.error('[MCP]', ...formatArgs(args));

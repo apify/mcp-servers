@@ -1,22 +1,22 @@
 {
-	"actorSpecification": 1,
-	"name": "perplexity-ask-mcp-server",
-	"title": "TypeScript MCP server",
-	"description": "TypeScript Model Context Protocol server.",
-	"version": "0.0",
-	"buildTag": "latest",
-	"usesStandbyMode": true,
-	"meta": {
-		"templateId": "ts-mcp-server"
-	},
-	"input": {
-		"title": "Actor input schema",
-		"description": "This is Actor input schema",
-		"type": "object",
-		"schemaVersion": 1,
-		"properties": {},
-		"required": []
-	},
-	"dockerfile": "../Dockerfile",
-	"webServerMcpPath": "/sse"
+    "actorSpecification": 1,
+    "name": "perplexity-sonar-mcp-server",
+    "title": "TypeScript MCP server",
+    "description": "TypeScript Model Context Protocol server.",
+    "version": "0.0",
+    "buildTag": "latest",
+    "usesStandbyMode": true,
+    "meta": {
+        "templateId": "ts-mcp-server"
+    },
+    "input": {
+        "title": "Perplexity Sonar MCP Server Input",
+        "type": "object",
+        "description": "Use your Apify credits to run Perplexity Sonar MCP, giving language models real-time access to powerful tools and web data—no fine-tuning required. 🚀\n\n## How to Use\n* **Connect to a Language Model:** To use this server with a model like Claude, provide it with this endpoint: https://mcp.apify.com/?actors=mcp-servers%2Fperplexity-sonar-mcp-server\n* **Test with the Apify Client:** You can also test the server directly using your Apify credits via our client: https://apify.com/jiri.spilka/tester-mcp-client\n\n## Available Tools\n* **`perplexity_ask`**: Engage in a conversation with the Perplexity Sonar API for live, up-to-date web searches.",
+        "schemaVersion": 1,
+        "properties": {},
+        "required": []
+    },
+    "dockerfile": "../Dockerfile",
+    "webServerMcpPath": "/sse"
 }

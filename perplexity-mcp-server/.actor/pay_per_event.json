@@ -4,7 +4,7 @@
         "eventDescription": "Flat fee for starting an Actor run.",
         "eventPriceUsd": 0.001
     },
-    "perplexity-request": {
+    "perplexity-ask": {
         "eventTitle": "Price for completing a Perplexity request",
         "eventDescription": "Flat fee for completing a tool request.",
         "eventPriceUsd": 0.001
