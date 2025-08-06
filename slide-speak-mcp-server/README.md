@@ -14,7 +14,7 @@ Generates a PowerPoint presentation from a user prompt.
 
 **Inputs:**
 - `prompt` (string): Description of the presentation content.
-- `slides` (integer, optional): Number of slides to include (default: 5).
+- `length` (integer, optional): Number of slides to include (default: 5).
 - `theme` (string, optional): Presentation theme/style.
 
 **Returns:**
