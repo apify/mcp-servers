@@ -1,29 +1,30 @@
 ## Perplexity Sonar MCP Server
 
-An MCP server implementation that integrates the Sonar API to provide Claude with unparalleled real-time, web-wide research.
+An MCP server that enables Claude to perform real-time web searches using the Perplexity Sonar API.
 
 **About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com).
 
 ---
 
-Please refer to the official [DeepWiki page](https://deepwiki.ai/docs/perplexity-ask-mcp-server) for assistance with implementation.
+## Available Tools
 
-### High-level System Architecture
+### `perplexity_ask`
+
+Engage in a conversation with the Sonar API for live web searches.
+
+**Inputs:**
+
+- `messages` (array of objects): Each message must include:
+  - `role` (string): One of `system`, `user`, or `assistant`
+  - `content` (string): The message content
+
+## High-level System Architecture
 
 Credits: DeepWiki powered by Devin
 
-### Tools
+## Configuration
 
-* `perplexity_ask`
-    * Engage in a conversation with the Sonar API for live web searches.
-    * Inputs:
-        * `messages` (array): An array of conversation messages. Each message must include:
-            * `role` (string): The role of the message (e.g., `system`, `user`, `assistant`).
-            * `content` (string): The content of the message.
-
-### Configuration
-
-#### Step 1:
+### Step 1:
 
 Clone this repository:
 
@@ -37,7 +38,7 @@ Navigate to the perplexity-ask directory and install the necessary dependencies:
 cd modelcontextprotocol/perplexity-ask && npm install
 ```
 
-#### Step 2: Get a Sonar API Key
+### Step 2: Get a Sonar API Key
 
 Sign up for a Sonar API account.
 
@@ -45,7 +46,7 @@ Follow the account setup instructions and generate your API key from the develop
 
 Set the API key in your environment as `PERPLEXITY_API_KEY`.
 
-#### Step 3: Configure Claude Desktop
+### Step 3: Configure Claude Desktop
 
 Download Claude desktop here.
 
@@ -99,7 +100,7 @@ You can access the file using:
 vim ~/Library/Application\ Support/Claude/claude_desktop_config.json
 ```
 
-#### Step 4: Build the Docker Image
+### Step 4: Build the Docker Image
 
 Docker build:
 
@@ -107,44 +108,53 @@ Docker build:
 docker build -t mcp/perplexity-ask:latest -f Dockerfile .
 ```
 
-#### Step 5: Testing
+### Step 5: Testing
 
-Let's make sure Claude for Desktop is picking up the two tools we've exposed in our perplexity-ask server. You can do this by looking for the hammer icon:
+Make sure Claude for Desktop is picking up the tools we've exposed in the perplexity-ask server. You can do this by looking for the hammer icon:
 
-After clicking on the hammer icon, you should see the tools that come with the Filesystem MCP Server:
+After clicking on the hammer icon, you should see the tools that come with the Filesystem MCP Server.
 
-If you see both of these this means that the integration is active. Congratulations! This means Claude can now ask Perplexity. You can then simply use it as you would use the Perplexity web app.
+If you see both tools, the integration is active. This means Claude can now ask Perplexity just like it would on the Perplexity web app.
 
-#### Step 6: Advanced parameters
+### Step 6: Advanced parameters
 
 Currently, the search parameters used are the default ones. You can modify any search parameter in the API call directly in the `index.ts` script. For this, please refer to the official API documentation.
 
-### Troubleshooting
+## Troubleshooting
 
-The Claude documentation provides an excellent troubleshooting guide you can refer to. However, you can still reach out to us at api@perplexity.ai for any additional support or file a bug.
+The Claude documentation provides an excellent troubleshooting guide. You can also reach out to us at api@perplexity.ai for additional support or to file a bug.
 
-### Cursor integration
+## Cursor integration
 
-You can also use our MCP with Cursor (or any other app that supports this). To use Sonar with Cursor, you can follow the following steps.
+You can also use this MCP server with Cursor or any other app that supports MCP. To use Sonar with Cursor, follow these steps:
 
 **Step 1:** Navigate to your Cursor settings
 
 **Step 2:** Navigate to the MCP directory
 
-And click on *Add new global MCP server*
+Click on *Add new global MCP server*
 
 **Step 3:** Insert the MCP Server Configuration from above
 
-This is the same configuration you would use for any other application that supports MCP. You should then see the application being part of your available tools like this:
+You should then see the application as part of your available tools.
 
-### License
+## License
 
-This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+This MCP server is licensed under the MIT License. You are free to use, modify, and distribute the software, subject to the terms of the MIT License. See the LICENSE file in the project repository for details.
 
----
+## 🚩 Claim this MCP server
 
-🚩 Claim this MCP server. Contact info.
+All credits to the original authors of [https://github.com/ppl-ai/modelcontextprotocol](https://github.com/ppl-ai/modelcontextprotocol)
 
-All credits to the original authors of https://github.com/ppl-ai/modelcontextprotocol
+To claim this server, please write to [ai@apify.com](mailto:ai@apify.com).
 
-Write to ai@apify.com
+## References
+
+To learn more about Apify and Actors, take a look at the following resources:
+
+- [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
+- [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
+- [Apify Platform documentation](https://docs.apify.com/platform)
+- [Apify MCP Server](https://docs.apify.com/platform/integrations/mcp)
+- [Webinar: Building and Monetizing MCP Servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)
+- [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)

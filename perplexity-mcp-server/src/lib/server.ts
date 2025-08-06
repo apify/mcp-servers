@@ -1,14 +1,17 @@
 // Source: https://github.com/supercorp-ai/supergateway
-import express from 'express';
-import bodyParser from 'body-parser';
-import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
+import type { ChildProcessWithoutNullStreams } from 'node:child_process';
+import { spawn } from 'node:child_process';
+
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
-import { JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js';
-import { Logger } from '../lib/types.js';
+import type { JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js';
+import bodyParser from 'body-parser';
+import express from 'express';
+
+import { validateAndChargeMcpResponse } from '../billing.js';
 import { getVersion } from '../lib/getVersion.js';
 import { onSignals } from '../lib/onSignals.js';
-import { chargeMcpResponse } from '../billing.js';
+import type { Logger } from '../lib/types.js';
 
 export interface StdioToSseArgs {
     stdioCmd: string;
@@ -91,7 +94,15 @@ export async function stdioToSse(args: StdioToSseArgs) {
     // @ts-ignore
     app.post(messagePath, async (req, res) => {
         const body = req.body as { method: string };
-        await chargeMcpResponse(body);
+
+        try {
+            await validateAndChargeMcpResponse(body);
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+            logger.error(`Validation failed: ${errorMessage}`);
+            return res.status(403).send(errorMessage);
+        }
+
         const sessionId = req.query.sessionId as string;
 
         if (!sessionId) {
