@@ -188,3 +188,6 @@ config.local.*
 .secrets
 secrets.json
 api-keys.json
+
+# MCP config with secrets
+.amazonq
