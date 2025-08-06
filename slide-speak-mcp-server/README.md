@@ -1,8 +1,24 @@
 ## SlideSpeak MCP Server
 
-An MCP Server that allows you to create PowerPoint presentations. Powered by SlideSpeak, you can now create presentations using the SlideSpeak MCP. Automate reports, presentations and other slide decks. Start today!
+An MCP server that enables Claude or other MCP-compatible apps to generate PowerPoint presentations from natural language prompts using the SlideSpeak API.
 
 **About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com).
+
+---
+
+## Available Tools
+
+### `generatePowerpoint`
+
+Generates a PowerPoint presentation from a user prompt.
+
+**Inputs:**
+- `prompt` (string): Description of the presentation content.
+- `length` (integer, optional): Number of slides to include (default: 5).
+- `theme` (string, optional): Presentation theme/style.
+
+**Returns:**
+- A downloadable `.pptx` file or a shareable link.
 
 ---
 
@@ -58,9 +74,13 @@ This will allow you to run the MCP Server on your own computer. This approach re
 }
 ```
 
+---
+
 ### Getting an API key
 
 Visit this page in order to get an API key for Slidespeak: [https://slidespeak.co/slidespeak-api/](https://slidespeak.co/slidespeak-api/)
+
+---
 
 ### Development of SlideSpeak MCP
 
@@ -129,7 +149,7 @@ The version needs to be updated in the following files:
 Make a new release in GitHub and tag it with the version number. This will trigger a GitHub Action. The release will be automatically built and pushed to Docker Hub.  
 [https://hub.docker.com/r/slidespeak/slidespeak-mcp](https://hub.docker.com/r/slidespeak/slidespeak-mcp)
 
------
+---
 
 ## 🚩 Claim this MCP server. Contact info.
 
@@ -138,3 +158,16 @@ All credits to the original authors of [https://github.com/SlideSpeak/slidespeak
 Write to [ai@apify.com](mailto:ai@apify.com)
 
 **Original project URL:** [https://github.com/SlideSpeak/slidespeak-mcp](https://github.com/SlideSpeak/slidespeak-mcp)
+
+---
+
+## References
+
+To learn more about Apify and Actors, take a look at the following resources:
+
+- [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
+- [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
+- [Apify Platform documentation](https://docs.apify.com/platform)
+- [Apify MCP Server](https://docs.apify.com/platform/integrations/mcp)
+- [Webinar: Building and Monetizing MCP Servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)
+- [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)
