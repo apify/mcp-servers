@@ -8,7 +8,7 @@ An MCP server that enables Claude or other MCP-compatible apps to generate Power
 
 ## Available Tools
 
-### `generate_ppt`
+### `generatePowerpoint`
 
 Generates a PowerPoint presentation from a user prompt.
 
