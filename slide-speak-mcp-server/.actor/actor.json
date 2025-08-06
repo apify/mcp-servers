@@ -1,22 +1,22 @@
 {
-	"actorSpecification": 1,
-	"name": "slide-speak-mcp-server",
-	"title": "Python MCP server",
-	"description": "Python Model Context Protocol (MCP) server.",
-	"version": "0.0",
-	"buildTag": "latest",
-	"usesStandbyMode": true,
-	"meta": {
-		"templateId": "python-mcp-server"
-	},
-	"input": {
-		"title": "Actor input schema",
-		"description": "This is Actor input schema",
-		"type": "object",
-		"schemaVersion": 1,
-		"properties": {},
-		"required": []
-	},
-	"dockerfile": "../Dockerfile",
-	"webServerMcpPath": "/sse,/mcp"
+  "actorSpecification": 1,
+  "name": "slidespeak-mcp-server",
+  "title": "SlideSpeak MCP Server",
+  "description": "Python Model Context Protocol (MCP) server.",
+  "version": "0.0",
+  "buildTag": "latest",
+  "usesStandbyMode": true,
+  "meta": {
+    "templateId": "python-mcp-server"
+  },
+  "input": {
+    "title": "SlideSpeak MCP Server Input",
+    "type": "object",
+    "description": "Use your Apify credits to generate presentations with SlideSpeak, avoiding the need for monthly subscriptions. 📄➡️💻\n\n## How to Use\n* **Connect to a Language Model:** To use this server with a model like Claude, provide it with this endpoint: https://mcp.apify.com/?actors=mcp-servers%2Fslidespeak-mcp-server\n* **Test with the Apify Client:** You can also test the server directly using your Apify credits via our client: https://apify.com/jiri.spilka/tester-mcp-client\n\n## Available Tools\n* **`generate_powerpoint`**: Generate a PowerPoint presentation based on text, length, and template. Waits up to a configured time for the result.\n* **`get_available_templates`**: Get all available presentation templates.",
+    "schemaVersion": 1,
+    "properties": {},
+    "required": []
+  },
+  "dockerfile": "../Dockerfile",
+  "webServerMcpPath": "/sse,/mcp"
 }
