@@ -33,5 +33,10 @@
         "eventTitle": "MCP tool call",
         "eventDescription": "Fee for executing MCP tools.",
         "eventPriceUsd": 0.05
+    },
+    "calculate": {
+        "eventTitle": "Calculator calculation",
+        "eventDescription": "Fee for executing mathematical calculations.",
+        "eventPriceUsd": 0.01
     }
 }

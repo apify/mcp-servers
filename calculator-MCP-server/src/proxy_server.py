@@ -141,7 +141,11 @@ async def create_proxy_server(  # noqa: PLR0915
         app.request_handlers[types.ListToolsRequest] = _list_tools
 
         async def _call_tool(req: types.CallToolRequest) -> types.ServerResult:
-            await charge_mcp_operation(actor_charge_function, ChargeEvents.TOOL_CALL)
+            # Use specific charging event for calculator tool
+            if req.params.name == 'calculate':
+                await charge_mcp_operation(actor_charge_function, ChargeEvents.CALCULATE)
+            else:
+                await charge_mcp_operation(actor_charge_function, ChargeEvents.TOOL_CALL)
             try:
                 result = await client_session.call_tool(req.params.name, (req.params.arguments or {}))
                 return types.ServerResult(result)

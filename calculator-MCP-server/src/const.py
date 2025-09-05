@@ -16,3 +16,4 @@ class ChargeEvents(str, Enum):
     PROMPT_GET = 'prompt-get'
     TOOL_LIST = 'tool-list'
     TOOL_CALL = 'tool-call'
+    CALCULATE = 'calculate'

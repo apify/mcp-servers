@@ -75,7 +75,7 @@ async def main() -> None:
                 f"""
                 {{
                     "mcpServers": {{
-                        "arxiv-mcp-server": {{
+                        "calculator-mcp-server": {{
                             "url": "{url}/mcp",
                         }}
                     }}
@@ -87,7 +87,7 @@ async def main() -> None:
                 f"""
                 {{
                     "mcpServers": {{
-                        "arxiv-mcp-server": {{
+                        "calculator-mcp-server": {{
                             "url": "{url}/sse",
                         }}
                     }}
