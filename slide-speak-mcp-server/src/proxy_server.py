@@ -63,7 +63,7 @@ async def create_proxy_server(  # noqa: PLR0915
     """
     logger.debug('Sending initialization request to remote MCP server...')
     response = await client_session.initialize()
-    
+
     capabilities: types.ServerCapabilities = response.capabilities
 
     logger.debug('Configuring proxied MCP server...')
@@ -150,8 +150,7 @@ async def create_proxy_server(  # noqa: PLR0915
                 slides_count = 1
                 try:
                     slides_count = int(arguments.get('length', 1))
-                    if slides_count < 1:
-                        slides_count = 1
+                    slides_count = max(slides_count, 1)
                 except (ValueError, TypeError):
                     logger.warning(f"Invalid 'length' argument: {arguments.get('length')}. Defaulting to 1.")
 
@@ -184,11 +183,12 @@ async def create_proxy_server(  # noqa: PLR0915
                 return types.ServerResult(result)
             except Exception as e:
                 # CRITICAL: Log the full, detailed exception to find the root cause
-                error_details = f"DOWNSTREAM SERVER FAILED. Tool: '{tool_name}'. Arguments: {arguments}. Full Exception: {e!r}"
+                error_details = f"SERVER FAILED. Tool: '{tool_name}'. Arguments: {arguments}. Full Exception: {e!r}"
                 logger.exception(error_details)
                 return types.ServerResult(
                     types.CallToolResult(content=[types.TextContent(type='text', text=error_details)], isError=True),
                 )
+
         app.request_handlers[types.CallToolRequest] = _call_tool
 
     async def _send_progress_notification(req: types.ProgressNotification) -> None:

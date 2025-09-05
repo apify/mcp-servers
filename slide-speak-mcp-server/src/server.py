@@ -100,13 +100,13 @@ class ProxyServer:
             event_store=event_store,  # Enable resumability
             json_response=False,
         )
-   
+
         @contextlib.asynccontextmanager
         async def lifespan(_app: Starlette) -> AsyncIterator[None]:
             """Context manager for managing session manager lifecycle."""
             async with session_manager.run():
                 logger.info('Application started with StreamableHTTP session manager!')
-                
+
                 logger.info('Adding a 2-second startup delay to ensure all services are ready...')
                 await asyncio.sleep(2)
                 logger.info('Startup delay complete. Server is now ready for requests.')
@@ -115,8 +115,6 @@ class ProxyServer:
                     yield
                 finally:
                     logger.info('Application shutting down...')
-                
-
 
         async def handle_root(request: Request) -> st.Response:
             """Handle root endpoint."""
