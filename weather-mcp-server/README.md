@@ -8,7 +8,7 @@ A Model Context Protocol (MCP) server that provides weather information using th
 MCP clients can connect to this server at:
 
 ```text
-https://mcp-servers--weather-mcp-server.apify.actor/mcp
+https://jiri-spilka--weather-mcp-server.apify.actor/mcp
 ```
 
 ## Client Configuration
@@ -18,7 +18,7 @@ To connect to this MCP server, use the following configuration in your MCP clien
 {
   "mcpServers": {
     "weather": {
-      "url": "https://mcp-servers--weather-mcp-server.apify.actor/mcp",
+      "url": "https://jiri-spilka--weather-mcp-server.apify.actor/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_APIFY_TOKEN"
       }

@@ -73,19 +73,20 @@ async def main() -> None:
         Actor.log.info('Starting MCP Server Actor')
         await Actor.charge(ChargeEvents.ACTOR_START.value)
 
+        url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
-            msg = 'This Actor is not meant to be run directly. It should be run in standby mode.'
+            msg = (
+                'Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.\n'
+                f'Connect to {url}/mcp to establish a connection.\n'
+                'Learn more at https://mcp.apify.com/'
+            )
             Actor.log.warning(msg)
             await Actor.exit(status_message=msg)
             return
 
         try:
             # Create and start the server with charging enabled
-            url = os.environ.get('ACTOR_STANDBY_URL', HOST)
             Actor.log.info('Starting MCP server')
-            Actor.log.info(f'  - proxy server host: {os.environ.get("ACTOR_STANDBY_URL", HOST)}')
-            Actor.log.info(f'  - proxy server port: {PORT}')
-
             Actor.log.info('Add the following configuration to your MCP client to use Streamable HTTP transport:')
             Actor.log.info(
                 f"""
