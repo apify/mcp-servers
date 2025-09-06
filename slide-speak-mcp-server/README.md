@@ -37,15 +37,35 @@ To connect to this MCP server, use the following configuration in your MCP clien
 
 ### `generatePowerpoint`
 
-Generates a PowerPoint presentation from a user prompt.
+Generates a PowerPoint or PDF presentation based on text, length, and template with extensive customization options.
 
-**Inputs:**
-- `prompt` (string): Description of the presentation content.
-- `length` (integer, optional): Number of slides to include (default: 5).
-- `theme` (string, optional): Presentation theme/style.
+**Required Inputs:**
+- `plain_text` (string): The topic to generate a presentation about
+- `length` (integer): The number of slides
+- `template` (string): Template name or ID
+
+**Optional Inputs:**
+- `document_uuids` (list[string]): UUIDs of uploaded documents to use
+- `language` (string): Language code (default: 'ORIGINAL')
+- `fetch_images` (boolean): Include stock images (default: True)
+- `use_document_images` (boolean): Include images from documents (default: False)
+- `tone` (string): Text tone - 'default', 'casual', 'professional', 'funny', 'educational', 'sales_pitch' (default: 'default')
+- `verbosity` (string): Text length - 'concise', 'standard', 'text-heavy' (default: 'standard')
+- `custom_user_instructions` (string): Custom generation instructions
+- `include_cover` (boolean): Include cover slide (default: True)
+- `include_table_of_contents` (boolean): Include TOC slides (default: True)
+- `add_speaker_notes` (boolean): Add speaker notes (default: False)
+- `use_general_knowledge` (boolean): Expand with related info (default: False)
+- `use_wording_from_document` (boolean): Use document wording (default: False)
+- `response_format` (string): 'powerpoint' or 'pdf' (default: 'powerpoint')
+- `use_branding_logo` (boolean): Include brand logo (default: False)
+- `use_branding_fonts` (boolean): Apply brand fonts (default: False)
+- `use_branding_color` (boolean): Apply brand colors (default: False)
+- `branding_logo` (string): Custom logo URL
+- `branding_fonts` (dict): The object of brand fonts to be used in the slides
 
 **Returns:**
-- A downloadable `.pptx` file or a shareable link.
+- A downloadable `.pptx` or `.pdf` file URL or a shareable link.
 
 ### `getAvailableTemplates`
 
@@ -55,7 +75,52 @@ Gets all available presentation templates from SlideSpeak.
 - None
 
 **Returns:**
-- A list of available presentation templates with their names and descriptions.
+- A formatted list of available presentation templates with their names, cover images, and content images.
+
+### `generateSlideBySlide`
+
+Generate a PowerPoint presentation using Slide-by-Slide input with precise control over each slide.
+
+**Required Inputs:**
+- `template` (string): The name of the template or the ID of a custom template
+- `slides` (list[dict]): A list of slides, each defined as a dictionary with:
+  - `title` (string): The title of the slide
+  - `layout` (string): The layout type for the slide
+  - `item_amount` (integer): Number of items for the slide (must match the layout constraints)
+  - `content` (string): The content that will be used for the slide
+
+**Optional Inputs:**
+- `language` (string): Language code like 'ENGLISH' or 'ORIGINAL'
+- `fetch_images` (boolean): Whether to include stock images (default: True)
+
+**Available Layouts:**
+- `items`: 1-5 items
+- `steps`: 3-5 items
+- `summary`: 1-5 items
+- `comparison`: exactly 2 items
+- `big-number`: 1-5 items
+- `milestone`: 3-5 items
+- `pestel`: exactly 6 items
+- `swot`: exactly 4 items
+- `pyramid`: 1-5 items
+- `timeline`: 3-5 items
+- `funnel`: 3-5 items
+- `quote`: 1 item
+- `cycle`: 3-5 items
+- `thanks`: 0 items
+
+**Returns:**
+- A downloadable `.pptx` file URL or a shareable link.
+
+### `getTaskStatus`
+
+Get the current task status and result by task_id for any SlideSpeak operation.
+
+**Required Inputs:**
+- `task_id` (string): The task ID returned from a generation operation
+
+**Returns:**
+- JSON object containing the current task status, progress, and result (if completed).
 
 ---
 

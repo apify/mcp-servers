@@ -22,6 +22,8 @@ class ChargeEvents(str, Enum):
     # SlideSpeak-specific operations (example for domain-specific charging)
     GET_TEMPLATES = 'get-templates'
     GENERATE_SLIDE = 'generate-slide'
+    GENERATE_SLIDE_BY_SLIDE = 'generate-slide-by-slide'
+    GET_TASK_STATUS = 'get-task-status'
 
 
 # Authorized tools list for MCP server
@@ -30,8 +32,9 @@ class ChargeEvents(str, Enum):
 AUTHORIZED_TOOLS = [
     'generatePowerpoint',
     'getAvailableTemplates',
+    'generateSlideBySlide',
+    'getTaskStatus',
 ]
-
 
 # Helper function to get ChargeEvents enum from tool name
 def get_charge_event(tool_name: str) -> ChargeEvents | None:
@@ -40,5 +43,8 @@ def get_charge_event(tool_name: str) -> ChargeEvents | None:
     tool_to_event = {
         'generatePowerpoint': ChargeEvents.GENERATE_SLIDE,
         'getAvailableTemplates': ChargeEvents.GET_TEMPLATES,
+        'generateSlideBySlide': ChargeEvents.GENERATE_SLIDE_BY_SLIDE,
+        'getTaskStatus': ChargeEvents.GET_TASK_STATUS,
     }
     return tool_to_event.get(tool_name)
+#
