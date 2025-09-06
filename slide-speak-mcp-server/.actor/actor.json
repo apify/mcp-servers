@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "slidespeak-mcp-server",
   "title": "SlideSpeak MCP Server",
-  "description": "Python Model Context Protocol (MCP) server.",
+  "description": "SlideSpeak MCP Server - Generate PowerPoint presentations from natural language prompts using the SlideSpeak API.",
   "version": "0.0",
   "buildTag": "latest",
   "usesStandbyMode": true,
@@ -12,7 +12,7 @@
   "input": {
     "title": "SlideSpeak MCP Server Input",
     "type": "object",
-    "description": "Use your Apify credits to generate presentations with SlideSpeak, avoiding the need for monthly subscriptions. 📄➡️💻\n\n## How to Use\n* **Connect to a Language Model:** To use this server with a model like Claude, provide it with this endpoint: https://mcp.apify.com/?actors=mcp-servers%2Fslidespeak-mcp-server\n* **Test with the Apify Client:** You can also test the server directly using your Apify credits via our client: https://apify.com/jiri.spilka/tester-mcp-client\n\n## Available Tools\n* **`generate_powerpoint`**: Generate a PowerPoint presentation based on text, length, and template. Waits up to a configured time for the result.\n* **`get_available_templates`**: Get all available presentation templates.",
+    "description": "Use your Apify credits to generate PowerPoint presentations with SlideSpeak, avoiding the need for monthly subscriptions. 📄➡️💻\n\n## How to Use\n* **Connect to a Language Model:** To use this server with a model like Claude, provide it with this endpoint: https://mcp.apify.com/?actors=mcp-servers%2Fslidespeak-mcp-server\n* **Test with the Apify Client:** You can also test the server directly using your Apify credits via our client: https://apify.com/jiri.spilka/tester-mcp-client\n\n## Available Tools\n* **`generatePowerpoint`**: Generate a PowerPoint presentation based on text prompt, length, and theme. Returns a downloadable .pptx file or shareable link.\n* **`getAvailableTemplates`**: Get all available presentation templates from SlideSpeak.",
     "schemaVersion": 1,
     "properties": {},
     "required": []

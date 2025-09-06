@@ -1,8 +1,35 @@
 ## SlideSpeak MCP Server
 
+[![Apify Actor](https://apify.com/actor-badge?actor=mcp-servers/slidespeak-mcp-server)](https://apify.com/actor/mcp-servers/slidespeak-mcp-server)
+
 An MCP server that enables Claude or other MCP-compatible apps to generate PowerPoint presentations from natural language prompts using the SlideSpeak API.
 
 **About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com).
+
+## Connection URL
+MCP clients can connect to this server at:
+
+```text
+https://mcp-servers--slidespeak-mcp-server.apify.actor/mcp
+```
+
+## Client Configuration
+To connect to this MCP server, use the following configuration in your MCP client:
+
+```json
+{
+  "mcpServers": {
+    "slidespeak": {
+      "url": "https://mcp-servers--slidespeak-mcp-server.apify.actor/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_APIFY_TOKEN"
+      }
+    }
+  }
+}
+```
+
+**Note:** Replace `YOUR_APIFY_TOKEN` with your actual Apify API token. You can find your token in the [Apify Console](https://console.apify.com/account/integrations).
 
 ---
 
@@ -19,6 +46,16 @@ Generates a PowerPoint presentation from a user prompt.
 
 **Returns:**
 - A downloadable `.pptx` file or a shareable link.
+
+### `getAvailableTemplates`
+
+Gets all available presentation templates from SlideSpeak.
+
+**Inputs:**
+- None
+
+**Returns:**
+- A list of available presentation templates with their names and descriptions.
 
 ---
 
