@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import ChargeEvents
+from .const import ChargeEvents, TOOL_WHITELIST
 from .models import ServerType
 from .server import ProxyServer
 
@@ -25,19 +25,7 @@ server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
     command='python',
     args=['-m', 'mcp_weather_server'],
-    env={'YOUR-ENV_VAR': os.getenv('YOUR-ENV-VAR') or ''},  # Optional environment variables
 )
-
-# 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
-# from .models import RemoteServerParameters  # noqa: ERA001
-
-# server_type = ServerType.HTTP # or ServerType.SSE, depending on your server type # noqa: ERA001
-# MCP_SERVER_PARAMS = RemoteServerParameters( # noqa: ERA001, RUF100
-#     url='https://your-mcp-server',  # noqa: ERA001
-#     headers={'Authorization':  'Bearer YOUR-API-KEY'},  # Optional headers, e.g., for authentication  # noqa: ERA001
-# )  # noqa: ERA001, RUF100
-# ------------------------------------------------------------------------------
-
 
 async def main() -> None:
     """Run the MCP Server Actor.
@@ -102,7 +90,7 @@ async def main() -> None:
             # Pass Actor.charge to enable charging for MCP operations
             # The proxy server will use this to charge for different operations
             proxy_server = ProxyServer(
-                SERVER_NAME, MCP_SERVER_PARAMS, HOST, PORT, server_type, actor_charge_function=Actor.charge
+                SERVER_NAME, MCP_SERVER_PARAMS, HOST, PORT, server_type, actor_charge_function=Actor.charge, tool_whitelist=TOOL_WHITELIST
             )
             await proxy_server.start()
         except Exception as e:

@@ -25,20 +25,12 @@ class ChargeEvents(str, Enum):
     GET_CURRENT_DATETIME = 'get_current_datetime'
 
 
-# Authorized tools list for MCP server
-# Only tools listed here will be allowed to execute.
-# To add new authorized tools, simply add the tool value to this list.
-AUTHORIZED_TOOLS = [
-    ChargeEvents.GET_CURRENT_WEATHER.value,
-    # ChargeEvents.GET_WEATHER_BY_DATETIME_RANGE.value,
-    # ChargeEvents.GET_CURRENT_DATETIME.value,
-]
-
-
-# Helper function to get ChargeEvents enum from tool name
-def get_charge_event(tool_name: str) -> ChargeEvents | None:
-    """Get the ChargeEvents enum member from a tool name string."""
-    for event in ChargeEvents:
-        if event.value == tool_name:
-            return event
-    return None
+# Tool whitelist for MCP server
+# Only tools listed here will be present to the user and allowed to execute.
+# Format of the dictionary: {tool_name: (charge_event_name, default_count)}
+# To add new authorized tools, add an entry with the tool name and its charging configuration.
+TOOL_WHITELIST = {
+    ChargeEvents.GET_CURRENT_WEATHER.value: (ChargeEvents.GET_CURRENT_WEATHER.value, 1),
+    # ChargeEvents.GET_WEATHER_BY_DATETIME_RANGE.value: (ChargeEvents.GET_WEATHER_BY_DATETIME_RANGE.value, 1),
+    # ChargeEvents.GET_CURRENT_DATETIME.value: (ChargeEvents.GET_CURRENT_DATETIME.value, 1),
+}
