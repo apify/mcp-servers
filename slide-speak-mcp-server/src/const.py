@@ -22,7 +22,6 @@ class ChargeEvents(str, Enum):
     # SlideSpeak-specific operations (example for domain-specific charging)
     GET_TEMPLATES = 'get-templates'
     GENERATE_SLIDE = 'generate-slide'
-    GENERATE_SLIDE_BY_SLIDE = 'generate-slide-by-slide'
     GET_TASK_STATUS = 'get-task-status'
 
 
