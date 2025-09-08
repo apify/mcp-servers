@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "weather-mcp-server",
+	"title": "Weather MCP Server",
+	"description": "A Model Context Protocol (MCP) server that provides weather information using the Open-Meteo API. Get current weather, historical weather data, and timezone information for any city worldwide.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
