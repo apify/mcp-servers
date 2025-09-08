@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the Docfork MCP Server Actor",
+        "eventPriceUsd": 0.1
+    },
+    "get-library-docs": {
+        "eventTitle": "Retrieve library documentation",
+        "eventDescription": "Fee for retrieving library documentation using the get-library-docs tool.",
+        "eventPriceUsd": 0.001
+    }
+  }
