@@ -1,6 +1,6 @@
 # Docfork MCP Server
 
-[![Apify Actor Badge](https://apify.com/actor-badge?actor=mcp-server/docfork-mcp-server)](https://apify.com/actor/mcp-server/docfork-mcp-server)
+[![Apify Actor Badge](https://apify.com/actor-badge?actor=mcp-servers/docfork-mcp-server)](https://apify.com/actor/mcp-servers/docfork-mcp-server)
 
 🌿 Access @latest documentation and code examples from 9000+ libraries in a single tool call.
 
