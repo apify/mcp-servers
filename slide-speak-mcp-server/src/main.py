@@ -19,13 +19,10 @@ PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT'))) or 500
 # 1) For stdio server type, you need to provide the command and args
 from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
-import os
-from mcp.client.stdio import StdioServerParameters
-
 # Get the API key from the Actor's environment variables
 slidespeak_api_key = os.getenv('SLIDESPEAK_API_KEY')
 if not slidespeak_api_key:
-    raise ValueError("SLIDESPEAK_API_KEY environment variable not set!")
+    raise ValueError('SLIDESPEAK_API_KEY environment variable not set!')
 
 # Configure the proxy to run slidespeak-mcp using npx
 MCP_SERVER_PARAMS = StdioServerParameters(

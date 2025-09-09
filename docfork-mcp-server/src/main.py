@@ -5,7 +5,7 @@ import os
 from apify import Actor
 
 from .const import TOOL_WHITELIST, ChargeEvents
-from .models import ServerType, RemoteServerParameters
+from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
 # Actor configuration
@@ -23,6 +23,7 @@ MCP_SERVER_PARAMS = RemoteServerParameters(  # noqa: ERA001, RUF100
     headers=None,  # No authentication required for Docfork
 )  # noqa: ERA001, RUF100
 # ------------------------------------------------------------------------------
+
 
 async def main() -> None:
     """Run the MCP Server Actor.
