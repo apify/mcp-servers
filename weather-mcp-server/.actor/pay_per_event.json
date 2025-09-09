@@ -1,0 +1,22 @@
+{
+    "actor-start": {
+        "eventTitle": "Weather MCP server startup",
+        "eventDescription": "Initial fee for starting the Weather MCP Server Actor",
+        "eventPriceUsd": 0.01
+    },
+    "get_current_weather": {
+        "eventTitle": "Current weather lookup",
+        "eventDescription": "Fee for getting current weather information for a specific city using the get_current_weather tool.",
+        "eventPriceUsd": 0.005
+    },
+    "get_weather_by_datetime_range": {
+        "eventTitle": "Historical weather data",
+        "eventDescription": "Fee for getting weather information for a date range using the get_weather_by_datetime_range tool.",
+        "eventPriceUsd": 0.01
+    },
+    "get_current_datetime": {
+        "eventTitle": "Current datetime lookup",
+        "eventDescription": "Fee for getting current datetime in a specific timezone using the get_current_datetime tool.",
+        "eventPriceUsd": 0.001
+    }
+  }
