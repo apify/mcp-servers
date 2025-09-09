@@ -188,3 +188,7 @@ config.local.*
 .secrets
 secrets.json
 api-keys.json
+
+# Added by Apify CLI
+storage
+node_modules
