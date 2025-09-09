@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "docfork-mcp-server",
+	"title": "Docfork MCP Server",
+	"description": "Docfork MCP Server - Access @latest documentation and code examples from 9000+ libraries in a single tool call.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
