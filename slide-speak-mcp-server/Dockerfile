@@ -20,8 +20,6 @@ RUN echo "Python version:" \
  && echo "All installed Python packages:" \
  && pip freeze
 
-RUN apt-get update && apt-get install -y nodejs npm
-
 # Next, copy the remaining files and directories with the source code.
 # Since we do this after installing the dependencies, quick builds will be really fast
 # for most source file changes.

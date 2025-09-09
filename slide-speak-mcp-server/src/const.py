@@ -34,4 +34,3 @@ TOOL_WHITELIST = {
     'getAvailableTemplates': (ChargeEvents.GET_TEMPLATES.value, 1),
     'getTaskStatus': (ChargeEvents.GET_TASK_STATUS.value, 1),
 }
-#

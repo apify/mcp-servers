@@ -4,8 +4,8 @@ import os
 
 from apify import Actor
 
-from .const import ChargeEvents, TOOL_WHITELIST
-from .models import ServerType
+from .const import TOOL_WHITELIST, ChargeEvents
+from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
 # Actor configuration
@@ -16,23 +16,7 @@ HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify plat
 PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
 SERVER_NAME = 'slidespeak-mcp-server'  # Name of the MCP server, without spaces
 
-# EDIT THIS SECTION ------------------------------------------------------------
-# Configuration constants - You need to override these values. You can also pass environment variables if needed.
-# 1) If you are wrapping stdio server type, you need to provide the command and args
-from mcp.client.stdio import StdioServerParameters  # noqa: E402
-
-server_type = ServerType.STDIO
-MCP_SERVER_PARAMS = None  # Will be set in main function
-
-# 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
-# from .models import RemoteServerParameters  # noqa: ERA001
-
-# server_type = ServerType.HTTP # or ServerType.SSE, depending on your server type # noqa: ERA001
-# MCP_SERVER_PARAMS = RemoteServerParameters( # noqa: ERA001, RUF100
-#     url='https://your-mcp-server',  # noqa: ERA001
-#     headers={'Authorization':  'Bearer YOUR-API-KEY'},  # Optional headers, e.g., for authentication  # noqa: ERA001
-# )  # noqa: ERA001, RUF100
-# ------------------------------------------------------------------------------
+server_type = ServerType.HTTP  # Use HTTP streamable transport for SlideSpeak MCP server
 
 
 async def main() -> None:
@@ -66,18 +50,12 @@ async def main() -> None:
     # Get the API key from the Actor's environment variables
     slidespeak_api_key = os.getenv('SLIDESPEAK_API_KEY')
     if not slidespeak_api_key:
-        raise ValueError("SLIDESPEAK_API_KEY environment variable not set!")
+        raise ValueError('SLIDESPEAK_API_KEY environment variable not set! Create an issue for developer.')
 
-    # Configure the proxy to run slidespeak-mcp using npx
-    global MCP_SERVER_PARAMS
-    MCP_SERVER_PARAMS = StdioServerParameters(
-        command='npx',
-        args=[
-            'mcp-remote',
-            'https://mcp.slidespeak.co/mcp',
-            '--header',
-            f'Authorization: Bearer {slidespeak_api_key}',
-        ],
+    # Configure the proxy to connect to SlideSpeak MCP server with API key
+    mcp_server_params = RemoteServerParameters(
+        url='https://mcp.slidespeak.co/mcp',
+        headers={'Authorization': f'Bearer {slidespeak_api_key}'},
     )
 
     async with Actor:
@@ -114,7 +92,13 @@ async def main() -> None:
             # Pass Actor.charge to enable charging for MCP operations
             # The proxy server will use this to charge for different operations
             proxy_server = ProxyServer(
-                SERVER_NAME, MCP_SERVER_PARAMS, HOST, PORT, server_type, actor_charge_function=Actor.charge, tool_whitelist=TOOL_WHITELIST
+                SERVER_NAME,
+                mcp_server_params,
+                HOST,
+                PORT,
+                server_type,
+                actor_charge_function=Actor.charge,
+                tool_whitelist=TOOL_WHITELIST,
             )
             await proxy_server.start()
         except Exception as e:
