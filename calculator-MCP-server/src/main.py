@@ -16,28 +16,13 @@ HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify plat
 PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
 SERVER_NAME = 'calculator-mcp-server'  # Name of the MCP server, without spaces
 
-# EDIT THIS SECTION ------------------------------------------------------------
-# Configuration constants - You need to override these values. You can also pass environment variables if needed.
-# 1) If you are wrapping stdio server type, you need to provide the command and args
 from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
     command='uv',
-    args=['run', 'mcp-server-calculator'],
-    env={'YOUR-ENV_VAR': os.getenv('YOUR-ENV_VAR') or ''},  # Optional environment variables
+    args=['run', 'mcp-server-calculator']
 )
-
-# 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
-# from .models import RemoteServerParameters  # noqa: ERA001
-
-# server_type = ServerType.HTTP # or ServerType.SSE, depending on your server type # noqa: ERA001
-# MCP_SERVER_PARAMS = RemoteServerParameters( # noqa: ERA001, RUF100
-#     url='https://your-mcp-server',  # noqa: ERA001
-#     headers={'Authorization':  'Bearer YOUR-API-KEY'},  # Optional headers, e.g., for authentication  # noqa: ERA001
-# )  # noqa: ERA001, RUF100
-# ------------------------------------------------------------------------------
-
 
 async def main() -> None:
     """Run the MCP Server Actor.
