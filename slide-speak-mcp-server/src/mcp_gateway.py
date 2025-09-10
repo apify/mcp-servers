@@ -18,7 +18,7 @@ from mcp import server, types
 from .const import ChargeEvents
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Awaitable, Callable
 
     from mcp.client.session import ClientSession
 
@@ -26,48 +26,52 @@ logger = logging.getLogger('apify')
 
 
 async def charge_mcp_operation(
-    charge_function: Callable[[str, int], None] | None,
-    event_name: ChargeEvents,
-    count: int = 1,
+    charge_function: Callable[[str, int], Awaitable[Any]] | None, event_name: str | None, count: int = 1
 ) -> None:
     """Charge for an MCP operation.
 
     Args:
         charge_function: Function to call for charging, or None if charging is disabled
         event_name: The type of event to charge for
-        count: The number of units to charge for (multiplier).
+        count: The number of times the event occurred (typically 1, but can be more)
     """
     if not charge_function:
         return
 
+    if not event_name:
+        return
+
     try:
-        await charge_function(event_name.value, count)
-        logger.info(f'Charged for event {event_name.value} (count: {count})')
+        await charge_function(event_name, count)
+        logger.info(f'Charged for event: {event_name}')
     except Exception:
-        logger.exception(f'Failed to charge for event {event_name.value}')
+        logger.exception(f'Failed to charge for event {event_name}')
         # Don't raise the exception - we want the operation to continue even if charging fails
 
 
-async def create_proxy_server(  # noqa: PLR0915
+async def create_gateway(  # noqa: PLR0915
     client_session: ClientSession,
-    actor_charge_function: Callable[[str, int], None] | None = None,
+    actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
+    tool_whitelist: dict[str, tuple[str, int]] | None = None,
 ) -> server.Server[object]:
     """Create a server instance from a remote app.
 
     Args:
         client_session: The MCP client session to proxy requests through
         actor_charge_function: Optional function to charge for operations.
-                        Should accept (event_name: str, count: int).
-                        Typically, Actor.charge in Apify Actors.
-                        If None, no charging will occur.
+                       Should accept (event_name: str, count: int).
+                       Typically, Actor.charge in Apify Actors.
+                       If None, no charging will occur.
+        tool_whitelist: Optional dict mapping tool names to (event_name, default_count) tuples.
+                       If provided, only whitelisted tools will be allowed and charged.
+                       If None, all tools are allowed without specific charging.
     """
     logger.debug('Sending initialization request to remote MCP server...')
     response = await client_session.initialize()
-
     capabilities: types.ServerCapabilities = response.capabilities
 
     logger.debug('Configuring proxied MCP server...')
-    app: server.Server[object] = server.Server(name=response.serverInfo.name, version=response.serverInfo.version)
+    app: server.Server = server.Server(name=response.serverInfo.name, version=response.serverInfo.version)
 
     if capabilities.prompts:
         logger.debug('Capabilities: adding Prompts...')
@@ -79,6 +83,8 @@ async def create_proxy_server(  # noqa: PLR0915
         app.request_handlers[types.ListPromptsRequest] = _list_prompts
 
         async def _get_prompt(req: types.GetPromptRequest) -> types.ServerResult:
+            # Uncomment the line below to charge for getting prompts
+            # await charge_mcp_operation(actor_charge_function, ChargeEvents.PROMPT_GET) # noqa: ERA001
             result = await client_session.get_prompt(req.params.name, req.params.arguments)
             return types.ServerResult(result)
 
@@ -100,6 +106,8 @@ async def create_proxy_server(  # noqa: PLR0915
         app.request_handlers[types.ListResourceTemplatesRequest] = _list_resource_templates
 
         async def _read_resource(req: types.ReadResourceRequest) -> types.ServerResult:
+            # Uncomment the line below to charge for reading resources
+            # await charge_mcp_operation(actor_charge_function, ChargeEvents.RESOURCE_READ)  # noqa: ERA001
             result = await client_session.read_resource(req.params.uri)
             return types.ServerResult(result)
 
@@ -134,6 +142,16 @@ async def create_proxy_server(  # noqa: PLR0915
 
         async def _list_tools(_: Any) -> types.ServerResult:
             tools = await client_session.list_tools()
+
+            # Filter tools to only include authorized ones if whitelist is provided
+            if tool_whitelist:
+                authorized_tools = []
+                for tool in tools.tools:
+                    if tool.name in tool_whitelist:
+                        authorized_tools.append(tool)  # noqa: PERF401
+                tools.tools = authorized_tools
+
+            await charge_mcp_operation(actor_charge_function, ChargeEvents.TOOL_LIST.value)
             return types.ServerResult(tools)
 
         app.request_handlers[types.ListToolsRequest] = _list_tools
@@ -143,47 +161,49 @@ async def create_proxy_server(  # noqa: PLR0915
             arguments = req.params.arguments or {}
 
             # Safe diagnostic logging for every tool call
-            logger.info(f"Received tool call. Tool: '{tool_name}', Arguments: {arguments}")
+            logger.info(f"Received tool call, tool: '{tool_name}', arguments: {arguments}")
 
-            # --- Tool Whitelisting and Charging Logic ---
-            if tool_name == 'generatePowerpoint':
-                slides_count = 1
-                try:
-                    slides_count = int(arguments.get('length', 1))
-                    slides_count = max(slides_count, 1)
-                except (ValueError, TypeError):
-                    logger.warning(f"Invalid 'length' argument: {arguments.get('length')}. Defaulting to 1.")
-
-                await charge_mcp_operation(
-                    actor_charge_function,
-                    ChargeEvents.GENERATE_SLIDE,
-                    count=slides_count,
+            # Tool whitelisting and charging logic
+            if tool_whitelist and tool_name not in tool_whitelist:
+                error_message = (
+                    f"The requested tool '{tool_name or 'unknown'}' is not authorized."
+                    f' Authorized tools are: {list(tool_whitelist.keys())}'
                 )
-
-            elif tool_name == 'getAvailableTemplates':
-                await charge_mcp_operation(
-                    actor_charge_function,
-                    ChargeEvents.GET_TEMPLATES,
-                )
-
-            else:
-                # Block any tool not on the whitelist
-                error_message = f"The requested tool '{tool_name or 'unknown'}' is not authorized."
                 logger.error(f'Blocking unauthorized tool call for: {tool_name or "unknown tool"}')
                 return types.ServerResult(
                     types.CallToolResult(content=[types.TextContent(type='text', text=error_message)], isError=True),
                 )
 
-            # --- End of Whitelisting Logic ---
-
-            # If the tool was authorized, proceed with the call
             try:
-                logger.info(f"ATTEMPTING tool call. Tool: '{tool_name}', Arguments: {arguments}")
+                logger.info(f"Tool call. Tool: '{tool_name}', Arguments: {arguments}")
                 result = await client_session.call_tool(tool_name, arguments)
+                logger.info(f'Tool executed successfully: {tool_name}')
+
+                # Special charging logic for SlideSpeak tools
+                if tool_name == 'generatePowerpoint':
+                    slides_count = 1
+                    try:
+                        slides_count = int(arguments.get('length', 1))
+                        slides_count = max(1, slides_count)
+                    except (ValueError, TypeError):
+                        logger.warning(f"Invalid 'length' argument: {arguments.get('length')}. Defaulting to 1.")
+
+                    await charge_mcp_operation(
+                        actor_charge_function,
+                        ChargeEvents.GENERATE_SLIDE.value,
+                        count=slides_count,
+                    )
+                else:
+                    # Determine event name and count for charging (default to TOOL_CALL if not whitelisted)
+                    default_tool_call = ChargeEvents.TOOL_CALL.value, 1
+                    event_name, default_count = (
+                        tool_whitelist.get(tool_name, default_tool_call) if tool_whitelist else default_tool_call
+                    )
+                    await charge_mcp_operation(actor_charge_function, event_name, default_count)
+
                 return types.ServerResult(result)
             except Exception as e:
-                # CRITICAL: Log the full, detailed exception to find the root cause
-                error_details = f"SERVER FAILED. Tool: '{tool_name}'. Arguments: {arguments}. Full Exception: {e!r}"
+                error_details = f"SERVER FAILED. Tool: '{tool_name}'. Arguments: {arguments}. Full exception: {e}"
                 logger.exception(error_details)
                 return types.ServerResult(
                     types.CallToolResult(content=[types.TextContent(type='text', text=error_details)], isError=True),
