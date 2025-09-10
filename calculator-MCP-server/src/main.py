@@ -19,10 +19,8 @@ SERVER_NAME = 'calculator-mcp-server'  # Name of the MCP server, without spaces
 from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
-MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uv',
-    args=['run', 'mcp-server-calculator']
-)
+MCP_SERVER_PARAMS = StdioServerParameters(command='uv', args=['run', 'mcp-server-calculator'])
+
 
 async def main() -> None:
     """Run the MCP Server Actor.
