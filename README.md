@@ -24,10 +24,11 @@ A curated collection of production-ready Model Context Protocol (MCP) servers pu
 | **[Slide Speak MCP Server](./slide-speak-mcp-server/)** | Presentation and speech synthesis | [![Slide Speak MCP Server](https://apify.com/actor-badge?actor=mcp-servers/slidespeak-mcp-server)](https://apify.com/mcp-servers/slidespeak-mcp-server) | [SlideSpeak](https://github.com/slidespeak/slidespeak-mcp) |
 | **[Lara Translate MCP Server](./lara-translate-mcp-server/)** | Multi-language translation services | [![Lara Translate MCP Server](https://apify.com/actor-badge?actor=mcp-servers/lara-translate-mcp-server)](https://apify.com/mcp-servers/lara-translate-mcp-server) | [Translated](https://github.com/translated/lara-mcp) |
 | **[Calculator MCP Server](./calculator-MCP-server/)** | Mathematical computations and calculations | [![Calculator MCP Server](https://apify.com/actor-badge?actor=mcp-servers/calculator-mcp-server)](https://apify.com/mcp-servers/calculator-mcp-server) | [Githejie](https://github.com/githejie/mcp-server-calculator) |
+| **[Kiwi MCP Server](./kiwi-mcp-server/)** | Flight search and booking using Kiwi.com | [![Kiwi MCP Server](https://apify.com/actor-badge?actor=mcp-servers/kiwi-mcp-server)](https://apify.com/mcp-servers/kiwi-mcp-server) | [Kiwi.com](https://github.com/alpic-ai/kiwi-mcp-server-public) |
 | **[National Parks MCP Server](./national-parks/)** | Geographic and park information | [![National Parks MCP Server](https://apify.com/actor-badge?actor=mcp-servers/national-parks-mcp-server)](https://apify.com/mcp-servers/national-parks-mcp-server) | [KyrieTangSheng](https://github.com/KyrieTangSheng/mcp-server-nationalparks) |
 
 ## 🙏 Credits
-These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, KyrieTangSheng, and others.
+These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, and others.
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
 

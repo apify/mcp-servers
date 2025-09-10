@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "kiwi-mcp-server",
+	"title": "Kiwi MCP Server",
+	"description": "Search and book flights directly from your favorite AI assistant using the Kiwi.com flight search engine!",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
