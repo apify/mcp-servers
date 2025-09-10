@@ -5,7 +5,7 @@ import os
 from apify import Actor
 
 from .const import TOOL_WHITELIST, ChargeEvents
-from .models import ServerType
+from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
 # Actor configuration
@@ -16,29 +16,13 @@ HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify plat
 PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
 SERVER_NAME = 'context7-mcp-server'  # Name of the MCP server, without spaces
 
-# EDIT THIS SECTION ------------------------------------------------------------
-# Configuration constants - You need to override these values. You can also pass environment variables if needed.
-# 1) If you are wrapping stdio server type, you need to provide the command and args
-# from mcp.client.stdio import StdioServerParameters  # noqa: E402
-
-# server_type = ServerType.STDIO
-# MCP_SERVER_PARAMS = StdioServerParameters(
-#     command='uv',
-#     args=['run', 'arxiv-mcp-server'],
-#     env={'YOUR-ENV_VAR': os.getenv('YOUR-ENV-VAR') or ''},  # Optional environment variables
-# )
-
-# 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
-from .models import RemoteServerParameters  # noqa: ERA001
 
 server_type = ServerType.HTTP  # Context7 uses HTTP transport
 
-MCP_SERVER_PARAMS = RemoteServerParameters(  # noqa: ERA001, RUF100
+MCP_SERVER_PARAMS = RemoteServerParameters(
     url='https://mcp.context7.com/mcp',  # Context7 MCP server URL
-    headers={'Authorization': f"Bearer {os.getenv('CONTEXT7_API_KEY')}"},
-)  # noqa: ERA001, RUF100
-
-# ------------------------------------------------------------------------------
+    headers={'Authorization': f'Bearer {os.getenv("CONTEXT7_API_KEY")}'},
+)
 
 
 async def main() -> None:
