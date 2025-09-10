@@ -1,0 +1,17 @@
+{
+    "actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the Context7 MCP Server Actor",
+        "eventPriceUsd": 0.05
+    },
+    "resolve-library-id": {
+        "eventTitle": "Context7 library ID resolution",
+        "eventDescription": "Fee for resolving a general library name into a Context7-compatible library ID using the resolve_library_id tool.",
+        "eventPriceUsd": 0.001
+    },
+    "get-library-docs": {
+        "eventTitle": "Context7 library documentation fetch",
+        "eventDescription": "Fee for fetching up-to-date documentation for a library using the get_library_docs tool.",
+        "eventPriceUsd": 0.01
+    }
+  }

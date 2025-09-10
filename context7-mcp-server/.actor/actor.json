@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "context7-mcp-server",
+	"title": "Context7 MCP Server",
+	"description": "Context7 MCP Server provides up-to-date, version-specific documentation and code examples straight from the source for any programming library or framework.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
