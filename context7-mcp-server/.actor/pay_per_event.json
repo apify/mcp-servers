@@ -12,6 +12,6 @@
     "get-library-docs": {
         "eventTitle": "Context7 library documentation fetch",
         "eventDescription": "Fee for fetching up-to-date documentation for a library using the get_library_docs tool.",
-        "eventPriceUsd": 0.01
+        "eventPriceUsd": 0.005
     }
   }
