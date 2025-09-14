@@ -84,7 +84,6 @@ async def create_gateway(  # noqa: PLR0915
 
         async def _get_prompt(req: types.GetPromptRequest) -> types.ServerResult:
             # Uncomment the line below to charge for getting prompts
-            # await charge_mcp_operation(actor_charge_function, ChargeEvents.PROMPT_GET) # noqa: ERA001
             result = await client_session.get_prompt(req.params.name, req.params.arguments)
             return types.ServerResult(result)
 
@@ -107,7 +106,6 @@ async def create_gateway(  # noqa: PLR0915
 
         async def _read_resource(req: types.ReadResourceRequest) -> types.ServerResult:
             # Uncomment the line below to charge for reading resources
-            # await charge_mcp_operation(actor_charge_function, ChargeEvents.RESOURCE_READ)  # noqa: ERA001
             result = await client_session.read_resource(req.params.uri)
             return types.ServerResult(result)
 
@@ -151,7 +149,6 @@ async def create_gateway(  # noqa: PLR0915
                         authorized_tools.append(tool)  # noqa: PERF401
                 tools.tools = authorized_tools
 
-            await charge_mcp_operation(actor_charge_function, ChargeEvents.TOOL_LIST.value)
             return types.ServerResult(tools)
 
         app.request_handlers[types.ListToolsRequest] = _list_tools
