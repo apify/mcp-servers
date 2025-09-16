@@ -10,6 +10,5 @@
 			"editor": "textfield",
             "isSecret": true
         }
-    },
-    "required": ["foreverVmToken"]
+    }
 }
