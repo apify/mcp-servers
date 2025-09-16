@@ -1,0 +1,35 @@
+{
+    "actorSpecification": 1,
+    "name": "ForeverVM MCP Server",
+    "title": "ForeverVM MCP Server",
+    "description": "A Model Context Protocol server that integrates with ForeverVM for secure Python code execution in stateful sandboxes. Enables AI agents to create Python REPLs and execute code with persistent state.",
+    "version": "0.0",
+    "meta": {
+        "templateId": "ts-mcp-server"
+    },
+    "input": "./input_schema.json",
+    "dockerfile": "./Dockerfile",
+    "readme": "./README.md",
+    "categories": ["MCP servers"],
+    "storages": {
+        "dataset": {
+            "actorSpecification": 1,
+            "title": "Results",
+            "description": "Dataset containing MCP server responses and execution logs.",
+            "views": {
+                "overview": {
+                    "title": "Overview",
+                    "transformation": {
+                        "fields": [
+                            "timestamp",
+                            "method",
+                            "tool",
+                            "status",
+                            "response"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

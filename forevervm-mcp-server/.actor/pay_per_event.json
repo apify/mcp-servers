@@ -1,0 +1,17 @@
+{
+    "actor-start": {
+        "eventTitle": "Actor Initialization Fee",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.001
+    },
+    "create-python-repl": {
+        "eventTitle": "Python REPL Creation",
+        "eventDescription": "Fee for creating a new Python REPL environment with ForeverVM",
+        "eventPriceUsd": 0.005
+    },
+    "run-python-in-repl": {
+        "eventTitle": "Python Code Execution",
+        "eventDescription": "Fee for executing Python code in a REPL environment",
+        "eventPriceUsd": 0.002
+    }
+}

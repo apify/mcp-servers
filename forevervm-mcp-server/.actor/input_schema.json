@@ -1,0 +1,15 @@
+{
+    "title": "ForeverVM MCP Server Input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "foreverVmToken": {
+            "title": "ForeverVM API Token",
+            "type": "string",
+            "description": "Your ForeverVM API token. Get it from your ForeverVM account at https://forevervm.com",
+			"editor": "textfield",
+            "isSecret": true
+        }
+    },
+    "required": ["foreverVmToken"]
+}
