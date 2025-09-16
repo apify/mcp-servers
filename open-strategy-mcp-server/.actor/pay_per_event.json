@@ -1,0 +1,7 @@
+{
+    "actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the Actor MCP Server (covers compute costs)",
+        "eventPriceUsd": 0.1
+    } 
+}

@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "open-strategy-partners-mcp-server",
+	"title": "Python MCP server",
+	"description": "Open Strategy Partners MCP Server: A suite of technical marketing tools for LLMs, providing product value mapping, metadata generation, content editing codes, and technical writing guidance via the Model Context Protocol (MCP). Actorized for Apify platform.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/sse,/mcp"
+}
