@@ -20,7 +20,6 @@ SERVER_NAME = 'osp_marketing_tools'  # Name of the MCP server, update as needed
 from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 
-
 # Set up to use the OSP Marketing Tools server as the default for Apify actorization
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
@@ -89,13 +88,7 @@ async def main() -> None:
             )
             # Pass Actor.charge to enable charging for MCP operations
             # The proxy server will use this to charge for different operations
-            proxy_server = ProxyServer(
-                MCP_SERVER_PARAMS,
-                HOST,
-                PORT,
-                server_type,
-                actor_charge_function=Actor.charge
-            )
+            proxy_server = ProxyServer(MCP_SERVER_PARAMS, HOST, PORT, server_type, actor_charge_function=Actor.charge)
             await proxy_server.start()
         except Exception as e:
             Actor.log.exception(f'Server failed to start: {e}')

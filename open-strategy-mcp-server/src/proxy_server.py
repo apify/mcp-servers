@@ -69,14 +69,12 @@ async def create_proxy_server(  # noqa: PLR0915
     if capabilities.prompts:
         logger.debug('Capabilities: adding Prompts...')
 
-
         async def _list_prompts(_: Any) -> types.ServerResult:
             # Charging for prompt listing disabled
             result = await client_session.list_prompts()
             return types.ServerResult(result)
 
         app.request_handlers[types.ListPromptsRequest] = _list_prompts
-
 
         async def _get_prompt(req: types.GetPromptRequest) -> types.ServerResult:
             # Charging for prompt get disabled
@@ -87,7 +85,6 @@ async def create_proxy_server(  # noqa: PLR0915
 
     if capabilities.resources:
         logger.debug('Capabilities: adding Resources...')
-
 
         async def _list_resources(_: Any) -> types.ServerResult:
             # Charging for resource listing disabled
@@ -101,7 +98,6 @@ async def create_proxy_server(  # noqa: PLR0915
             return types.ServerResult(result)
 
         app.request_handlers[types.ListResourceTemplatesRequest] = _list_resource_templates
-
 
         async def _read_resource(req: types.ReadResourceRequest) -> types.ServerResult:
             # Charging for resource read disabled
@@ -137,14 +133,12 @@ async def create_proxy_server(  # noqa: PLR0915
     if capabilities.tools:
         logger.debug('Capabilities: adding Tools...')
 
-
         async def _list_tools(_: Any) -> types.ServerResult:
             # Charging for tool listing disabled
             tools = await client_session.list_tools()
             return types.ServerResult(tools)
 
         app.request_handlers[types.ListToolsRequest] = _list_tools
-
 
         async def _call_tool(req: types.CallToolRequest) -> types.ServerResult:
             # Charging for tool call disabled
