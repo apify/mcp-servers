@@ -1,23 +1,23 @@
+
 """Main entry point for the MCP Server Actor."""
 
 import os
 
 from apify import Actor
+from mcp.client.stdio import StdioServerParameters
 
 from .const import ChargeEvents
 from .models import ServerType
 from .server import ProxyServer
 
-
 # Actor configuration
 STANDBY_MODE = os.environ.get('APIFY_META_ORIGIN') == 'STANDBY'
-HOST = '0.0.0.0'  # Required for container networking at Apify platform
+HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify platform
 PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
 SERVER_NAME = 'osp_marketing_tools'  # Name of the MCP server, update as needed
 
 # EDIT THIS SECTION ------------------------------------------------------------
 # Configuration constants - You need to override these values. You can also pass environment variables if needed.
-from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 
 # Set up to use the OSP Marketing Tools server as the default for Apify actorization

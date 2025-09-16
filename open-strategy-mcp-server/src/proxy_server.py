@@ -8,6 +8,8 @@ This is typically used in Apify Actors to charge users for different types of MC
 like tool calls, prompt operations, or resource access.
 """
 
+
+
 from __future__ import annotations
 
 import logging
@@ -15,12 +17,12 @@ from typing import TYPE_CHECKING, Any
 
 from mcp import server, types
 
-from .const import ChargeEvents
-
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
 
     from mcp.client.session import ClientSession
+
+    from .const import ChargeEvents
 
 logger = logging.getLogger('apify')
 
@@ -48,16 +50,11 @@ async def charge_mcp_operation(
 
 async def create_proxy_server(  # noqa: PLR0915
     client_session: ClientSession,
-    actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
 ) -> server.Server[object]:
     """Create a server instance from a remote app.
 
     Args:
         client_session: The MCP client session to proxy requests through
-        actor_charge_function: Optional function to charge for operations.
-                       Should accept (event_name: str, params: Optional[dict]).
-                       Typically, Actor.charge in Apify Actors.
-                       If None, no charging will occur.
     """
     logger.debug('Sending initialization request to remote MCP server...')
     response = await client_session.initialize()

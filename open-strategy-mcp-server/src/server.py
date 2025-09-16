@@ -3,6 +3,7 @@
 Heavily inspired by: https://github.com/sparfenyuk/mcp-proxy
 """
 
+
 from __future__ import annotations
 
 import contextlib
@@ -12,6 +13,7 @@ from typing import TYPE_CHECKING, Any
 import httpx
 import uvicorn
 from mcp.client.session import ClientSession
+from mcp.client.sse import sse_client
 from mcp.client.stdio import StdioServerParameters, stdio_client
 from mcp.client.streamable_http import streamablehttp_client
 from mcp.server.sse import SseServerTransport
@@ -24,14 +26,13 @@ from starlette.responses import JSONResponse, RedirectResponse, Response
 from starlette.routing import Mount, Route
 
 from .event_store import InMemoryEventStore
+from .mcp_gateway import create_gateway
 from .models import RemoteServerParameters, ServerParameters, ServerType
-from .proxy_server import create_proxy_server
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Awaitable, Callable
+    from collections.abc import AsyncIterator, Callable
 
     from mcp.server import Server
-    from starlette import types as st
     from starlette.requests import Request
     from starlette.types import Receive, Scope, Send
 
@@ -53,45 +54,45 @@ class McpPathRewriteMiddleware(BaseHTTPMiddleware):
         return await call_next(request)
 
 
+
+
 class ProxyServer:
-    """Main class implementing the proxy functionality using MCP SDK.
+    """Main class implementing the proxy functionality using MCP SDK, template-aligned with SSE compatibility."""
 
-    This proxy runs a Starlette app that exposes /sse and /messages/ endpoints for legacy SSE transport,
-            and a /mcp endpoint for Streamable HTTP transport.
-    It then connects to stdio or remote MCP servers and forwards the messages to the client.
-
-    The server can optionally charge for operations using a provided charging function.
-    This is typically used in Apify Actors to charge users for MCP operations.
-    The charging function should accept an event name and optional parameters.
-    """
+    @staticmethod
+    def get_html_page(server_name: str, mcp_url: str) -> str:
+        """Return a simple HTML page for the MCP endpoint browser view."""
+        return (
+            f"""
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='UTF-8'>
+    <title>{server_name}</title>
+  </head>
+  <body>
+    <h1>{server_name}</h1>
+    <div>MCP endpoint: <code>{mcp_url}</code></div>
+  </body>
+</html>
+"""
+        )
 
     def __init__(
         self,
+        server_name: str,
         config: ServerParameters,
-        host: str,
-        port: int,
-        server_type: ServerType,
-        actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
+        server_options: dict,
     ) -> None:
-        """Initialize the proxy server.
-
-        Args:
-            config: Server configuration (stdio or SSE parameters)
-            host: Host to bind the server to
-            port: Port to bind the server to
-            server_type: Type of server to connect (stdio, SSE, or HTTP)
-            actor_charge_function: Optional function to charge for operations.
-                           Should accept (event_name: str, count: int).
-                           Typically, Actor.charge in Apify Actors.
-                           If None, no charging will occur.
-        """
-        self.server_type = server_type
+        self.server_name = server_name
+        self.server_type = server_options.get('server_type')
         self.config = self._validate_config(self.server_type, config)
-        self.path_sse: str = '/sse'
-        self.path_message: str = '/message'
-        self.host: str = host
-        self.port: int = port
-        self.actor_charge_function = actor_charge_function
+        self.host = server_options.get('host')
+        self.port = server_options.get('port')
+        self.actor_charge_function = server_options.get('actor_charge_function')
+        self.tool_whitelist = server_options.get('tool_whitelist')
+        self.path_sse = '/sse'
+        self.path_message = '/message'
 
     @staticmethod
     def _validate_config(client_type: ServerType, config: ServerParameters) -> ServerParameters | None:
@@ -107,20 +108,36 @@ class ProxyServer:
         except ValidationError as e:
             raise ValueError(f'Invalid server configuration: {e}') from e
 
+
     @staticmethod
-    async def create_starlette_app(mcp_server: Server) -> Starlette:
-        """Create a Starlette app (SSE server) that exposes /sse and /messages/ endpoints."""
-        transport = SseServerTransport('/messages/')  # Only used for legacy SSE transport
+    async def create_starlette_app(
+        server_name: str,
+        mcp_server: Server,
+        *,
+        enable_sse: bool = True,
+    ) -> Starlette:
+        """Create a Starlette app that exposes /mcp endpoint for Streamable HTTP transport and optionally SSE endpoints.
+
+        The app supports both HTTP and SSE transports, and provides a browser-friendly HTML page at the root endpoint.
+        """
         event_store = InMemoryEventStore()
         session_manager = StreamableHTTPSessionManager(
             app=mcp_server,
-            event_store=event_store,  # Enable resume ability for Streamable HTTP connections
+            event_store=event_store,
             json_response=False,
         )
+        transport = SseServerTransport('/messages/') if enable_sse else None
+
+        def is_html_browser(request: Request) -> bool:
+            accept_header = request.headers.get('accept', '')
+            return 'text/html' in accept_header
+
+        def serve_html_page(server_name: str, mcp_url: str) -> Response:
+            html = ProxyServer.get_html_page(server_name, mcp_url)
+            return Response(content=html, media_type='text/html')
 
         @contextlib.asynccontextmanager
         async def lifespan(_app: Starlette) -> AsyncIterator[None]:
-            """Context manager for managing session manager lifecycle."""
             async with session_manager.run():
                 logger.info('Application started with StreamableHTTP session manager!')
                 try:
@@ -128,51 +145,29 @@ class ProxyServer:
                 finally:
                     logger.info('Application shutting down...')
 
-        async def handle_root(request: Request) -> st.Response:
-            """Handle root endpoint."""
-            # Handle Apify standby readiness probe
+        async def handle_root(request: Request) -> Any:
             if 'x-apify-container-server-readiness-probe' in request.headers:
-                return Response(
-                    content=b'ok',
-                    media_type='text/plain',
-                    status_code=200,
-                )
+                return Response(content=b'ok', media_type='text/plain', status_code=200)
+            if is_html_browser(request):
+                server_url = f"https://{request.headers.get('host', 'localhost')}"
+                mcp_url = f'{server_url}/mcp'
+                return serve_html_page(server_name, mcp_url)
+            endpoints = {'streamableHttp': '/mcp'}
+            if enable_sse:
+                endpoints['sse'] = '/sse'
+                endpoints['messages'] = '/messages/'
+            return JSONResponse({
+                'status': 'running',
+                'type': 'mcp-server',
+                'transport': 'streamable-http' + ('+sse' if enable_sse else ''),
+                'endpoints': endpoints,
+            })
 
-            return JSONResponse(
-                {
-                    'status': 'running',
-                    'type': 'mcp-server',
-                    'transport': 'sse+streamable-http',
-                    'endpoints': {
-                        'sse': '/sse',
-                        'messages': '/messages/',
-                        'streamableHttp': '/mcp',
-                    },
-                }
-            )
-
-        async def handle_sse(request: st.Request) -> st.Response | None:
-            """Handle incoming SSE requests."""
-            try:
-                async with transport.connect_sse(request.scope, request.receive, request._send) as streams:  # noqa: SLF001
-                    init_options = mcp_server.create_initialization_options()
-                    await mcp_server.run(streams[0], streams[1], init_options)
-            except Exception as e:
-                logger.exception('Error in SSE connection')
-                return Response(status_code=500, content=str(e))
-            finally:
-                logger.info('SSE connection closed')
-            # Add Response to prevent the None type error
-            return Response(status_code=204)  # No content response
-
-        async def handle_favicon(_request: Request) -> st.Response:
-            """Handle favicon.ico requests by redirecting to Apify's favicon."""
+        async def handle_favicon(_request: Request) -> Any:
             return RedirectResponse(url='https://apify.com/favicon.ico', status_code=301)
 
-        async def handle_oauth_authorization_server(_request: Request) -> st.Response:
-            """Handle OAuth authorization server well-known endpoint."""
+        async def handle_oauth_authorization_server(_request: Request) -> Any:
             try:
-                # Some MCP clients do not follow redirects, so we need to fetch the data and return it directly.
                 async with httpx.AsyncClient() as client:
                     response = await client.get('https://api.apify.com/.well-known/oauth-authorization-server')
                     response.raise_for_status()
@@ -182,24 +177,41 @@ class ProxyServer:
                 logger.exception('Error fetching OAuth authorization server data')
                 return JSONResponse({'error': 'Failed to fetch OAuth authorization server data'}, status_code=500)
 
-        # ASGI handler for Streamable HTTP connections
+        async def handle_sse(request: Request) -> Any:
+            if not transport:
+                return Response(status_code=404)
+            try:
+                send = getattr(request, 'send', None) or getattr(request, '_send', None)
+                async with transport.connect_sse(request.scope, request.receive, send) as streams:
+                    init_options = mcp_server.create_initialization_options()
+                    await mcp_server.run(streams[0], streams[1], init_options)
+            except Exception as e:
+                logger.exception('Error in SSE connection')
+                return Response(status_code=500, content=str(e))
+            finally:
+                logger.info('SSE connection closed')
+            return Response(status_code=204)
+
         async def handle_streamable_http(scope: Scope, receive: Receive, send: Send) -> None:
             await session_manager.handle_request(scope, receive, send)
 
+        routes = [
+            Route('/', endpoint=handle_root),
+            Route('/favicon.ico', endpoint=handle_favicon, methods=['GET']),
+            Route(
+                '/.well-known/oauth-authorization-server',
+                endpoint=handle_oauth_authorization_server,
+                methods=['GET'],
+            ),
+            Mount('/mcp/', app=handle_streamable_http),
+        ]
+        if enable_sse and transport:
+            routes.append(Route('/sse', endpoint=handle_sse, methods=['GET']))
+            routes.append(Mount('/messages/', app=transport.handle_post_message))
+
         return Starlette(
             debug=True,
-            routes=[
-                Route('/', endpoint=handle_root),
-                Route('/favicon.ico', endpoint=handle_favicon, methods=['GET']),
-                Route(
-                    '/.well-known/oauth-authorization-server',
-                    endpoint=handle_oauth_authorization_server,
-                    methods=['GET'],
-                ),
-                Route('/sse', endpoint=handle_sse, methods=['GET']),
-                Mount('/messages/', app=transport.handle_post_message),
-                Mount('/mcp/', app=handle_streamable_http),
-            ],
+            routes=routes,
             lifespan=lifespan,
             middleware=[Middleware(McpPathRewriteMiddleware)],
         )
@@ -213,36 +225,34 @@ class ProxyServer:
     async def start(self) -> None:
         """Start Starlette app and connect to stdio, Streamable HTTP, or SSE based MCP server."""
         logger.info(f'Starting MCP server with client type: {self.server_type} and config {self.config}')
+        params: dict = (self.config and self.config.model_dump(exclude_unset=True)) or {}
 
         if self.server_type == ServerType.STDIO:
-            # Pass the StdioServerParameters object directly
+            config_ = StdioServerParameters.model_validate(self.config)
             async with (
-                stdio_client(self.config) as (read_stream, write_stream),
+                stdio_client(config_) as (read_stream, write_stream),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_proxy_server(session, self.actor_charge_function)
-                app = await self.create_starlette_app(mcp_server)
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
+                app = await self.create_starlette_app(self.server_name, mcp_server, enable_sse=True)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.SSE:
-            # For SSE, keep using params (if needed)
-            params: dict = (self.config and self.config.model_dump(exclude_unset=True)) or {}
             async with (
-                stdio_client(**params) as (read_stream, write_stream),
+                sse_client(**params) as (read_stream, write_stream),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_proxy_server(session, self.actor_charge_function)
-                app = await self.create_starlette_app(mcp_server)
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
+                app = await self.create_starlette_app(self.server_name, mcp_server, enable_sse=True)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.HTTP:
-            # HTTP streamable server needs to unpack three parameters
             async with (
                 streamablehttp_client(**params) as (read_stream, write_stream, _),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_proxy_server(session, self.actor_charge_function)
-                app = await self.create_starlette_app(mcp_server)
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
+                app = await self.create_starlette_app(self.server_name, mcp_server, enable_sse=True)
                 await self._run_server(app)
         else:
             raise ValueError(f'Unknown server type: {self.server_type}')
