@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "microsoft-learn-mcp-server",
+	"title": "Microsoft Learn MCP Server",
+	"description": "Microsoft Learn MCP Server enables AI clients to access trusted and up-to-date information directly from Microsoft's official documentation with semantic search and document retrieval capabilities.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

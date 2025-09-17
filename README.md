@@ -26,9 +26,10 @@ A curated collection of production-ready Model Context Protocol (MCP) servers pu
 | **[Kiwi MCP Server](./kiwi-mcp-server/)** | Flight search and booking using Kiwi.com | [![Kiwi MCP Server](https://apify.com/actor-badge?actor=mcp-servers/kiwi-mcp-server)](https://apify.com/mcp-servers/kiwi-mcp-server) | [Kiwi.com](https://github.com/alpic-ai/kiwi-mcp-server-public) |
 | **[National Parks MCP Server](./national-parks/)** | Geographic and park information | [![National Parks MCP Server](https://apify.com/actor-badge?actor=mcp-servers/national-parks-mcp-server)](https://apify.com/mcp-servers/national-parks-mcp-server) | [KyrieTangSheng](https://github.com/KyrieTangSheng/mcp-server-nationalparks) |
 | **[Context7 MCP Server](./context7-mcp-server/)** | Up-to-date code docs for any programming library | [![Context7 MCP Server](https://apify.com/actor-badge?actor=mcp-servers/context7-mcp-server)](https://apify.com/mcp-servers/context7-mcp-server) | [Upstash](https://github.com/upstash/context7) |
+| **[Microsoft Docs MCP Server](./microsoft-docs-mcp-server/)** | Access Microsoft's official documentation with semantic search | [![Microsoft Docs MCP Server](https://apify.com/actor-badge?actor=mcp-servers/microsoft-docs-mcp-server)](https://apify.com/mcp-servers/microsoft-docs-mcp-server) | [Microsoft](https://github.com/MicrosoftDocs/mcp) |
 
 ## 🙏 Credits
-These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, and others.
+These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Microsoft, and others.
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
 
