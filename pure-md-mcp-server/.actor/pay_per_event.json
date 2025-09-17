@@ -1,0 +1,22 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "unblock-url": {
+        "eventTitle": "URL to Markdown Conversion",
+        "eventDescription": "Convert any URL to clean, readable markdown content.",
+        "eventPriceUsd": 0.02
+    },
+    "search-web": {
+        "eventTitle": "Web Search Query",
+        "eventDescription": "Perform web search and return results in markdown format.",
+        "eventPriceUsd": 0.03
+    },
+    "list-request": {
+        "eventTitle": "Price for completing a list request",
+        "eventDescription": "Flat fee for completing a list request.",
+        "eventPriceUsd": 0.001
+    }
+}
