@@ -334,8 +334,7 @@ async def get_current_crypto_price(ticker: str) -> str:
     """Get the current / latest price of a crypto currency.
 
     Args:
-        ticker: Ticker symbol of the crypto currency (e.g. BTC-USD). The list of available crypto tickers can be retrieved
-            via the get_available_crypto_tickers tool.
+        ticker: Ticker symbol of the crypto currency (e.g. BTC-USD). The list of available crypto tickers can be retrieved via the get_available_crypto_tickers tool.
     """
     # Fetch data from the API
     url = f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/snapshot/?ticker={ticker}'
