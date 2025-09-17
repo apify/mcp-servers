@@ -1,124 +1,102 @@
-## MCP server template
+## DeepL MCP Server
 
-A template for running and monetizing a [Model Context Protocol](https://modelcontextprotocol.io) server using [stdio](https://modelcontextprotocol.io/docs/concepts/transports#standard-input%2Foutput-stdio) transport on [Apify platform](https://docs.apify.com/platform).
-This allows you to run any stdio MCP server as a [standby Actor](https://docs.apify.com/platform/actors/development/programming-interface/standby) and connect via either the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http) with an [MCP client](https://modelcontextprotocol.io/clients).
+A Model Context Protocol (MCP) server that provides translation capabilities using the DeepL API.
 
-## How to use
+**About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com)..
 
-Change the `MCP_COMMAND` to spawn your stdio MCP server in `src/main.ts`, and don't forget to install the required MCP server in the `package.json` (using `npm install ...`).
-By default, this template runs an [Everything MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) using the following command:
+## Connection URL
+MCP clients can connect to this server at:
 
-```
-const MCP_COMMAND = [
-    'npx',
-    '@modelcontextprotocol/server-everything',
-];
+```text
+https://mcp-servers--deepl-mcp-server.apify.actor/mcp
 ```
 
-Alternatively, you can use the [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) tool to turn a remote MCP server into an Actor. For example, to connect to a remote server with authentication:
-
-```
-const MCP_COMMAND = [
-    'npx',
-    'mcp-remote',
-    'https://mcp.apify.com',
-    '--header',
-    'Authorization: Bearer TOKEN',
-];
-```
-
-Feel free to configure billing logic in `.actor/pay_per_event.json` and `src/billing.ts`.
-
-[Push your Actor](https://docs.apify.com/academy/deploying-your-code/deploying) to the Apify platform, configure [standby mode](https://docs.apify.com/platform/actors/development/programming-interface/standby), and then connect to the Actor standby URL with your MCP client using the endpoint: `https://me--my-mcp-server.apify.actor/mcp` ([streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http)).
-
-**Important:** When connecting to your deployed MCP server, you must pass your Apify API token in the `Authorization` header as a Bearer token. For example:
-
-```
-Authorization: Bearer <YOUR_APIFY_API_TOKEN>
-```
-
-This is required for authentication and to access your Actor endpoint.
-
-### Pay per event
-
-This template uses the [Pay Per Event (PPE)](https://docs.apify.com/platform/actors/publishing/monetize#pay-per-event-pricing-model) monetization model, which provides flexible pricing based on defined events.
-
-To charge users, define events in JSON format and save them on the Apify platform. Here is an example schema with the `tool-request` event:
+## Client Configuration
+To connect to this MCP server, use the following configuration in your MCP client:
 
 ```json
-[
-    {
-        "tool-request": {
-            "eventTitle": "Price for completing a tool request",
-            "eventDescription": "Flat fee for completing a tool request.",
-            "eventPriceUsd": 0.05
-        }
+{
+  "mcpServers": {
+    "playwright": {
+      "url": "https://mcp-servers--deepl-mcp-server.apify.actor/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_APIFY_TOKEN"
+      }
     }
-]
+  }
+}
 ```
 
-In the Actor, trigger the event with:
+**Note:** Replace `YOUR_APIFY_TOKEN` with your actual Apify API token. You can find your token in the [Apify Console](https://console.apify.com/account/integrations).
 
-```typescript
-await Actor.charge({ eventName: 'tool-request' });
-```
+## 🚩 Claim this MCP server
+All credits to the original authors of [https://github.com/DeepLcom/deepl-mcp-server/tree/main](https://github.com/DeepLcom/deepl-mcp-server/tree/main)
+To claim this server, please write to [ai@apify.com](mailto:ai@apify.com).
 
-This approach allows you to programmatically charge users directly from your Actor, covering the costs of execution and related services.
+## Features
 
-To set up the PPE model for this Actor:
+- Translate text between numerous languages
+- Rephrase text using DeepL's capabilities
+- Access to all DeepL API languages and features
+- Automatic language detection
+- Formality control for supported languages
 
-- **Configure Pay Per Event**: establish the Pay Per Event pricing schema in the Actor's **Monetization settings**. First, set the **Pricing model** to `Pay per event` and add the schema. An example schema can be found in [pay_per_event.json](.actor/pay_per_event.json).
+## Available Tools
 
-## Resources
+This server provides the following tools:
 
-- [What is Anthropic's Model Context Protocol?](https://blog.apify.com/what-is-model-context-protocol/)
-- [How to use MCP with Apify Actors](https://blog.apify.com/how-to-use-mcp/)
-- [Apify MCP server](https://mcp.apify.com)
-- [Apify MCP server documentation](https://docs.apify.com/platform/integrations/mcp)
-- [Apify MCP client](https://apify.com/jiri.spilka/tester-mcp-client)
-- [Model Context Protocol documentation](https://modelcontextprotocol.io)
-- [TypeScript tutorials in Academy](https://docs.apify.com/academy/node-js)
-- [Apify SDK documentation](https://docs.apify.com/sdk/js/)
+- `get-source-languages`: Get list of available source languages for translation
+- `get-target-languages`: Get list of available target languages for translation
+- `translate-text`: Translate text to a target language
+- `rephrase-text`: Rephrase text in the same or different language
 
+## Tool Details
 
-## Getting started
+### translate-text
 
-For complete information [see this article](https://docs.apify.com/platform/actors/development#build-actor-locally). To run the Actor use the following command:
+This tool translates text between languages using the DeepL API.
 
-```bash
-apify run
-```
+Parameters:
 
-## Deploy to Apify
+- `text`: The text to translate
+- `targetLang`: Target language code (e.g., 'en-US', 'de', 'fr')
+- `formality` (optional): Controls formality level of the translation:
+    - `'less'`: use informal language
+    - `'more'`: use formal, more polite language
+    - `'default'`: use default formality
+    - `'prefer_less'`: use informal language if available, otherwise default
+    - `'prefer_more'`: use formal language if available, otherwise default
 
-### Connect Git repository to Apify
+### rephrase-text
 
-If you've created a Git repository for the project, you can easily connect to Apify:
+This tool rephrases text in the same or different language using the DeepL API.
 
-1. Go to [Actor creation page](https://console.apify.com/actors/new)
-2. Click on **Link Git Repository** button
+Parameters:
 
-### Push project on your local machine to Apify
+- `text`: The text to rephrase
 
-You can also deploy the project on your local machine to Apify without the need for the Git repository.
+## Supported Languages
 
-1. Log in to Apify. You will need to provide your [Apify API Token](https://console.apify.com/account/integrations) to complete this action.
+The DeepL API supports a wide variety of languages for translation. You can use the `get-source-languages` and `get-target-languages` tools to see all currently supported languages.
 
-    ```bash
-    apify login
-    ```
+Some examples of supported languages include:
 
-2. Deploy your Actor. This command will deploy and build the Actor on the Apify Platform. You can find your newly created Actor under [Actors -> My Actors](https://console.apify.com/actors?tab=my).
+- English (en, en-US, en-GB)
+- German (de)
+- Spanish (es)
+- French (fr)
+- Italian (it)
+- Japanese (ja)
+- Chinese (zh)
+- Portuguese (pt-BR, pt-PT)
+- Russian (ru)
+- And many more
 
-    ```bash
-    apify push
-    ```
-
-## Documentation reference
-
+## References
 To learn more about Apify and Actors, take a look at the following resources:
-
 - [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
 - [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
 - [Apify Platform documentation](https://docs.apify.com/platform)
+- [Apify MCP Server](https://docs.apify.com/platform/integrations/mcp)
+- [Webinar: Building and Monetizing MCP Servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)
 - [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)

@@ -1,8 +1,8 @@
 {
 	"actorSpecification": 1,
 	"name": "deepl-mcp-server",
-	"title": "TypeScript MCP server",
-	"description": "TypeScript Model Context Protocol server.",
+	"title": "Deepl MCP Server",
+	"description": "A Model Context Protocol (MCP) server that provides translation capabilities using the DeepL API.",
 	"version": "0.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
