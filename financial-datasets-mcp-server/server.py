@@ -44,7 +44,7 @@ async def make_request(url: str) -> dict[str, any] | None:
 @mcp.tool()
 async def get_income_statements(
     ticker: str,
-    period: str = "annual",
+    period: str = 'annual',
     limit: int = 4,
 ) -> str:
     """Get income statements for a company.
@@ -173,7 +173,7 @@ async def get_historical_stock_prices(
     interval: str = 'day',
     interval_multiplier: int = 1,
 ) -> str:
-    """Get historical stock prices for a company.
+    """Gets historical stock prices for a company.
 
     Args:
         ticker: Ticker symbol of the company (e.g. AAPL, GOOGL)
@@ -183,14 +183,7 @@ async def get_historical_stock_prices(
         interval_multiplier: Multiplier of the interval (e.g. 1, 2, 3)
     """
     # Fetch data from the API
-    url = (
-        f'{FINANCIAL_DATASETS_API_BASE}/prices/'
-        f'?ticker={ticker}'
-        f'&interval={interval}'
-        f'&interval_multiplier={interval_multiplier}'
-        f'&start_date={start_date}'
-        f'&end_date={end_date}'
-    )
+    url = f'{FINANCIAL_DATASETS_API_BASE}/prices/?ticker={ticker}&interval={interval}&interval_multiplier={interval_multiplier}&start_date={start_date}&end_date={end_date}'
     data = await make_request(url)
 
     # Check if data is found
@@ -260,14 +253,7 @@ async def get_crypto_prices(
 ) -> str:
     """Gets historical prices for a crypto currency."""
     # Fetch data from the API
-    url = (
-        f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/'
-        f'?ticker={ticker}'
-        f'&interval={interval}'
-        f'&interval_multiplier={interval_multiplier}'
-        f'&start_date={start_date}'
-        f'&end_date={end_date}'
-    )
+    url = f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/?ticker={ticker}&interval={interval}&interval_multiplier={interval_multiplier}&start_date={start_date}&end_date={end_date}'
     data = await make_request(url)
 
     # Check if data is found
@@ -296,22 +282,14 @@ async def get_historical_crypto_prices(
     """Gets historical prices for a crypto currency.
 
     Args:
-        ticker: Ticker symbol of the crypto currency (e.g. BTC-USD). The list of available crypto tickers can be
-            retrieved via the get_available_crypto_tickers tool.
+        ticker: Ticker symbol of the crypto currency (e.g. BTC-USD). The list of available crypto tickers can be retrieved via the get_available_crypto_tickers tool.
         start_date: Start date of the price data (e.g. 2020-01-01)
         end_date: End date of the price data (e.g. 2020-12-31)
         interval: Interval of the price data (e.g. minute, hour, day, week, month)
         interval_multiplier: Multiplier of the interval (e.g. 1, 2, 3)
     """
     # Fetch data from the API
-    url = (
-        f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/'
-        f'?ticker={ticker}'
-        f'&interval={interval}'
-        f'&interval_multiplier={interval_multiplier}'
-        f'&start_date={start_date}'
-        f'&end_date={end_date}'
-    )
+    url = f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/?ticker={ticker}&interval={interval}&interval_multiplier={interval_multiplier}&start_date={start_date}&end_date={end_date}'
     data = await make_request(url)
 
     # Check if data is found
@@ -334,8 +312,7 @@ async def get_current_crypto_price(ticker: str) -> str:
     """Get the current / latest price of a crypto currency.
 
     Args:
-        ticker: Ticker symbol of the crypto currency (e.g. BTC-USD). The list of available crypto tickers can be retrieved
-            via the get_available_crypto_tickers tool.
+        ticker: Ticker symbol of the crypto currency (e.g. BTC-USD). The list of available crypto tickers can be retrieved via the get_available_crypto_tickers tool.
     """
     # Fetch data from the API
     url = f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/snapshot/?ticker={ticker}'
