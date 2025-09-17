@@ -1,10 +1,11 @@
 import json
-import os
-import httpx
 import logging
+import os
 import sys
-from mcp.server.fastmcp import FastMCP
+
+import httpx
 from dotenv import load_dotenv
+from mcp.server.fastmcp import FastMCP
 
 # Configure logging to write to stderr
 logging.basicConfig(
@@ -226,8 +227,7 @@ async def get_company_news(ticker: str) -> str:
 
 @mcp.tool()
 async def get_available_crypto_tickers() -> str:
-    """
-    Gets all available crypto tickers.
+    """Gets all available crypto tickers.
     """
     # Fetch data from the API
     url = f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/tickers'
@@ -252,8 +252,7 @@ async def get_crypto_prices(
     interval: str = 'day',
     interval_multiplier: int = 1,
 ) -> str:
-    """
-    Gets historical prices for a crypto currency.
+    """Gets historical prices for a crypto currency.
     """
     # Fetch data from the API
     url = f'{FINANCIAL_DATASETS_API_BASE}/crypto/prices/?ticker={ticker}&interval={interval}&interval_multiplier={interval_multiplier}&start_date={start_date}&end_date={end_date}'
@@ -362,7 +361,7 @@ async def get_sec_filings(
 
     # Check if SEC filings are found
     if not filings:
-        return f'Unable to fetch SEC filings or no SEC filings found.'
+        return 'Unable to fetch SEC filings or no SEC filings found.'
 
     # Stringify the SEC filings
     return json.dumps(filings, indent=2)
