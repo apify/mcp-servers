@@ -1,4 +1,3 @@
-
 import os
 
 from apify import Actor
@@ -24,6 +23,7 @@ MCP_SERVER_PARAMS = StdioServerParameters(
     env={},
     cwd="/usr/src/app/osp_marketing_tools/src",
 )
+
 
 async def main() -> None:
     async with Actor:
@@ -59,7 +59,7 @@ async def main() -> None:
                 }}
                 """
             )
-            
+
             proxy_server = ProxyServer(
                 SERVER_NAME,
                 MCP_SERVER_PARAMS,
