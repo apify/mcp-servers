@@ -1,0 +1,14 @@
+{
+    "actorSpecification": 1,
+    "name": "n8n-mcp-documentation-server",
+    "title": "N8N MCP Documentation Server",
+    "description": "n8n MCP Server provides AI assistants with structured access to n8n node documentation, properties, and validation tools for building and verifying workflows efficiently. This server provides only documentation capability and does not support workflow management or execution. Connect via https://mcp-servers--n8n-mcp-server.apify.actor/mcp. Credits to https://github.com/czlonkowski/n8n-mcp. See https://docs.apify.com/platform/integrations/mcp for usage.",
+    "version": "0.0",
+    "buildTag": "latest",
+    "usesStandbyMode": true,
+    "meta": {
+        "templateId": "ts-mcp-server"
+    },
+    "dockerfile": "../Dockerfile",
+    "webServerMcpPath": "/sse"
+}
