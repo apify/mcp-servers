@@ -30,7 +30,7 @@ export async function getMcpServer(command: string[], options?: {
       name: "mcp-server",
       version: "1.0.0",
     });
-    
+
     // Register all capabilities except experimental
     server.server.registerCapabilities({
         tools: {},
@@ -39,7 +39,7 @@ export async function getMcpServer(command: string[], options?: {
         completions: {},
         logging: {},
     })
-    
+
     // Spawn MCP proxy client for the stdio MCP server
     const proxyClient = await getMcpProxyClient(command);
 
@@ -71,8 +71,8 @@ export async function getMcpServer(command: string[], options?: {
             });
         });
     }
-    
-    
+
+
     // Register notification handlers for all client notifications
     for (const schema of ClientNotificationSchema.options) {
         const method = schema.shape.method.value;
@@ -90,7 +90,7 @@ export async function getMcpServer(command: string[], options?: {
             await proxyClient.notification(notification);
         });
     }
-    
+
     // Register notification handlers for all proxy client notifications
     for (const schema of ServerNotificationSchema.options) {
         const method = schema.shape.method.value;
@@ -103,7 +103,7 @@ export async function getMcpServer(command: string[], options?: {
             await server.server.notification(notification);
         });
     }
-    
+
     // Handle server shutdown and cleanup proxy client
     server.server.onclose = () => {
         log.info('MCP Server is closing, shutting down the proxy client');
@@ -113,7 +113,7 @@ export async function getMcpServer(command: string[], options?: {
             });
         });
     };
-    
+
     return server;
 }
 
@@ -135,6 +135,9 @@ export async function getMcpProxyClient(command: string[]): Promise<Client> {
     const transport = new StdioClientTransport({
         command: command[0],
         args: command.slice(1),
+        env: {
+            DEEPL_API_KEY: process.env.DEEPL_API_KEY!,
+        },
     });
 
     // Create the MCP proxy client instance
