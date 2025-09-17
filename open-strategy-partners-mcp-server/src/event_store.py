@@ -1,9 +1,3 @@
-# Source https://github.com/modelcontextprotocol/python-sdk/blob/3978c6e1b91e8830e82d97ab3c4e3b6559972021/examples/servers/simple-streamablehttp/mcp_simple_streamablehttp/event_store.py
-"""In-memory event store for demonstrating resumability functionality.
-
-This is a simple implementation intended for examples and testing,
-not for production use where a persistent storage solution would be more appropriate.
-"""
 
 import logging
 from collections import deque
