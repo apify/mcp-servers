@@ -3,7 +3,7 @@
 
 apify < 3.0.0
 apify-client
-arxiv-mcp-server==0.2.11
+# (OSP MCP server is now included as local code, not a PyPI package)
 fastapi==0.116.1
 httpx>=0.24.0
 mcp==1.13.1

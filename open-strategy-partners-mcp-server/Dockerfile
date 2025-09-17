@@ -20,12 +20,18 @@ RUN echo "Python version:" \
  && echo "All installed Python packages:" \
  && pip freeze
 
+
 # Next, copy the remaining files and directories with the source code.
 # Since we do this after installing the dependencies, quick builds will be really fast
 # for most source file changes.
 COPY . ./
+COPY osp_marketing_tools/ ./osp_marketing_tools/
 
-# Use compileall to ensure the runnability of the Actor Python code.
+
+
+# Ensure the OSP MCP server module is importable for -m execution
+ENV PYTHONPATH="${PYTHONPATH}:/usr/src/app/osp_marketing_tools/src"
+
 RUN python3 -m compileall -q src/
 
 # Specify how to launch the source code of your Actor.

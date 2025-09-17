@@ -1,42 +1,43 @@
-## 🚀 Python MCP Server Template
 
-A Python template for deploying and monetizing a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server in the cloud using the [Apify platform](https://docs.apify.com/platform/actors).
+# Open Strategy Partners MCP Server
 
-This template enables you to:
+> Apify Actor for OSP Marketing Tools (MCP)
 
-- Deploy any Python stdio MCP server (e.g., [ArXiv MCP Server](https://github.com/blazickjp/arxiv-mcp-server)), or connect to an existing remote MCP server using Streamable HTTP or SSE transport
-- Expose your MCP server via [Streamable HTTP](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http) transport
-- Monetize your server using Apify's Pay Per Event (PPE) model
+This Actor exposes the Open Strategy Partners (OSP) marketing tools as a Model Context Protocol (MCP) server for LLM clients.
 
-## ✨ Features
+## Usage
 
-- Support for **stdio-based, Streamable HTTP**, and SSE-based MCP servers
-- **Built-in charging**: Integrated [Pay Per Event (PPE)](https://docs.apify.com/platform/actors/publishing/monetize#pay-per-event-pricing-model) for:
-    - Server startup
-    - Tool calls
-    - Resource access
-    - Prompt operations
-    - List operations
-- **Gateway**: Acts as a controlled entry point to MCP servers with charging and authorization logic
+**Client config:**
+```json
+{
+    "mcpServers": {
+        "osp_marketing_tools": {
+            "type": "stdio",
+            "command": "uv",
+            "args": ["run", "osp-marketing-mcp-server"]
+        }
+    }
+}
+```
 
-## Quick Start
+**Features:**
+- OSP Product Value Map Generator
+- OSP Meta Information Generator
+- OSP Content Editing Codes
+- OSP Technical Writing Guide
+- OSP On-Page SEO Guide
 
-1. Configure your MCP server in `src/main.py`:
+See [Open Strategy Partners](https://openstrategypartners.com/) and [MCP](https://mcp.apify.com) for more.
 
-    ```python
-    # For stdio server:
-    server_type = ServerType.STDIO
-    MCP_SERVER_PARAMS = StdioServerParameters(
-        command='your-command',
-        args=['your', 'args'],
-    )
+## Apify
+- [MCP Servers Registry](https://github.com/apify/mcp-servers)
+- [MCP Docs](https://mcp.apify.com)
 
-    # For HTTP or SSE server:
-    # server_type = ServerType.HTTP  # or ServerType.SSE
-    # MCP_SERVER_PARAMS = RemoteServerParameters(
-    #     url='your-server-url',
-    # )
-    ```
+## Monetization
+See `.actor/pay_per_event.json` for billable event mapping.
+
+## Attribution
+This software implements OSP's content creation and optimization methodologies. See LICENSE for details.
 
 2. Add any required dependencies to the `requirements.txt` file (e.g. [arxiv-mcp-server](https://github.com/blazickjp/arxiv-mcp-server)).
 3. Deploy to Apify and enable standby mode.

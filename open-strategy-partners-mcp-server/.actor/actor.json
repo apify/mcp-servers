@@ -2,7 +2,7 @@
 	"actorSpecification": 1,
 	"name": "open-strategy-partners-mcp-server",
 	"title": "Python MCP server",
-	"description": "Python Model Context Protocol (MCP) server.",
+		"description": "Exposes Open Strategy Partners (OSP) marketing tools as a Model Context Protocol (MCP) server for LLM clients. See https://openstrategypartners.com/ and https://mcp.apify.com for details.",
 	"version": "0.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,

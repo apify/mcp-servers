@@ -19,13 +19,15 @@ SERVER_NAME = 'arxiv-mcp-server'  # Name of the MCP server, without spaces
 # EDIT THIS SECTION ------------------------------------------------------------
 # Configuration constants - You need to override these values. You can also pass environment variables if needed.
 # 1) If you are wrapping stdio server type, you need to provide the command and args
+# --- OSP MCP Server wiring ---
 from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uv',
-    args=['run', 'arxiv-mcp-server'],
-    env={'YOUR-ENV_VAR': os.getenv('YOUR-ENV-VAR') or ''},  # Optional environment variables
+    command='python',
+    args=['-m', 'osp_marketing_tools.server'],
+    env={},
+    cwd='/usr/src/app/osp_marketing_tools/src',
 )
 
 # 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
