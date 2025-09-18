@@ -1,17 +1,17 @@
 {
 	"actorSpecification": 1,
 	"name": "time-mcp-server",
-	"title": "Python MCP server",
-	"description": "Python Model Context Protocol (MCP) server.",
-	"version": "0.0",
+	"title": "Time MCP Server",
+	"description": "A Python server implementing the Model Context Protocol (MCP) for time-related operations.",
+	"version": "0.1.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
 	"meta": {
 		"templateId": "python-mcp-server"
 	},
 	"input": {
-		"title": "Actor input schema",
-		"description": "This is Actor input schema",
+		"title": "Time MCP Server Input Schema",
+		"description": "Input schema for configuring the Time MCP Server actor.",
 		"type": "object",
 		"schemaVersion": 1,
 		"properties": {},
