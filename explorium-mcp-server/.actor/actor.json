@@ -11,7 +11,7 @@
 	},
 	"input": {
 		"title": "Actor input schema",
-		"description": "This is Actor input schema",
+		"description": "## Explorium MCP Server\n\nUse your Apify credits to run the Explorium MCP Server, giving language models real-time access to comprehensive business intelligence data including company, contact, and market insights—no manual data gathering required. \uD83D\uDCC8\n\n### How to Use\n\n*   **Connect to a Language Model:** To use this server with a model like Claude, provide it with this endpoint:\n    `https://mcp-servers--explorium-mcp-server.apify.actor/mcp`\n*   **Test with the Apify Client:** You can also test the server directly using your Apify credits via our client (connect your client to the endpoint above):\n    `https://apify.com/client-mcp-inspector` (Link to the live Inspector if available, or the command `npx @modelcontextprotocol/inspector` if CLI only).\n\n### Available Tools\n\nAccess a suite of powerful tools for rich business intelligence:\n*   `match-business`: Find companies by name, domain, or ID.\n*   `fetch-businesses`: Get detailed firmographics, technographics, and business intelligence.\n*   `enrich-prospects`: Access contact information, work history, and professional profiles.\n*   `web-search`: Perform live, up-to-date web searches for relevant information.\n*   ...and more for prospect discovery, events tracking, and autocomplete.",
 		"type": "object",
 		"schemaVersion": 1,
 		"properties": {},
