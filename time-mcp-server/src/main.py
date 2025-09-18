@@ -14,7 +14,7 @@ STANDBY_MODE = os.environ.get('APIFY_META_ORIGIN') == 'STANDBY'
 # The container's network is isolated, so this is safe
 HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify platform
 PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
-SERVER_NAME = 'arxiv-mcp-server'  # Name of the MCP server, without spaces
+SERVER_NAME = 'time-mcp-server'  # Name of the MCP server, without spaces
 
 # EDIT THIS SECTION ------------------------------------------------------------
 # Configuration constants - You need to override these values. You can also pass environment variables if needed.
@@ -23,9 +23,9 @@ from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uv',
-    args=['run', 'arxiv-mcp-server'],
-    env={'YOUR-ENV_VAR': os.getenv('YOUR-ENV-VAR') or ''},  # Optional environment variables
+    command='uvx',
+    args=['mcp-server-time'],
+    env={},  # Optionally add env vars, e.g., 'LOCAL_TIMEZONE': 'America/New_York'
 )
 
 # 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
