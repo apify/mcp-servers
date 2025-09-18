@@ -11,6 +11,12 @@ import { Actor, log } from 'apify';
 
 import { startServer } from './server.js';
 
+const apiKey = process.env.EXPLORIUM_API_KEY;
+
+if (!apiKey) {
+    await Actor.fail(`EXPLORIUM_API_KEY environmental variable was not set. Cannot proceed.`)
+}
+
 // This is an ESM project, and as such, it requires you to specify extensions in your relative imports
 // Read more about this here: https://nodejs.org/docs/latest-v18.x/api/esm.html#mandatory-file-extensions
 // Note that we need to use `.js` even when inside TS files
@@ -24,7 +30,7 @@ const MCP_COMMAND = [
     'mcp-remote',
     'https://mcp.explorium.ai/mcp',
     '--header',
-    `Authorization: Bearer ${process.env.EXPLORIUM_API_KEY || ''}`,
+    `Authorization: Bearer ${apiKey}`,
 ];
 
 // Check if the Actor is running in standby mode
