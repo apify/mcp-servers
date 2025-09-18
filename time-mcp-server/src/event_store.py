@@ -51,10 +51,14 @@ class InMemoryEventStore(EventStore):
         # event_id -> EventEntry for quick lookup
         self.event_index: dict[EventId, EventEntry] = {}
 
-    async def store_event(self, stream_id: StreamId, message: JSONRPCMessage) -> EventId:
+    async def store_event(
+        self, stream_id: StreamId, message: JSONRPCMessage
+    ) -> EventId:
         """Stores an event with a generated event ID."""  # noqa: D401
         event_id = str(uuid4())
-        event_entry = EventEntry(event_id=event_id, stream_id=stream_id, message=message)
+        event_entry = EventEntry(
+            event_id=event_id, stream_id=stream_id, message=message
+        )
 
         # Get or create deque for this stream
         if stream_id not in self.streams:
@@ -79,7 +83,7 @@ class InMemoryEventStore(EventStore):
     ) -> StreamId | None:
         """Replays events that occurred after the specified event ID."""
         if last_event_id not in self.event_index:
-            logger.warning(f'Event ID {last_event_id} not found in store')
+            logger.warning(f"Event ID {last_event_id} not found in store")
             return None
 
         # Get the stream and find events after the last one

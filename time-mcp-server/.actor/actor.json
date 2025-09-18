@@ -9,14 +9,6 @@
 	"meta": {
 		"templateId": "python-mcp-server"
 	},
-	"input": {
-		"title": "Time MCP Server Input Schema",
-		"description": "Input schema for configuring the Time MCP Server actor.",
-		"type": "object",
-		"schemaVersion": 1,
-		"properties": {},
-		"required": []
-	},
 	"dockerfile": "../Dockerfile",
 	"webServerMcpPath": "/mcp"
 }
