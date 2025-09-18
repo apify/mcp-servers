@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "sqt-mcp-server",
+	"title": "Sequential Thinking MCP server",
+		"description": "Dynamic, step-by-step problem-solving via structured thinking. Exposes the sequential_thinking tool as an MCP server for Apify clients.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

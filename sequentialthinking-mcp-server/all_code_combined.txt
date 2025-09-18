@@ -1,0 +1,567 @@
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/.actor =====
+
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/node_modules =====
+
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/.prettierignore =====
+
+.prettierignore
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/.editorconfig =====
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = lf
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/.dockerignore =====
+
+# configurations
+.idea
+.vscode
+.zed
+
+# crawlee and apify storage folders
+apify_storage
+crawlee_storage
+storage
+
+# installed files
+node_modules
+
+# git folder
+.git
+
+# dist folder
+dist
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/.gitignore =====
+
+# This file tells Git which files shouldn't be added to source control
+
+.idea
+.vscode
+.zed
+storage
+apify_storage
+crawlee_storage
+node_modules
+dist
+tsconfig.tsbuildinfo
+
+# Added by Apify CLI
+.venv
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/.prettierrc =====
+
+{
+    "printWidth": 120,
+    "singleQuote": true,
+    "tabWidth": 4
+}
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/src/main.ts =====
+
+/**
+ * MCP Server - Main Entry Point
+ *
+ * This file serves as the entry point for the MCP Server Actor.
+ * It sets up a proxy server that forwards requests to the locally running
+ * MCP server, which provides a Model Context Protocol (MCP) interface.
+ */
+
+// Apify SDK - toolkit for building Apify Actors (Read more at https://docs.apify.com/sdk/js/)
+import { Actor, log } from 'apify';
+
+import { startServer } from './server.js';
+
+// Configuration constants for the MCP server
+// Command to run the Sequential Thinking MCP Server
+const MCP_COMMAND = [
+    'npx',
+    '-y',
+    '@modelcontextprotocol/server-sequential-thinking',
+];
+const STANDBY_MODE = process.env.APIFY_META_ORIGIN === 'STANDBY';
+const SERVER_PORT = parseInt(process.env.ACTOR_WEB_SERVER_PORT || '3002', 10);
+
+// Initialize the Apify Actor environment
+await Actor.init();
+
+// Charge for Actor start
+await Actor.charge({ eventName: 'actor-start' });
+
+if (!STANDBY_MODE) {
+    // If the Actor is not in standby mode, we should not run the MCP server
+    const msg = 'This Actor is not meant to be run directly. It should be run in standby mode.';
+    log.error(msg);
+    await Actor.exit({ statusMessage: msg });
+}
+
+await startServer({
+    serverPort: SERVER_PORT,
+    command: MCP_COMMAND,
+});
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/src/mcp.ts =====
+
+/**
+ * This module provides functions to create and manage an MCP server and its proxy client.
+ * It registers protocol capabilities, request handlers, and notification handlers for the MCP server,
+ * and spawns a proxy client that communicates with another MCP process over stdio.
+ */
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { DEFAULT_REQUEST_TIMEOUT_MSEC } from "@modelcontextprotocol/sdk/shared/protocol.js";
+import { ClientNotificationSchema, ClientRequestSchema, ResultSchema, ServerNotificationSchema } from "@modelcontextprotocol/sdk/types.js";
+import { log } from "apify";
+
+/**
+ * Creates and configures an MCP server instance.
+ *
+ * - Registers all protocol capabilities except experimental.
+ * - Spawns a proxy client to forward requests and notifications.
+ * - Sets up handlers for requests and notifications between the server and proxy client.
+ * - Handles server shutdown and proxy client cleanup.
+ *
+ * @param command - The command to start the MCP proxy process.
+ * @param options - Optional configuration (e.g., request timeout).
+ * @returns A Promise that resolves to a configured McpServer instance.
+ */
+export async function getMcpServer(command: string[], options?: {
+    timeout?: number;
+}): Promise<McpServer> {
+    // Create the MCP server instance
+    const server = new McpServer({
+      name: "mcp-server",
+      version: "1.0.0",
+    });
+    
+    // Register all capabilities except experimental
+    server.server.registerCapabilities({
+        tools: {},
+        prompts: {},
+        resources: {},
+        completions: {},
+        logging: {},
+    })
+    
+    // Spawn MCP proxy client for the stdio MCP server
+    const proxyClient = await getMcpProxyClient(command);
+
+    // Register request handlers for all client requests
+    for (const schema of ClientRequestSchema.options) {
+        const method = schema.shape.method.value;
+        // Forward requests to the proxy client and return its response
+        server.server.setRequestHandler(schema, async (req) => {
+            if (req.method === "initialize") {
+                // Handle the 'initialize' request separately and do not forward it to the proxy client
+                // this is needed for mcp-remote servers to work correctly
+                return {
+                    capabilities: proxyClient.getServerCapabilities(),
+                    // Return back the client protocolVersion
+                    protocolVersion: req.params.protocolVersion,
+                    serverInfo: {
+                      name: "Apify MCP proxy server",
+                      title: "Apify MCP proxy server",
+                      version: "1.0.0"
+                    },
+                };
+            }
+            log.info('Received MCP request', {
+                method,
+                request: req,
+            });
+            return proxyClient.request(req, ResultSchema, {
+                timeout: options?.timeout || DEFAULT_REQUEST_TIMEOUT_MSEC,
+            });
+        });
+    }
+    
+    
+    // Register notification handlers for all client notifications
+    for (const schema of ClientNotificationSchema.options) {
+        const method = schema.shape.method.value;
+        // Forward notifications to the proxy client
+        server.server.setNotificationHandler(schema, async (notification) => {
+            if (notification.method === 'notifications/initialized') {
+                // Do not forward the 'notifications/initialized' notification
+                // This is needed for mcp-remote servers to work correctly
+                return;
+            }
+            log.info('Received MCP notification', {
+                method,
+                notification,
+            });
+            await proxyClient.notification(notification);
+        });
+    }
+    
+    // Register notification handlers for all proxy client notifications
+    for (const schema of ServerNotificationSchema.options) {
+        const method = schema.shape.method.value;
+        // Forward notifications from the proxy client to the server
+        proxyClient.setNotificationHandler(schema, async (notification) => {
+            log.info('Sending MCP notification', {
+                method,
+                notification,
+            });
+            await server.server.notification(notification);
+        });
+    }
+    
+    // Handle server shutdown and cleanup proxy client
+    server.server.onclose = () => {
+        log.info('MCP Server is closing, shutting down the proxy client');
+        proxyClient.close().catch((error) => {
+            log.error('Error closing MCP Proxy Client', {
+                error,
+            });
+        });
+    };
+    
+    return server;
+}
+
+/**
+ * Creates and connects an MCP Proxy Client using a given command.
+ *
+ * This function splits the provided command string into the executable and its arguments,
+ * initializes a StdioClientTransport for communication, and then creates a Client instance.
+ * It connects the client to the transport and returns the connected client.
+ *
+ * @param command - The command to start the MCP proxy process (e.g., 'node server.js').
+ * @returns A Promise that resolves to a connected Client instance.
+ */
+export async function getMcpProxyClient(command: string[]): Promise<Client> {
+    log.info('Starting MCP Proxy Client', {
+        command,
+    });
+    // Create a stdio transport for the proxy client
+    const transport = new StdioClientTransport({
+        command: command[0],
+        args: command.slice(1),
+    });
+
+    // Create the MCP proxy client instance
+    const client = new Client({
+        name: 'mcp-proxy-client',
+        version: '1.0.0',
+    });
+
+    // Connect the client to the transport
+    await client.connect(transport);
+    log.info('MCP Proxy Client started successfully');
+    return client;
+}
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/src/billing.ts =====
+
+/**
+ * This module handles billing for different types of protocol requests in the MCP server.
+ * It defines a function to charge users based on the type of protocol method invoked.
+ */
+import { Actor, log } from 'apify';
+
+// Pay-per-event mapping for Apify MCP Actor monetization
+export const BILLABLE_EVENTS = {
+    sequential_thinking: { price: 0.05 }
+};
+
+/**
+ * Charges the user for a message request based on the method type.
+ * Only charges for the sequential_thinking tool.
+ */
+export async function chargeMessageRequest(request: { method: string }): Promise<void> {
+    const { method } = request;
+    if (method === 'tools/sequential_thinking/invoke') {
+        await Actor.charge({ eventName: 'sequential_thinking' });
+        log.info(`Charged for sequential_thinking tool request: ${method}`);
+    } else if (method === 'actor-start') {
+        await Actor.charge({ eventName: 'actor-start' });
+        log.info(`Charged for actor start: ${method}`);
+    } else {
+        log.info(`Not charging for method: ${method}`);
+    }
+}
+
+
+===== /Users/ivanvasilev/Desktop/code-folder-local/apify-related/mcp-servers/sequentialthinking-mcp-server/src/server.ts =====
+
+/**
+ * This module implements the HTTP server for the MCP protocol.
+ * It manages session-based transports, request routing, and billing for protocol messages.
+ *
+ * The server supports streamable HTTP endpoints and handles session
+ * initialization, message routing, and resource cleanup on shutdown.
+ */
+import { randomUUID } from 'node:crypto';
+
+import { InMemoryEventStore } from '@modelcontextprotocol/sdk/examples/shared/inMemoryEventStore.js';
+import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
+import { log } from 'apify';
+import type { Request, Response } from 'express';
+import express from 'express';
+
+import { chargeMessageRequest } from './billing.js';
+import { getMcpServer as getMCPServerWithCommand } from './mcp.js';
+
+let getMcpServer: null | (() => Promise<McpServer>) = null;
+
+// Map to store transports by session ID
+const transports: { [sessionId: string]: StreamableHTTPServerTransport } = {};
+
+/**
+ * Handles POST requests to the /mcp endpoint.
+ * - Initializes new sessions and transports if needed.
+ * - Routes requests to the correct transport based on session ID.
+ * - Charges for each message request.
+ */
+async function mcpPostHandler(req: Request, res: Response) {
+    // Ensure the MCP server is initialized
+    if (!getMcpServer) {
+        res.status(500).json({
+            jsonrpc: '2.0',
+            error: {
+                code: -32000,
+                message: 'Server not initialized',
+            },
+            id: null,
+        });
+        return;
+    }
+    const sessionId = req.headers['mcp-session-id'] as string | undefined;
+    log.info('Received MCP request', {
+        sessionId: sessionId || null,
+        body: req.body,
+    });
+    try {
+        let transport: StreamableHTTPServerTransport;
+        if (sessionId && transports[sessionId]) {
+            // Reuse existing transport for the session
+            transport = transports[sessionId] as StreamableHTTPServerTransport;
+        } else if (!sessionId && isInitializeRequest(req.body)) {
+            // New initialization request: create a new transport and event store
+            const eventStore = new InMemoryEventStore();
+            transport = new StreamableHTTPServerTransport({
+                sessionIdGenerator: () => randomUUID(),
+                eventStore, // Enable resumability
+                onsessioninitialized: (initializedSessionId) => {
+                    // Store the transport by session ID when session is initialized
+                    // This avoids race conditions where requests might come in before the session is stored
+                    log.info('Session initialized', {
+                        sessionId: initializedSessionId,
+                    });
+                    transports[initializedSessionId] = transport;
+                }
+            });
+
+            // Charge for each message request received on this transport
+            transport.onmessage = (message) => {
+                chargeMessageRequest(message as { method: string }).catch((error) => {
+                    log.error('Error charging for message request:', {
+                        error,
+                        sessionId: transport.sessionId || null,
+                    });
+                });
+            };
+
+            // Clean up transport when closed
+            transport.onclose = () => {
+                const sid = transport.sessionId;
+                if (sid && transports[sid]) {
+                    log.info('Transport closed', {
+                        sessionId: sid,
+                    });
+                    delete transports[sid];
+                }
+            };
+
+            // Connect the transport to the MCP server BEFORE handling the request
+            // so responses can flow back through the same transport
+            const server = await getMcpServer();
+            await server.connect(transport);
+
+            // Charge for the request
+            await chargeMessageRequest(req.body);
+            
+            await transport.handleRequest(req, res, req.body);
+            return; // Already handled
+        } else {
+            // Invalid request - no session ID or not initialization request
+            res.status(400).json({
+                jsonrpc: '2.0',
+                error: {
+                    code: -32000,
+                    message: 'Bad Request: No valid session ID provided',
+                },
+                id: null,
+            });
+            return;
+        }
+
+        // Charge for the request
+        await chargeMessageRequest(req.body);
+        // Handle the request with existing transport - no need to reconnect
+        // The existing transport is already connected to the server
+        await transport.handleRequest(req, res, req.body);
+    } catch (error) {
+        log.error('Error handling MCP request:', {
+            error,
+            sessionId: sessionId || null,
+        });
+        if (!res.headersSent) {
+            res.status(500).json({
+                jsonrpc: '2.0',
+                error: {
+                    code: -32603,
+                    message: 'Internal server error',
+                },
+                id: null,
+            });
+        }
+    }
+};
+
+/**
+ * Handles GET requests to the /mcp endpoint for streaming responses.
+ * - Validates session ID and resumes or establishes SSE streams as needed.
+ */
+async function mcpGetHandler(req: Request, res: Response) {
+    const sessionId = req.headers['mcp-session-id'] as string | undefined;
+    if (!sessionId || !transports[sessionId]) {
+        res.status(400).send('Invalid or missing session ID');
+        return;
+    }
+
+    // Check for Last-Event-ID header for resumability
+    const lastEventId = req.headers['last-event-id'] as string | undefined;
+    if (lastEventId) {
+        log.info('Client reconnecting', {
+            lastEventId: lastEventId || null,
+        });
+    } else {
+        log.info('Establishing new SSE stream', {
+            sessionId: sessionId || null,
+        });
+    }
+
+    const transport = transports[sessionId] as StreamableHTTPServerTransport;
+    await transport.handleRequest(req, res);
+};
+
+
+/**
+ * Handles DELETE requests to the /mcp endpoint for session termination.
+ * - Cleans up and closes the transport for the given session.
+ */
+async function mcpDeleteHandler(req: Request, res: Response) {
+    const sessionId = req.headers['mcp-session-id'] as string | undefined;
+    if (!sessionId || !transports[sessionId]) {
+        res.status(400).send('Invalid or missing session ID');
+        return;
+    }
+
+    log.info('Received session termination request', {
+        sessionId: sessionId || null,
+    });
+
+    try {
+        const transport = transports[sessionId] as StreamableHTTPServerTransport;
+        await transport.handleRequest(req, res);
+    } catch (error) {
+        log.error('Error handling session termination:', {
+            error
+        });
+        if (!res.headersSent) {
+            res.status(500).send('Error processing session termination');
+        }
+    }
+};
+
+
+/**
+ * Starts the MCP HTTP server and sets up all endpoints.
+ * - Initializes the MCP server factory.
+ * - Registers all HTTP endpoints.
+ * - Handles graceful shutdown and resource cleanup.
+ */
+export async function startServer(options: {
+    serverPort: number;
+    command: string[];
+}) {
+    log.info('Starting MCP HTTP Server', {
+        serverPort: options.serverPort,
+        command: options.command,
+    });
+    const { serverPort, command } = options;
+    // Initialize the MCP client
+    getMcpServer = async () => getMCPServerWithCommand(command);
+
+    const app = express();
+    
+    // Redirect to Apify favicon
+    app.get('/favicon.ico', (_req: Request, res: Response) => {
+        res.writeHead(301, { Location: "https://apify.com/favicon.ico" });
+        res.end();
+    });
+
+    // Return the Apify OAuth authorization server metadata to allow the MCP client to authenticate using OAuth
+    app.get('/.well-known/oauth-authorization-server', async (_req: Request, res: Response) => {
+        // Some MCP clients do not follow redirects, so we need to fetch the data and return it directly.
+        const response = await fetch(`https://api.apify.com/.well-known/oauth-authorization-server`);
+        const data = await response.json();
+        res.status(200).json(data);
+    });
+
+    app.use(express.json());
+
+    // Streamable HTTP endpoints
+    app.post('/mcp', mcpPostHandler);
+    app.get('/mcp', mcpGetHandler);
+    app.delete('/mcp', mcpDeleteHandler);
+
+    app.listen(serverPort, () => {
+        log.info(`MCP HTTP Server listening on port ${serverPort}`);
+    });
+
+    // Handle server shutdown
+    process.on('SIGINT', async () => {
+        log.info('Shutting down server...');
+
+        // Close all active transports to properly clean up resources
+        for (const sessionId of Object.keys(transports)) {
+            try {
+                log.info(`Closing transport for session ${sessionId}`);
+                await transports[sessionId].close();
+                delete transports[sessionId];
+            } catch (error) {
+                log.error(`Error closing transport for session ${sessionId}:`, {
+                    error
+                });
+            }
+        }
+        log.info('Server shutdown complete');
+        process.exit(0);
+    });
+}
