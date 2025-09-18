@@ -18,12 +18,13 @@ import { startServer } from './server.js';
 
 // Configuration constants for the MCP server
 // Command to run the Everything MCP Server
-// TODO: Do not forget to install the MCP server in package.json (using `npm install ...`)
 const MCP_COMMAND = [
     'npx',
     '-y',
     'mcp-remote',
     'https://mcp.explorium.ai/mcp',
+    '--header',
+    `Authorization: Bearer ${process.env.EXPLORIUM_API_KEY || ''}`,
 ];
 
 // Check if the Actor is running in standby mode
