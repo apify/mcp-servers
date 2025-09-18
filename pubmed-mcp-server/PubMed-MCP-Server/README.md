@@ -1,5 +1,3 @@
-[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/jackkuo666-pubmed-mcp-server-badge.png)](https://mseep.ai/app/jackkuo666-pubmed-mcp-server)
-
 # PubMed MCP Server
 
 [![smithery badge](https://smithery.ai/badge/@JackKuo666/pubmed-mcp-server)](https://smithery.ai/server/@JackKuo666/pubmed-mcp-server)
