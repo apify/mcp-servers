@@ -42,7 +42,7 @@ if (chargingManager.getChargedEventCount('actor-start') === 0) {
 
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, we should not run the MCP server
-    const msg = 'This Actor is not meant to be run directly. It should be run in standby mode.';
+    const msg = 'This Actor is intended to run in standby mode. Please use an MCP client to connect.';
     log.error(msg);
     await Actor.exit({ statusMessage: msg });
 }
