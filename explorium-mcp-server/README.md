@@ -19,7 +19,7 @@ MCP clients can connect to this server at:
 https://mcp-servers--explorium-mcp-server.apify.actor/mcp
 ```
 
-## Client Configuration
+## Client configuration
 To connect to this MCP server, use the following configuration in your MCP client:
 
 ```json
