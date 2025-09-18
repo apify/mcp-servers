@@ -1,2 +1,3 @@
-[tool.ruff]
+
 exclude = ["PubMed-MCP-Server/*"]
+

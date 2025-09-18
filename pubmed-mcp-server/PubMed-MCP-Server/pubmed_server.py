@@ -3,17 +3,30 @@ from typing import Any, List, Dict, Optional, Union
 import asyncio
 import logging
 from mcp.server.fastmcp import FastMCP
-from pubmed_web_search import search_key_words, search_advanced, get_pubmed_metadata, download_full_text_pdf, deep_paper_analysis
+from pubmed_web_search import (
+    search_key_words,
+    search_advanced,
+    get_pubmed_metadata,
+    download_full_text_pdf,
+    deep_paper_analysis,
+)
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 # Initialize FastMCP server
 mcp = FastMCP("pubmed")
 
+
 @mcp.tool()
-async def search_pubmed_key_words(key_words: str, num_results: int = 10) -> List[Dict[str, Any]]:
-    logging.info(f"Searching for articles with key words: {key_words}, num_results: {num_results}")
+async def search_pubmed_key_words(
+    key_words: str, num_results: int = 10
+) -> List[Dict[str, Any]]:
+    logging.info(
+        f"Searching for articles with key words: {key_words}, num_results: {num_results}"
+    )
     """
     Search for articles on PubMed using key words.
 
@@ -30,6 +43,7 @@ async def search_pubmed_key_words(key_words: str, num_results: int = 10) -> List
     except Exception as e:
         return [{"error": f"An error occurred while searching: {str(e)}"}]
 
+
 @mcp.tool()
 async def search_pubmed_advanced(
     term: Optional[str] = None,
@@ -38,7 +52,7 @@ async def search_pubmed_advanced(
     journal: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
-    num_results: int = 10
+    num_results: int = 10,
 ) -> List[Dict[str, Any]]:
     logging.info(f"Performing advanced search with parameters: {locals()}")
     """
@@ -59,11 +73,20 @@ async def search_pubmed_advanced(
     try:
         results = await asyncio.to_thread(
             search_advanced,
-            term, title, author, journal, start_date, end_date, num_results
+            term,
+            title,
+            author,
+            journal,
+            start_date,
+            end_date,
+            num_results,
         )
         return results
     except Exception as e:
-        return [{"error": f"An error occurred while performing advanced search: {str(e)}"}]
+        return [
+            {"error": f"An error occurred while performing advanced search: {str(e)}"}
+        ]
+
 
 @mcp.tool()
 async def get_pubmed_article_metadata(pmid: Union[str, int]) -> Dict[str, Any]:
@@ -80,9 +103,14 @@ async def get_pubmed_article_metadata(pmid: Union[str, int]) -> Dict[str, Any]:
     try:
         pmid_str = str(pmid)
         metadata = await asyncio.to_thread(get_pubmed_metadata, pmid_str)
-        return metadata if metadata else {"error": f"No metadata found for PMID: {pmid_str}"}
+        return (
+            metadata
+            if metadata
+            else {"error": f"No metadata found for PMID: {pmid_str}"}
+        )
     except Exception as e:
         return {"error": f"An error occurred while fetching metadata: {str(e)}"}
+
 
 @mcp.tool()
 async def download_pubmed_pdf(pmid: Union[str, int]) -> str:
@@ -103,6 +131,7 @@ async def download_pubmed_pdf(pmid: Union[str, int]) -> str:
     except Exception as e:
         return f"An error occurred while attempting to download the PDF: {str(e)}"
 
+
 @mcp.prompt()
 async def deep_paper_analysis(pmid: Union[str, int]) -> Dict[str, str]:
     logging.info(f"Performing deep paper analysis for PMID: {pmid}")
@@ -120,18 +149,22 @@ async def deep_paper_analysis(pmid: Union[str, int]) -> Dict[str, str]:
         metadata = await asyncio.to_thread(get_pubmed_metadata, pmid_str)
         if not metadata:
             return {"error": f"No metadata found for PMID: {pmid_str}"}
-            
+
         # 使用导入的 deep_paper_analysis 函数生成分析提示
         # 为避免递归调用，我们需要明确指定导入的函数
         from pubmed_web_search import deep_paper_analysis as web_deep_paper_analysis
+
         analysis_prompt = await asyncio.to_thread(web_deep_paper_analysis, metadata)
-        
+
         # 返回包含分析提示的字典
         return {"analysis_prompt": analysis_prompt}
     except Exception as e:
-        return {"error": f"An error occurred while performing the deep paper analysis: {str(e)}"}
+        return {
+            "error": f"An error occurred while performing the deep paper analysis: {str(e)}"
+        }
+
 
 if __name__ == "__main__":
     logging.info("Starting PubMed MCP server")
     # Initialize and run the server
-    mcp.run(transport='stdio')
+    mcp.run(transport="stdio")
