@@ -9,12 +9,14 @@ from .models import ServerType
 from .server import ProxyServer
 
 # Actor configuration
-STANDBY_MODE = os.environ.get('APIFY_META_ORIGIN') == 'STANDBY'
+STANDBY_MODE = os.environ.get("APIFY_META_ORIGIN") == "STANDBY"
 # Bind to all interfaces (0.0.0.0) as this is running in a containerized environment (Apify Actor)
 # The container's network is isolated, so this is safe
-HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify platform
-PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
-SERVER_NAME = 'weather-mcp-server'  # Name of the MCP server, without spaces
+HOST = "0.0.0.0"  # noqa: S104 - Required for container networking at Apify platform
+PORT = (
+    Actor.is_at_home() and int(os.environ.get("ACTOR_STANDBY_PORT") or "5001")
+) or 5001
+SERVER_NAME = "weather-mcp-server"  # Name of the MCP server, without spaces
 
 # EDIT THIS SECTION ------------------------------------------------------------
 # Configuration constants - You need to override these values. You can also pass environment variables if needed.
@@ -23,8 +25,8 @@ from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='python',
-    args=['-m', 'mcp_weather_server'],
+    command="python",
+    args=["-m", "mcp_weather_server"],
 )
 
 
@@ -59,15 +61,15 @@ async def main() -> None:
     """
     async with Actor:
         # Initialize and charge for Actor startup
-        Actor.log.info('Starting MCP Server Actor')
+        Actor.log.info("Starting MCP Server Actor")
         await Actor.charge(ChargeEvents.ACTOR_START.value)
 
-        url = os.environ.get('ACTOR_STANDBY_URL', HOST)
+        url = os.environ.get("ACTOR_STANDBY_URL", HOST)
         if not STANDBY_MODE:
             msg = (
-                'Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.\n'
-                f'Connect to {url}/mcp to establish a connection.\n'
-                'Learn more at https://mcp.apify.com/'
+                "Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.\n"
+                f"Connect to {url}/mcp to establish a connection.\n"
+                "Learn more at https://mcp.apify.com/"
             )
             Actor.log.warning(msg)
             await Actor.exit(status_message=msg)
@@ -75,8 +77,10 @@ async def main() -> None:
 
         try:
             # Create and start the server with charging enabled
-            Actor.log.info('Starting MCP server')
-            Actor.log.info('Add the following configuration to your MCP client to use Streamable HTTP transport:')
+            Actor.log.info("Starting MCP server")
+            Actor.log.info(
+                "Add the following configuration to your MCP client to use Streamable HTTP transport:"
+            )
             Actor.log.info(
                 f"""
                 {{
@@ -101,6 +105,6 @@ async def main() -> None:
             )
             await proxy_server.start()
         except Exception as e:
-            Actor.log.exception(f'Server failed to start: {e}')
+            Actor.log.exception(f"Server failed to start: {e}")
             await Actor.exit()
             raise

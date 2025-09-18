@@ -13,16 +13,16 @@ class ChargeEvents(str, Enum):
     """
 
     # Generic MCP operations (can be used for any MCP server)
-    ACTOR_START = 'actor-start'
-    RESOURCE_READ = 'resource-read'
-    TOOL_LIST = 'tool-list'
-    PROMPT_GET = 'prompt-get'
-    TOOL_CALL = 'tool-call'
+    ACTOR_START = "actor-start"
+    RESOURCE_READ = "resource-read"
+    TOOL_LIST = "tool-list"
+    PROMPT_GET = "prompt-get"
+    TOOL_CALL = "tool-call"
 
     # Weather-specific operations
-    GET_CURRENT_WEATHER = 'get_current_weather'
-    GET_WEATHER_BY_DATETIME_RANGE = 'get_weather_by_datetime_range'
-    GET_CURRENT_DATETIME = 'get_current_datetime'
+    GET_CURRENT_WEATHER = "get_current_weather"
+    GET_WEATHER_BY_DATETIME_RANGE = "get_weather_by_datetime_range"
+    GET_CURRENT_DATETIME = "get_current_datetime"
 
 
 # Tool whitelist for MCP server

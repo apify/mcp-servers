@@ -13,12 +13,12 @@ class ChargeEvents(str, Enum):
     """
 
     # Generic MCP operations (can be used for any MCP server)
-    ACTOR_START = 'actor-start'
-    TOOL_CALL = 'tool-call'
+    ACTOR_START = "actor-start"
+    TOOL_CALL = "tool-call"
 
     # Context7-specific operations (example for domain-specific charging)
-    RESOLVE_LIBRARY_ID = 'resolve-library-id'
-    GET_LIBRARY_DOCS = 'get-library-docs'
+    RESOLVE_LIBRARY_ID = "resolve-library-id"
+    GET_LIBRARY_DOCS = "get-library-docs"
 
 
 # Tool whitelist for MCP server

@@ -3,18 +3,22 @@
 import os
 
 from apify import Actor
+from .models import ServerType
 
 from .const import TOOL_WHITELIST, ChargeEvents
-from .models import ServerType
+
 from .server import ProxyServer
 
+
 # Actor configuration
-STANDBY_MODE = os.environ.get('APIFY_META_ORIGIN') == 'STANDBY'
+STANDBY_MODE = os.environ.get("APIFY_META_ORIGIN") == "STANDBY"
 # Bind to all interfaces (0.0.0.0) as this is running in a containerized environment (Apify Actor)
 # The container's network is isolated, so this is safe
-HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify platform
-PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
-SERVER_NAME = 'arxiv-mcp-server'  # Name of the MCP server, without spaces
+HOST = "0.0.0.0"  # noqa: S104 - Required for container networking at Apify platform
+PORT = (
+    Actor.is_at_home() and int(os.environ.get("ACTOR_STANDBY_PORT") or "5001")
+) or 5001
+SERVER_NAME = "time-mcp-server"  # Name of the MCP server, without spaces
 
 # EDIT THIS SECTION ------------------------------------------------------------
 # Configuration constants - You need to override these values. You can also pass environment variables if needed.
@@ -23,9 +27,9 @@ from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uv',
-    args=['run', 'arxiv-mcp-server'],
-    env={'YOUR-ENV_VAR': os.getenv('YOUR-ENV-VAR') or ''},  # Optional environment variables
+    command="uvx",
+    args=["mcp-server-time"],
+    env={},
 )
 
 # 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
@@ -36,7 +40,6 @@ MCP_SERVER_PARAMS = StdioServerParameters(
 #     url='https://your-mcp-server',  # noqa: ERA001
 #     headers={'Authorization':  'Bearer YOUR-API-KEY'},  # Optional headers, e.g., for authentication  # noqa: ERA001
 # )  # noqa: ERA001, RUF100
-# ------------------------------------------------------------------------------
 
 
 async def main() -> None:
@@ -57,7 +60,7 @@ async def main() -> None:
        - Charge for prompt operations (PROMPT_LIST, PROMPT_GET)
        - Charge for tool listing (TOOL_LIST)
 
-    2. DOMAIN-SPECIFIC CHARGING (arXiv example):
+    2. DOMAIN-SPECIFIC CHARGING (example):
        - Charge different amounts for different tools
        - search_papers: $0.01 per search
        - list_papers: $0.001 per listing
@@ -71,15 +74,15 @@ async def main() -> None:
     """
     async with Actor:
         # Initialize and charge for Actor startup
-        Actor.log.info('Starting MCP Server Actor')
+        Actor.log.info("Starting MCP Server Actor")
         await Actor.charge(ChargeEvents.ACTOR_START.value)
 
-        url = os.environ.get('ACTOR_STANDBY_URL', HOST)
+        url = os.environ.get("ACTOR_STANDBY_URL", HOST)
         if not STANDBY_MODE:
             msg = (
-                'Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.\n'
-                f'Connect to {url}/mcp to establish a connection.\n'
-                'Learn more at https://mcp.apify.com/'
+                "Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.\n"
+                f"Connect to {url}/mcp to establish a connection.\n"
+                "Learn more at https://mcp.apify.com/"
             )
             Actor.log.info(msg)
             await Actor.exit(status_message=msg)
@@ -87,8 +90,10 @@ async def main() -> None:
 
         try:
             # Create and start the server with charging enabled
-            Actor.log.info('Starting MCP server')
-            Actor.log.info('Add the following configuration to your MCP client to use Streamable HTTP transport:')
+            Actor.log.info("Starting MCP server")
+            Actor.log.info(
+                "Add the following configuration to your MCP client to use Streamable HTTP transport:"
+            )
             Actor.log.info(
                 f"""
                 {{
@@ -113,6 +118,6 @@ async def main() -> None:
             )
             await proxy_server.start()
         except Exception as e:
-            Actor.log.exception(f'Server failed to start: {e}')
+            Actor.log.exception(f"Server failed to start: {e}")
             await Actor.exit()
             raise

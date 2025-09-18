@@ -13,14 +13,14 @@ class ChargeEvents(str, Enum):
     """
 
     # Generic MCP operations (can be used for any MCP server)
-    ACTOR_START = 'actor-start'
-    RESOURCE_READ = 'resource-read'
-    TOOL_LIST = 'tool-list'
-    PROMPT_GET = 'prompt-get'
-    TOOL_CALL = 'tool-call'
+    ACTOR_START = "actor-start"
+    RESOURCE_READ = "resource-read"
+    TOOL_LIST = "tool-list"
+    PROMPT_GET = "prompt-get"
+    TOOL_CALL = "tool-call"
 
     # Docfork-specific operations (domain-specific charging)
-    GET_LIBRARY_DOCS = 'get-library-docs'
+    GET_LIBRARY_DOCS = "get-library-docs"
 
 
 # Tool whitelist for MCP server

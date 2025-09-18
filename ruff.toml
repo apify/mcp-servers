@@ -1,0 +1,2 @@
+[lint.per-file-ignores]
+"time-mcp-server/src/main.py" = ["S104"]
