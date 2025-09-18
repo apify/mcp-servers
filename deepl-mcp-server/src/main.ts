@@ -28,7 +28,17 @@ if (!process.env.DEEPL_API_KEY) {
 }
 
 // Charge for Actor start
-await Actor.charge({ eventName: 'actor-start' });
+const chargingManager = Actor.getChargingManager();
+
+if (!chargingManager.getPricingInfo().isPayPerEvent) {
+    const msg = 'This Actor is not configured for PPE billing. Please contact the developer about this error.';
+    log.error(msg);
+    await Actor.exit({ statusMessage: msg });
+}
+
+if (chargingManager.getChargedEventCount('actor-start') === 0) {
+    await Actor.charge({ eventName: 'actor-start' });
+}
 
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, we should not run the MCP server
