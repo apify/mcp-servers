@@ -50,7 +50,6 @@ async def main() -> None:
     2. Charges for Actor startup
     3. Creates and starts the proxy server
     4. Configures charging for MCP operations using Actor.charge
-
     CHARGING STRATEGIES:
     The template supports multiple charging approaches:
 
