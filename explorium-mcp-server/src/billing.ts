@@ -34,12 +34,9 @@ export async function chargeMessageRequest(request: { method: string; params?: a
         }
     }
 
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
-        // Charge for other generic tool-related requests (fallback for non-'tools/call' methods like 'tools/info')
-    } else if (method.startsWith('tools/')) {
+    // Do not charge for list requests (e.g., tools/list, resources/list, etc.)
+    // Charge for other generic tool-related requests (fallback for non-'tools/call' methods like 'tools/info')
+    if (method.startsWith('tools/') && !method.endsWith('/list')) {
         await Actor.charge({ eventName: 'tool-request' });
         log.info(`Charged for generic tool request: ${method}`);
         // Do not charge for other methods (e.g., 'server/info', 'server/version')

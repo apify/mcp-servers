@@ -4,11 +4,6 @@
         "eventDescription": "Flat fee for initiating an Actor run.",
         "eventPriceUsd": 0.1
     },
-    "list-request": {
-        "eventTitle": "List Request",
-        "eventDescription": "Charge for fetching lists (e.g., tools/list, resources/list).",
-        "eventPriceUsd": 0.0001
-    },
     "tool-request": {
         "eventTitle": "Generic Tool Request",
         "eventDescription": "Fallback charge for unclassified or generic tool calls.",
