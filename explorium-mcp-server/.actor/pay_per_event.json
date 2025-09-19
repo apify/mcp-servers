@@ -1,0 +1,67 @@
+{
+    "actor-start": {
+        "eventTitle": "Actor Run Start",
+        "eventDescription": "Flat fee for initiating an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "tool-request": {
+        "eventTitle": "Generic Tool Request",
+        "eventDescription": "Fallback charge for unclassified or generic tool calls.",
+        "eventPriceUsd": 0.0005
+    },
+    "match-business": {
+        "eventTitle": "Business Matching",
+        "eventDescription": "Find companies by name, domain, or business ID.",
+        "eventPriceUsd": 0.01
+    },
+    "fetch-businesses": {
+        "eventTitle": "Business Enrichment",
+        "eventDescription": "Get detailed firmographics, technographics, and business intelligence.",
+        "eventPriceUsd": 0.005
+    },
+    "fetch-businesses-statistics": {
+        "eventTitle": "Business Statistics Fetch",
+        "eventDescription": "Access business statistics, e.g., funding history or growth signals.",
+        "eventPriceUsd": 0.001
+    },
+    "fetch-businesses-events": {
+        "eventTitle": "Business Events Fetch",
+        "eventDescription": "Track business events like funding rounds, office changes, hiring trends.",
+        "eventPriceUsd": 0.001
+    },
+    "match-prospects": {
+        "eventTitle": "Prospect Matching",
+        "eventDescription": "Search for professionals and contacts within companies.",
+        "eventPriceUsd": 0.0025
+    },
+    "fetch-prospects": {
+        "eventTitle": "Prospect Fetch",
+        "eventDescription": "Fetch professional contact information and profiles.",
+        "eventPriceUsd": 0.001
+    },
+    "fetch-prospects-events": {
+        "eventTitle": "Prospect Events Fetch",
+        "eventDescription": "Track prospect-related events like role changes or career milestones.",
+        "eventPriceUsd": 0.001
+    },
+    "fetch-prospects-statistics": {
+        "eventTitle": "Prospect Statistics Fetch",
+        "eventDescription": "Access professional profile statistics and insights.",
+        "eventPriceUsd": 0.001
+    },
+    "enrich-prospects": {
+        "eventTitle": "Prospect Enrichment",
+        "eventDescription": "Enrich professional contact information, work history, and profiles.",
+        "eventPriceUsd": 0.001
+    },
+    "autocomplete": {
+        "eventTitle": "Autocomplete Request",
+        "eventDescription": "Provides auto-completion suggestions for search queries.",
+        "eventPriceUsd": 0.001
+    },
+    "web-search": {
+        "eventTitle": "Web Search Request",
+        "eventDescription": "Performs a general web search to find relevant information.",
+        "eventPriceUsd": 0.001
+    }
+}
