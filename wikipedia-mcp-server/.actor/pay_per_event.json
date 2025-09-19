@@ -1,0 +1,52 @@
+{
+    "actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the MCP Server Actor",
+        "eventPriceUsd": 0.00001
+    },
+    "search_wikipedia": {
+        "eventTitle": "Wikipedia search",
+        "eventDescription": "Fee for searching Wikipedia articles.",
+        "eventPriceUsd": 0.00001
+    },
+    "get_article": {
+        "eventTitle": "Wikipedia get article",
+        "eventDescription": "Fee for retrieving a full Wikipedia article.",
+        "eventPriceUsd": 0.00001
+    },
+    "get_summary": {
+        "eventTitle": "Wikipedia get summary",
+        "eventDescription": "Fee for retrieving a summary of a Wikipedia article.",
+        "eventPriceUsd": 0.00001
+    },
+    "get_sections": {
+        "eventTitle": "Wikipedia get sections",
+        "eventDescription": "Fee for retrieving sections of a Wikipedia article.",
+        "eventPriceUsd": 0.00001
+    },
+    "get_links": {
+        "eventTitle": "Wikipedia get links",
+        "eventDescription": "Fee for retrieving links from a Wikipedia article.",
+        "eventPriceUsd": 0.00001
+    },
+    "get_related_topics": {
+        "eventTitle": "Wikipedia get related topics",
+        "eventDescription": "Fee for retrieving related topics from a Wikipedia article.",
+        "eventPriceUsd": 0.00001
+    },
+    "summarize_article_for_query": {
+        "eventTitle": "Wikipedia summarize article for query",
+        "eventDescription": "Fee for summarizing a Wikipedia article for a specific query.",
+        "eventPriceUsd": 0.00001
+    },
+    "summarize_article_section": {
+        "eventTitle": "Wikipedia summarize article section",
+        "eventDescription": "Fee for summarizing a section of a Wikipedia article.",
+        "eventPriceUsd": 0.00001
+    },
+    "extract_key_facts": {
+        "eventTitle": "Wikipedia extract key facts",
+        "eventDescription": "Fee for extracting key facts from a Wikipedia article.",
+        "eventPriceUsd": 0.00001
+    }
+}
