@@ -13,15 +13,5 @@
         "eventTitle": "Microsoft Learn Fetch",
         "eventDescription": "Fetch and convert a Microsoft documentation page into markdown format.",
         "eventPriceUsd": 0.03
-    },
-    "tool-request": {
-        "eventTitle": "Price for completing a tool request",
-        "eventDescription": "Flat fee for completing a tool request.",
-        "eventPriceUsd": 0.05
-    },
-    "list-request": {
-        "eventTitle": "Price for completing a list request",
-        "eventDescription": "Flat fee for completing a list request.",
-        "eventPriceUsd": 0.001
     }
 }

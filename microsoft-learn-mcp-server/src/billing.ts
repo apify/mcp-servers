@@ -22,7 +22,8 @@ export async function chargeMessageRequest(request: { method: string; params?: a
             await Actor.charge({ eventName: 'microsoft-learn-search' });
             log.info(`Charged for Microsoft Learn search: ${toolName}`);
             return;
-        } else if (toolName === 'microsoft_learn_fetch') {
+        }
+        if (toolName === 'microsoft_learn_fetch') {
             await Actor.charge({ eventName: 'microsoft-learn-fetch' });
             log.info(`Charged for Microsoft Learn fetch: ${toolName}`);
             return;
@@ -32,15 +33,6 @@ export async function chargeMessageRequest(request: { method: string; params?: a
     // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
     // on the method names and protocol messages
     // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
-    // Charge for tool-related requests (fallback for other tools)
-    } else if (method.startsWith('tools/')) {
-        await Actor.charge({ eventName: 'tool-request' });
-        log.info(`Charged for tool request: ${method}`);
     // Do not charge for other methods
-    } else {
-        log.info(`Not charging for method: ${method}`);
-    }
+    log.info(`Not charging for method: ${method}`);
 }
