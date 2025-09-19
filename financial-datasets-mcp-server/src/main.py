@@ -23,8 +23,8 @@ from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uv',
-    args=['run', 'server.py'],
+    command='python',
+    args=['src/financial_mcp.py'],
     env={'FINANCIAL_DATASETS_API_KEY': os.getenv('FINANCIAL_DATASETS_API_KEY') or ''},  # Financial Datasets API key
 )
 

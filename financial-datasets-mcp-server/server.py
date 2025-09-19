@@ -1,3 +1,4 @@
+# Source: https://github.com/financial-datasets/mcp-server/blob/main/server.py
 import json
 import logging
 import os
