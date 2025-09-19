@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "pure-md-mcp-server",
+	"title": "Pure.md MCP Server",
+	"description": "Model Context Protocol server that provides web content extraction and search capabilities powered by Pure.md. Converts URLs to clean markdown content and performs web searches.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
