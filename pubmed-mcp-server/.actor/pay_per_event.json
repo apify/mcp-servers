@@ -4,24 +4,29 @@
         "eventDescription": "Initial fee for starting the MCP Server Actor",
         "eventPriceUsd": 0.1
     },
-    "search-papers": {
-        "eventTitle": "arXiv paper search",
-        "eventDescription": "Fee for searching papers on arXiv using the search_papers tool.",
+    "searchPubmedKeywords": {
+        "eventTitle": "PubMed keyword search",
+        "eventDescription": "Fee for searching PubMed articles by keywords.",
         "eventPriceUsd": 0.0001
     },
-    "list-papers": {
-        "eventTitle": "arXiv paper listing",
-        "eventDescription": "Fee for listing available papers using the list_papers tool.",
-        "eventPriceUsd": 0.0001
+    "searchPubmedAdvanced": {
+        "eventTitle": "PubMed advanced search",
+        "eventDescription": "Fee for advanced search on PubMed articles.",
+        "eventPriceUsd": 0.0002
     },
-    "download-paper": {
-        "eventTitle": "arXiv paper download",
-        "eventDescription": "Fee for downloading a paper from arXiv using the download_paper tool.",
-        "eventPriceUsd": 0.0001
+    "getPubmedArticleMetadata": {
+        "eventTitle": "Get PubMed article metadata",
+        "eventDescription": "Fee for retrieving metadata for a PubMed article.",
+        "eventPriceUsd": 0.00005
     },
-    "read-paper": {
-        "eventTitle": "arXiv paper reading",
-        "eventDescription": "Fee for reading the full content of a paper using the read_paper tool.",
-        "eventPriceUsd": 0.0001
+    "downloadPubmedPdf": {
+        "eventTitle": "Download PubMed article PDF",
+        "eventDescription": "Fee for downloading a PubMed article PDF.",
+        "eventPriceUsd": 0.0005
+    },
+    "deepPaperAnalysis": {
+        "eventTitle": "Deep analysis of PubMed paper",
+        "eventDescription": "Fee for running deep analysis on a PubMed paper.",
+        "eventPriceUsd": 0.001
     }
   }

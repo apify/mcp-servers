@@ -1,21 +1,13 @@
 {
 	"actorSpecification": 1,
 	"name": "pubmed-mcp-server",
-	"title": "Python MCP server",
-	"description": "Python Model Context Protocol (MCP) server.",
+	"title": "PubMed MCP server",
+	"description": "A server implementing the Model Context Protocol (MCP) for accessing and processing PubMed biomedical literature data.",
 	"version": "0.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
 	"meta": {
 		"templateId": "python-mcp-server"
-	},
-	"input": {
-		"title": "Actor input schema",
-		"description": "This is Actor input schema",
-		"type": "object",
-		"schemaVersion": 1,
-		"properties": {},
-		"required": []
 	},
 	"dockerfile": "../Dockerfile",
 	"webServerMcpPath": "/mcp"

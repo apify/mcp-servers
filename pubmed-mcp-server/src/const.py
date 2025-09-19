@@ -11,28 +11,14 @@ PPE_EVENT_MAP = {
 
 
 class ChargeEvents(str, Enum):
-    """Event types for charging MCP operations.
+    """Event types for charging PubMed MCP operations."""
 
-    These events are used to charge users for different types of MCP operations
-    when running as an Apify Actor. Each event corresponds to a specific operation
-    that can be charged for.
-
-    The template includes both generic MCP operations and specific arXiv operations
-    as examples. You can customize these events based on your specific MCP server needs.
-    """
-
-    # Generic MCP operations (can be used for any MCP server)
     ACTOR_START = "actor-start"
-    RESOURCE_READ = "resource-read"
-    TOOL_LIST = "tool-list"
-    PROMPT_GET = "prompt-get"
-    TOOL_CALL = "tool-call"
-
-    # arXiv-specific operations (example for domain-specific charging)
-    SEARCH_PAPERS = "search_papers"
-    LIST_PAPERS = "list_papers"
-    DOWNLOAD_PAPER = "download_paper"
-    READ_PAPER = "read_paper"
+    SEARCH_PUBMED_KEYWORDS = "searchPubmedKeywords"
+    SEARCH_PUBMED_ADVANCED = "searchPubmedAdvanced"
+    GET_PUBMED_ARTICLE_METADATA = "getPubmedArticleMetadata"
+    DOWNLOAD_PUBMED_PDF = "downloadPubmedPdf"
+    DEEP_PAPER_ANALYSIS = "deepPaperAnalysis"
 
 
 # Tool whitelist for MCP server
