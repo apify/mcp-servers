@@ -1,0 +1,14 @@
+{
+	"actorSpecification": 1,
+	"name": "mindmap-mcp-server",
+	"title": "Python MCP server",
+	"description": "Python Model Context Protocol (MCP) server.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

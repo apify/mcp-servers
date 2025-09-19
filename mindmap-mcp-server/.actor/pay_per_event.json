@@ -1,0 +1,12 @@
+{
+    "apify-actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the MCP Server Actor",
+        "eventPriceUsd": 0.0001
+    },
+    "convert_markdown_to_mindmap": {
+        "eventTitle": "Convert Markdown to Mindmap",
+        "eventDescription": "Fee for converting a Markdown document to a mindmap",
+        "eventPriceUsd": 0.01
+    }
+  }
