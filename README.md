@@ -29,9 +29,10 @@ A curated collection of production-ready Model Context Protocol (MCP) servers pu
 | **[DeepL MCP Server](./deepl-mcp-server/)**                   | Translation capabilities using the DeepL API     | [![DeepL MCP Server](https://apify.com/actor-badge?actor=mcp-servers/deepl-mcp-server)](https://apify.com/mcp-servers/deepl-mcp-server)                                  | [DeepLcom](https://github.com/DeepLcom/deepl-mcp-server)                                                      |
 | **[Pure.md MCP Server](./pure-md-mcp-server/)** | Web content extraction and search capabilities powered by Pure.md | [![Pure.md MCP Server](https://apify.com/actor-badge?actor=mcp-servers/pure-md-mcp-server)](https://apify.com/mcp-servers/pure-md-mcp-server) | [Pure.md](https://github.com/puremd/puremd-mcp) |
 | **[Financial Datasets MCP Server](./financial-datasets-mcp-server/)** | Stock market data, financial statements, and cryptocurrency information | [![Financial Datasets MCP Server](https://apify.com/actor-badge?actor=mcp-servers/financial-datasets-mcp-server)](https://apify.com/mcp-servers/financial-datasets-mcp-server) | [Financial Datasets](https://github.com/financial-datasets/mcp-server) |
+| **[TomTom MCP Server](./tomtom-mcp-server/)** | Geospatial services including search, routing, traffic and static maps | [![TomTom MCP Server](https://apify.com/actor-badge?actor=mcp-servers/tomtom-mcp-server)](https://apify.com/mcp-servers/tomtom-mcp-server) | [TomTom International](https://github.com/tomtom-international/tomtom-mcp) |
 
 ## 🙏 Credits
-These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, and others.
+These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, TomTom International, and others.
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
 

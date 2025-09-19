@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "tomtom-mcp-server",
+	"title": "TomTom MCP Server",
+	"description": "TomTom MCP Server simplifies geospatial development by providing seamless access to TomTom's location services, including search, routing, traffic and static maps data.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
