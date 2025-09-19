@@ -74,6 +74,19 @@ This tool rephrases text in the same or different language using the DeepL API.
 Parameters:
 
 - `text`: The text to rephrase
+- `style`: (optional): Style of rephrasing:
+    - `'default'`
+    - `'academic'`
+    - `'business'`
+    - `'casual'`
+- `tone`: (optional): Tone of rephrasing:
+    - `'default'`
+    - `'confident'`
+    - `'diplomatic'`
+    - `'enthusiastic'`
+    - `'friendly'`
+
+Note: You can use the `get-writing-styles-and-tones` tool to see all available styles and tones.
 
 ## Supported Languages
 

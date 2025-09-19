@@ -22,9 +22,10 @@ const SERVER_PORT = parseInt(process.env.ACTOR_WEB_SERVER_PORT || '3001', 10);
 await Actor.init();
 
 if (!process.env.DEEPL_API_KEY) {
-    const msg = 'DEEPL_API_KEY environment variable is not set. Please provide a valid DeepL API key.';
-    log.error(msg);
-    await Actor.exit(msg);
+    const errorCode = 10;
+    const msg = `This Actor is not configured properly. Please contact the developer about this error.`;
+    log.error(msg, { errorCode });
+    await Actor.exit(msg, { exitCode: errorCode });
 }
 
 // Charge for Actor start
@@ -42,7 +43,9 @@ if (chargingManager.getChargedEventCount('actor-start') === 0) {
 
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, we should not run the MCP server
-    const msg = 'This Actor is intended to run in standby mode. Please use an MCP client to connect.';
+    const msg = 'Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.\n'
+    + 'Connect to {url}/mcp to establish a connection.\n'
+    + 'Learn more at https://mcp.apify.com/';
     log.error(msg);
     await Actor.exit({ statusMessage: msg });
 }

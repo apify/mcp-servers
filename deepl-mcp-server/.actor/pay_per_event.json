@@ -4,11 +4,6 @@
         "eventDescription": "Flat fee for starting an Actor run.",
         "eventPriceUsd": 0.001
     },
-    "list-tools": {
-        "eventTitle": "List tools",
-        "eventDescription": "List all tools",
-        "eventPriceUsd": 0.001
-    },
     "get-source-languages": {
         "eventTitle": "Get source languages",
         "eventDescription": "Get all available source languages for translation",
