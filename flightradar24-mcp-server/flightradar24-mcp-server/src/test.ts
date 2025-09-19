@@ -37,6 +37,6 @@ const requests = [
 ];
 
 // Print each request with a delay
-requests.forEach((request, index) => {
+requests.forEach((request) => {
     console.log(JSON.stringify(request));
 }); 

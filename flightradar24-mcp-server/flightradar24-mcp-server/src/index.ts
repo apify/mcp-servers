@@ -69,7 +69,7 @@ class FlightTrackingServer {
    * Configure available tools and their handlers
    */
   private setupToolHandlers(): void {
-    this.server.setRequestHandler(ListToolsRequestSchema, async (request: ListToolsRequest) => ({
+  this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools: [
         {
           name: 'get_flight_positions',
