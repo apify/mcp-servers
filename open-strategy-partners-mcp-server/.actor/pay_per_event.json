@@ -1,0 +1,32 @@
+{
+    "actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the MCP Server Actor",
+        "eventPriceUsd": 0.1
+    },
+    "generate-value-map": {
+        "eventTitle": "OSP Value Map Generation",
+        "eventDescription": "Fee for generating a product value map.",
+        "eventPriceUsd": 0.001
+    },
+    "generate-meta-info": {
+        "eventTitle": "OSP Meta Information Generation",
+        "eventDescription": "Fee for generating meta information.",
+        "eventPriceUsd": 0.001
+    },
+    "edit-content": {
+        "eventTitle": "OSP Content Editing",
+        "eventDescription": "Fee for editing content using OSP codes.",
+        "eventPriceUsd": 0.001
+    },
+    "write-technical-guide": {
+        "eventTitle": "OSP Technical Writing Guide",
+        "eventDescription": "Fee for generating a technical writing guide.",
+        "eventPriceUsd": 0.001
+    },
+    "seo-guide": {
+        "eventTitle": "OSP SEO Guide",
+        "eventDescription": "Fee for generating an SEO guide.",
+        "eventPriceUsd": 0.001
+    }
+}
