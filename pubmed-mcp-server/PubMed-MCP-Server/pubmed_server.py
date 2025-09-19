@@ -54,7 +54,6 @@ async def search_pubmed_advanced(
     end_date: Optional[str] = None,
     num_results: int = 10,
 ) -> List[Dict[str, Any]]:
-    logging.info(f"Performing advanced search with parameters: {locals()}")
     """
     Perform an advanced search for articles on PubMed.
 
@@ -70,6 +69,7 @@ async def search_pubmed_advanced(
     Returns:
         List of dictionaries containing article information
     """
+    logging.info(f"Performing advanced search with parameters: {locals()}")
     try:
         results = await asyncio.to_thread(
             search_advanced,
