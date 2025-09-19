@@ -13,10 +13,5 @@
         "eventTitle": "Web Search Query",
         "eventDescription": "Perform web search and return results in markdown format.",
         "eventPriceUsd": 0.03
-    },
-    "list-request": {
-        "eventTitle": "Price for completing a list request",
-        "eventDescription": "Flat fee for completing a list request.",
-        "eventPriceUsd": 0.001
     }
 }

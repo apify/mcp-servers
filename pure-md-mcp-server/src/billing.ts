@@ -16,12 +16,8 @@ export async function chargeMessageRequest(request: { method: string; params?: a
 
     // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
     // on the method names and protocol messages
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
     // Charge for specific Pure.md tool calls
-    } else if (method === 'tools/call' && params?.name === 'unblock-url') {
+    if (method === 'tools/call' && params?.name === 'unblock-url') {
         await Actor.charge({ eventName: 'unblock-url' });
         log.info(`Charged for unblock-url tool: ${params.arguments?.url}`);
     } else if (method === 'tools/call' && params?.name === 'search-web') {

@@ -36,14 +36,17 @@ await Actor.charge({ eventName: 'actor-start' });
 
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, we should not run the MCP server
-    const msg = 'This Actor is not meant to be run directly. It should be run in standby mode.';
+    const msg = 'Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.\n'
+        + 'Connect to {url}/mcp to establish a connection.\n'
+        + 'Learn more at https://mcp.apify.com/';
     log.error(msg);
     await Actor.exit({ statusMessage: msg });
 }
 
 if (!process.env.PUREMD_API_KEY) {
     // If the Actor is not in standby mode, we should not run the MCP server
-    const msg = `Environmental variable PUREMD_API_KEY was not provided!`
+    const msg = 'PUREMD_API_KEY is not provided!\n'
+        + 'Please contact the developer of this Actor by raising an issue in the Apify Console.';
     log.error(msg);
     await Actor.exit({ statusMessage: msg });
 }
