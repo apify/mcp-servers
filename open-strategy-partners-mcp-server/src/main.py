@@ -1,6 +1,7 @@
 import os
 
 from apify import Actor
+from mcp.client.stdio import StdioServerParameters
 
 from .const import TOOL_WHITELIST, ChargeEvents
 from .models import ServerType
@@ -8,13 +9,11 @@ from .server import ProxyServer
 
 # Actor configuration
 STANDBY_MODE = os.environ.get("APIFY_META_ORIGIN") == "STANDBY"
-HOST = "0.0.0.0"  # noqa: S104 - Required for container networking at Apify platform
+HOST = "0.0.0.0"
 PORT = (
     Actor.is_at_home() and int(os.environ.get("ACTOR_STANDBY_PORT") or "5001")
 ) or 5001
-SERVER_NAME = "arxiv-mcp-server"
-
-from mcp.client.stdio import StdioServerParameters  # noqa: E402
+SERVER_NAME = "open-strategy-partners-mcp-server"
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
@@ -51,9 +50,9 @@ async def main() -> None:
             Actor.log.info(
                 f"""
                 {{
-                    "mcpServers": {{
-                        "{SERVER_NAME}": {{
-                            "url": "{url}/mcp",
+                    'mcpServers': {{
+                        '{SERVER_NAME}': {{
+                            'url': '{url}/mcp',
                         }}
                     }}
                 }}
