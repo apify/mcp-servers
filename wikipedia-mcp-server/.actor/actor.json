@@ -1,21 +1,13 @@
 {
 	"actorSpecification": 1,
 	"name": "wikipedia-mcp-server",
-	"title": "Python MCP server",
-	"description": "Python Model Context Protocol (MCP) server.",
+	"title": "Wikipedia MCP server",
+	"description": "MCP server for Wikipedia, providing LLMs and clients with real-time access to Wikipedia articles, summaries, sections, and related information via Apify Actor.",
 	"version": "0.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
 	"meta": {
 		"templateId": "python-mcp-server"
-	},
-	"input": {
-		"title": "Actor input schema",
-		"description": "This is Actor input schema",
-		"type": "object",
-		"schemaVersion": 1,
-		"properties": {},
-		"required": []
 	},
 	"dockerfile": "../Dockerfile",
 	"webServerMcpPath": "/mcp"
