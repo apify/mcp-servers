@@ -1,0 +1,9 @@
+# Feel free to add your Python dependencies below. For formatting guidelines, see:
+# https://pip.pypa.io/en/latest/reference/requirements-file-format/
+
+apify>=2.4
+mcp>=1.12
+uvicorn>=0.30
+starlette>=0.40
+httpx>=0.27
+pydantic>=2.7
