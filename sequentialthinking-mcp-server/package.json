@@ -8,12 +8,10 @@
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.17.5",
-		"@modelcontextprotocol/server-everything": "^2025.8.18",
 		"@modelcontextprotocol/server-sequential-thinking": "^2025.7.1",
 		"apify": "^3.4.4",
 		"body-parser": "^2.2.0",
 		"express": "^5.1.0",
-		"mcp-remote": "0.1.29",
 		"zod": "^3.25.76"
 	},
 	"devDependencies": {
