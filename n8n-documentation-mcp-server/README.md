@@ -1,12 +1,11 @@
 
-# n8n MCP Server
+![Apify Actor Badge](https://apify.com/actor-badge?actor=mcp-servers/n8n-mcp-server)
 
+# n8n MCP Server
 
 **Important:** This server provides only documentation capability for n8n nodes and does not support workflow management or execution.
 
 Enhance your workflow automation with n8n-MCP, bridging AI and n8n nodes for streamlined efficiency, all without the need for monthly subscriptions! 🚀
-
-![Apify Actor Badge](https://apify.com/actor-badge?actor=mcp-servers/n8n-mcp-server)
 
 **About this MCP Server:**
 To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com).

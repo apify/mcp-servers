@@ -35,9 +35,13 @@ await Actor.init();
 // Charge for Actor start
 await Actor.charge({ eventName: 'actor-start' });
 
+const standbyUrl = process.env.STANDBY_URL;
+
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, we should not run the MCP server
-    const msg = 'This Actor is not meant to be run directly. It should be run in standby mode.';
+    const msg = `Actor is not designed to run in the NORMAL mode. Use MCP server URL to connect to the server.
+    Connect to ${standbyUrl}/mcp to establish a connection.
+    Learn more at https://mcp.apify.com/`;
     log.error(msg);
     await Actor.exit({ statusMessage: msg });
 }
