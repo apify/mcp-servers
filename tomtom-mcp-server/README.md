@@ -27,8 +27,6 @@ To connect to this MCP server, use the following configuration in your MCP clien
 }
 ```
 
-**Note:** Replace `YOUR_APIFY_TOKEN` with your actual Apify API token. You can find your token in the [Apify Console](https://console.apify.com/account/integrations).
-
 ## 🚩 Claim this MCP server
 All credits to the original authors of https://github.com/tomtom-international/tomtom-mcp
 To claim this server, please write to [ai@apify.com](mailto:ai@apify.com).
@@ -49,23 +47,6 @@ To claim this server, please write to [ai@apify.com](mailto:ai@apify.com).
 | `tomtom-reachable-range` | Determine coverage areas by time/distance | https://developer.tomtom.com/routing-api/documentation/tomtom-maps/calculate-reachable-range |
 | `tomtom-traffic` | Real-time incidents data | https://developer.tomtom.com/traffic-api/documentation/traffic-incidents/traffic-incidents-service  |
 | `tomtom-static-map` | Generate custom map images | https://developer.tomtom.com/map-display-api/documentation/raster/static-image |
-
-## Prerequisites
-- TomTom API key
-
-**How to obtain a TomTom API key**:
-1. Create a developer account on [TomTom Developer Portal](https://developer.tomtom.com/)
-2. Go to **API & SDK Keys** in the left-hand menu.
-3. Click the **red Create Key** button.
-4. Select all available APIs to ensure full access, assign a name to your key, and click **Create**.
-
-For more details, visit the [TomTom API Key Management Documentation](https://developer.tomtom.com/platform/documentation/dashboard/api-key-management).
-
-## Environment Variables
-
-Set your TomTom API key as an environment variable:
-
-- `TOMTOM_API_KEY` - Your TomTom API key (required)
 
 ## References
 To learn more about Apify and Actors, take a look at the following resources:
