@@ -2,7 +2,7 @@
 	"actorSpecification": 1,
 	"name": "sqt-mcp-server",
 	"title": "Sequential Thinking MCP server",
-		"description": "Dynamic, step-by-step problem-solving via structured thinking. Exposes the sequential_thinking tool as an MCP server for Apify clients.",
+		"description": "An MCP server for structured sequential thinking process - breaking down complex problems, iteratively refining solutions, and exploring multiple reasoning paths",
 	"version": "0.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
