@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "financial-datasets-mcp-server",
+	"title": "Financial Datasets MCP Server",
+	"description": "Model Context Protocol (MCP) server providing access to stock market data, financial statements, and cryptocurrency information from Financial Datasets API.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

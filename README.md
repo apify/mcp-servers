@@ -28,9 +28,10 @@ A curated collection of production-ready Model Context Protocol (MCP) servers pu
 | **[Context7 MCP Server](./context7-mcp-server/)** | Up-to-date code docs for any programming library | [![Context7 MCP Server](https://apify.com/actor-badge?actor=mcp-servers/context7-mcp-server)](https://apify.com/mcp-servers/context7-mcp-server) | [Upstash](https://github.com/upstash/context7) |
 | **[DeepL MCP Server](./deepl-mcp-server/)**                   | Translation capabilities using the DeepL API     | [![DeepL MCP Server](https://apify.com/actor-badge?actor=mcp-servers/deepl-mcp-server)](https://apify.com/mcp-servers/deepl-mcp-server)                                  | [DeepLcom](https://github.com/DeepLcom/deepl-mcp-server)                                                      |
 | **[Pure.md MCP Server](./pure-md-mcp-server/)** | Web content extraction and search capabilities powered by Pure.md | [![Pure.md MCP Server](https://apify.com/actor-badge?actor=mcp-servers/pure-md-mcp-server)](https://apify.com/mcp-servers/pure-md-mcp-server) | [Pure.md](https://github.com/puremd/puremd-mcp) |
+| **[Financial Datasets MCP Server](./financial-datasets-mcp-server/)** | Stock market data, financial statements, and cryptocurrency information | [![Financial Datasets MCP Server](https://apify.com/actor-badge?actor=mcp-servers/financial-datasets-mcp-server)](https://apify.com/mcp-servers/financial-datasets-mcp-server) | [Financial Datasets](https://github.com/financial-datasets/mcp-server) |
 
 ## 🙏 Credits
-These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, and others.
+These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, and others.
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
 
