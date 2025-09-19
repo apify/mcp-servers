@@ -16,27 +16,50 @@ export async function chargeMessageRequest(request: { method: string }): Promise
 
     // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
     // on the method names and protocol messages
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
-    // Charge for tool-related requests
-    } else if (method.startsWith('tools/')) {
-        await Actor.charge({ eventName: 'tool-request' });
-        log.info(`Charged for tool request: ${method}`);
-    // Charge for resource-related requests
-    } else if (method.startsWith('resources/')) {
-        await Actor.charge({ eventName: 'resource-request' });
-        log.info(`Charged for resource request: ${method}`);
-    // Charge for prompt-related requests
-    } else if (method.startsWith('prompts/')) {
-        await Actor.charge({ eventName: 'prompt-request' });
-        log.info(`Charged for prompt request: ${method}`);
-    // Charge for completion-related requests
-    } else if (method.startsWith('completion/')) {
-        await Actor.charge({ eventName: 'completion-request' });
-        log.info(`Charged for completion request: ${method}`);
-    // Do not charge for other methods
+    if (method.includes('actor-start')) {
+        await Actor.charge({ eventName: 'actor-start' });
+        log.info(`Charged for actor-start request: ${method}`);
+        // Charge for tool-related requests tomtom-geocode requests
+    } else if (method.includes('tomtom-geocode')) {
+        await Actor.charge({ eventName: 'tomtom-geocode' });
+        log.info(`Charged for tomtom-geocode request: ${method}`);
+        // Charge for tool-related requests tomtom-reverse-geocode requests
+    } else if (method.includes('tomtom-reverse-geocode')) {
+        await Actor.charge({ eventName: 'tomtom-reverse-geocode' });
+        log.info(`Charged for tomtom-reverse-geocode request: ${method}`);
+        // Charge for tool-related requests tomtom-fuzzy-search requests
+    } else if (method.includes('tomtom-fuzzy-search')) {
+        await Actor.charge({ eventName: 'tomtom-fuzzy-search' });
+        log.info(`Charged for tomtom-fuzzy-search request: ${method}`);
+        // Charge for tool-related requests tomtom-poi-search requests
+    } else if (method.includes('tomtom-poi-search')) {
+        await Actor.charge({ eventName: 'tomtom-poi-search' });
+        log.info(`Charged for tomtom-poi-search request: ${method}`);
+        // Charge for tool-related requests tomtom-nearby requests
+    } else if (method.includes('tomtom-nearby')) {
+        await Actor.charge({ eventName: 'tomtom-nearby' });
+        log.info(`Charged for tomtom-nearby request: ${method}`);
+        // Charge for tool-related requests tomtom-routing requests
+    } else if (method.includes('tomtom-routing')) {
+        await Actor.charge({ eventName: 'tomtom-routing' });
+        log.info(`Charged for tomtom-routing request: ${method}`);
+        // Charge for tool-related requests tomtom-waypoint-routing requests
+    } else if (method.includes('tomtom-waypoint-routing')) {
+        await Actor.charge({ eventName: 'tomtom-waypoint-routing' });
+        log.info(`Charged for tomtom-waypoint-routing request: ${method}`);
+        // Charge for tool-related requests tomtom-reachable-range requests
+    } else if (method.includes('tomtom-reachable-range')) {
+        await Actor.charge({ eventName: 'tomtom-reachable-range' });
+        log.info(`Charged for tomtom-reachable-range request: ${method}`);
+        // Charge for tool-related requests tomtom-traffic requests
+    } else if (method.includes('tomtom-traffic')) {
+        await Actor.charge({ eventName: 'tomtom-traffic' });
+        log.info(`Charged for tomtom-traffic request: ${method}`);
+        // Charge for tool-related requests tomtom-static-map requests
+    } else if (method.includes('tomtom-static-map')) {
+        await Actor.charge({ eventName: 'tomtom-static-map' });
+        log.info(`Charged for tomtom-static-map request: ${method}`);
+        // Do not charge for other methods
     } else {
         log.info(`Not charging for method: ${method}`);
     }

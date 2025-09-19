@@ -4,29 +4,54 @@
         "eventDescription": "Flat fee for starting an Actor run.",
         "eventPriceUsd": 0.1
     },
-    "tool-request": {
-        "eventTitle": "Price for TomTom geospatial tool request",
-        "eventDescription": "Flat fee for completing a TomTom geospatial tool request (geocoding, routing, search, traffic, maps).",
-        "eventPriceUsd": 0.08
-    },
-    "prompt-request": {
-        "eventTitle": "Price for completing a prompt request",
-        "eventDescription": "Flat fee for completing a prompt request.",
+    "tomtom-geocode": {
+        "eventTitle": "Price for TomTom Geocode request",
+        "eventDescription": "Price for converting an address to coordinates.",
         "eventPriceUsd": 0.01
     },
-    "completion-request": {
-        "eventTitle": "Price for completing a completion request",
-        "eventDescription": "Flat fee for completing a completion request.",
-        "eventPriceUsd": 0.001
+    "tomtom-reverse-geocode": {
+        "eventTitle": "Price for TomTom Reverse Geocode request",
+        "eventDescription": "Price for getting an address from GPS coordinates.",
+        "eventPriceUsd": 0.01
     },
-    "resource-request": {
-        "eventTitle": "Price for completing a resource request",
-        "eventDescription": "Flat fee for completing a resource request.",
-        "eventPriceUsd": 0.025
+    "tomtom-fuzzy-search": {
+        "eventTitle": "Price for TomTom Fuzzy Search request",
+        "eventDescription": "Price for an intelligent search with typo tolerance.",
+        "eventPriceUsd": 0.01
     },
-    "list-request": {
-        "eventTitle": "Price for completing a list request",
-        "eventDescription": "Flat fee for completing a list request.",
+    "tomtom-poi-search": {
+        "eventTitle": "Price for TomTom POI Search request",
+        "eventDescription": "Price for finding specific business categories.",
+        "eventPriceUsd": 0.01
+    },
+    "tomtom-nearby": {
+        "eventTitle": "Price for TomTom Nearby Search request",
+        "eventDescription": "Price for discovering services within a radius.",
+        "eventPriceUsd": 0.01
+    },
+    "tomtom-routing": {
+        "eventTitle": "Price for TomTom Routing request",
+        "eventDescription": "Price for calculating optimal routes between locations.",
+        "eventPriceUsd": 0.01
+    },
+    "tomtom-waypoint-routing": {
+        "eventTitle": "Price for TomTom Waypoint Routing request",
+        "eventDescription": "Price for multi-stop route planning.",
+        "eventPriceUsd": 0.01
+    },
+    "tomtom-reachable-range": {
+        "eventTitle": "Price for TomTom Reachable Range request",
+        "eventDescription": "Price for determining coverage areas by time/distance.",
+        "eventPriceUsd": 0.01
+    },
+    "tomtom-traffic": {
+        "eventTitle": "Price for TomTom Traffic request",
+        "eventDescription": "Price for getting real-time incidents data.",
+        "eventPriceUsd": 0.01
+    },
+    "tomtom-static-map": {
+        "eventTitle": "Price for TomTom Static Map request",
+        "eventDescription": "Price for generating custom map images.",
         "eventPriceUsd": 0.001
     }
 }
