@@ -44,9 +44,9 @@ async def make_request(url: str) -> dict[str, any] | None:
 
 @mcp.tool()
 async def get_income_statements(
-    ticker: str,
-    period: str = 'annual',
-    limit: int = 4,
+        ticker: str,
+        period: str = 'annual',
+        limit: int = 4,
 ) -> str:
     """Get income statements for a company.
 
@@ -76,9 +76,9 @@ async def get_income_statements(
 
 @mcp.tool()
 async def get_balance_sheets(
-    ticker: str,
-    period: str = 'annual',
-    limit: int = 4,
+        ticker: str,
+        period: str = 'annual',
+        limit: int = 4,
 ) -> str:
     """Get balance sheets for a company.
 
@@ -108,9 +108,9 @@ async def get_balance_sheets(
 
 @mcp.tool()
 async def get_cash_flow_statements(
-    ticker: str,
-    period: str = 'annual',
-    limit: int = 4,
+        ticker: str,
+        period: str = 'annual',
+        limit: int = 4,
 ) -> str:
     """Get cash flow statements for a company.
 
@@ -168,11 +168,11 @@ async def get_current_stock_price(ticker: str) -> str:
 
 @mcp.tool()
 async def get_historical_stock_prices(
-    ticker: str,
-    start_date: str,
-    end_date: str,
-    interval: str = 'day',
-    interval_multiplier: int = 1,
+        ticker: str,
+        start_date: str,
+        end_date: str,
+        interval: str = 'day',
+        interval_multiplier: int = 1,
 ) -> str:
     """Get historical stock prices for a company.
 
@@ -249,11 +249,11 @@ async def get_available_crypto_tickers() -> str:
 
 @mcp.tool()
 async def get_crypto_prices(
-    ticker: str,
-    start_date: str,
-    end_date: str,
-    interval: str = 'day',
-    interval_multiplier: int = 1,
+        ticker: str,
+        start_date: str,
+        end_date: str,
+        interval: str = 'day',
+        interval_multiplier: int = 1,
 ) -> str:
     """Get historical prices for a crypto currency."""
     # Fetch data from the API
@@ -280,11 +280,11 @@ async def get_crypto_prices(
 
 @mcp.tool()
 async def get_historical_crypto_prices(
-    ticker: str,
-    start_date: str,
-    end_date: str,
-    interval: str = 'day',
-    interval_multiplier: int = 1,
+        ticker: str,
+        start_date: str,
+        end_date: str,
+        interval: str = 'day',
+        interval_multiplier: int = 1,
 ) -> str:
     """Get historical prices for a crypto currency.
 
@@ -347,9 +347,9 @@ async def get_current_crypto_price(ticker: str) -> str:
 
 @mcp.tool()
 async def get_sec_filings(
-    ticker: str,
-    limit: int = 10,
-    filing_type: str | None = None,
+        ticker: str,
+        limit: int = 10,
+        filing_type: str | None = None,
 ) -> str:
     """Get all SEC filings for a company.
 
