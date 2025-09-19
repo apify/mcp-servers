@@ -26,7 +26,7 @@ logger = logging.getLogger('apify')
 
 
 async def charge_mcp_operation(
-        charge_function: Callable[[str, int], Awaitable[Any]] | None, event_name: str | None, count: int = 1
+    charge_function: Callable[[str, int], Awaitable[Any]] | None, event_name: str | None, count: int = 1
 ) -> None:
     """Charge for an MCP operation.
 
@@ -50,9 +50,9 @@ async def charge_mcp_operation(
 
 
 async def create_gateway(  # noqa: PLR0915
-        client_session: ClientSession,
-        actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
-        tool_whitelist: dict[str, tuple[str, int]] | None = None,
+    client_session: ClientSession,
+    actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
+    tool_whitelist: dict[str, tuple[str, int]] | None = None,
 ) -> server.Server[object]:
     """Create a server instance from a remote app.
 
