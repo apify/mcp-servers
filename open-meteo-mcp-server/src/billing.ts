@@ -1,25 +1,22 @@
 
 import { Actor, log } from 'apify';
-// PPE (Pay Per Event) mapping for Apify monetization
-export const BILLABLE_EVENTS = {
-    weather_forecast: { price: 0.0001 },
-    weather_archive: { price: 0.0001 },
-    air_quality: { price: 0.0001 },
-    marine_weather: { price: 0.0001 },
-    elevation: { price: 0.0001 },
-    geocoding: { price: 0.0001 },
-    dwd_icon_forecast: { price: 0.0001 },
-    gfs_forecast: { price: 0.0001 },
-    meteofrance_forecast: { price: 0.0001 },
-    ecmwf_forecast: { price: 0.0001 },
-    jma_forecast: { price: 0.0001 },
-    metno_forecast: { price: 0.0001 },
-    gem_forecast: { price: 0.0001 },
-    flood_forecast: { price: 0.0001 },
-    seasonal_forecast: { price: 0.0001 },
-    climate_projection: { price: 0.0001 },
-    ensemble_forecast: { price: 0.0001 }
-};
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+
+// Load billable events from .actor/pay_per_event.json (sync at startup)
+let BILLABLE_EVENTS: Record<string, any> = {};
+const payPerEventPath = path.resolve(__dirname, '../.actor/pay_per_event.json');
+async function loadBillableEvents() {
+    try {
+        const data = await readFile(payPerEventPath, 'utf-8');
+        BILLABLE_EVENTS = JSON.parse(data);
+        log.info('Loaded billable events from pay_per_event.json');
+    } catch (err) {
+        log.error('Failed to load billable events:', { error: err });
+    }
+}
+// Immediately load on module import
+await loadBillableEvents();
 /**
  * This module handles billing for different types of protocol requests in the MCP server.
  * It defines a function to charge users based on the type of protocol method invoked.
@@ -32,32 +29,23 @@ export const BILLABLE_EVENTS = {
  * @param request - The request object containing the method string.
  * @returns Promise<void>
  */
-export async function chargeMessageRequest(request: { method: string }): Promise<void> {
+export async function chargeMessageRequest(request: { method: string; params?: { tool?: string } }): Promise<void> {
     const { method } = request;
 
-    // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
-    // on the method names and protocol messages
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
-    // Charge for tool-related requests
-    } else if (method.startsWith('tools/')) {
-        await Actor.charge({ eventName: 'tool-request' });
-        log.info(`Charged for tool request: ${method}`);
-    // Charge for resource-related requests
-    } else if (method.startsWith('resources/')) {
-        await Actor.charge({ eventName: 'resource-request' });
-        log.info(`Charged for resource request: ${method}`);
-    // Charge for prompt-related requests
-    } else if (method.startsWith('prompts/')) {
-        await Actor.charge({ eventName: 'prompt-request' });
-        log.info(`Charged for prompt request: ${method}`);
-    // Charge for completion-related requests
-    } else if (method.startsWith('completion/')) {
-        await Actor.charge({ eventName: 'completion-request' });
-        log.info(`Charged for completion request: ${method}`);
-    // Do not charge for other methods
+    if (method === 'tools/call' && request?.params?.tool) {
+        const toolName = request.params.tool;
+        if (BILLABLE_EVENTS[toolName]) {
+            await Actor.charge({ eventName: toolName });
+            const event = BILLABLE_EVENTS[toolName];
+            log.info(`Charged for tool call: ${toolName} ($${event.eventPriceUsd}) - ${event.eventTitle}`);
+        } else {
+            await Actor.charge({ eventName: 'tool-call' });
+            log.info(`Charged for tool call (unknown tool): ${toolName}`);
+        }
+    } else if (BILLABLE_EVENTS[method]) {
+        await Actor.charge({ eventName: method });
+        const event = BILLABLE_EVENTS[method];
+        log.info(`Charged for event: ${method} ($${event.eventPriceUsd}) - ${event.eventTitle}`);
     } else {
         log.info(`Not charging for method: ${method}`);
     }
