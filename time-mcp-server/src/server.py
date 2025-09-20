@@ -35,13 +35,13 @@ if TYPE_CHECKING:
     from starlette import types as st
     from starlette.types import Receive, Scope, Send
 
-logger = logging.getLogger("apify")
+logger = logging.getLogger('apify')
 
 
 def is_html_browser(request: Request) -> bool:
     """Detect if the request is from an HTML browser based on Accept header."""
-    accept_header = request.headers.get("accept", "")
-    return "text/html" in accept_header
+    accept_header = request.headers.get('accept', '')
+    return 'text/html' in accept_header
 
 
 def get_html_page(server_name: str, mcp_url: str) -> str:
@@ -67,7 +67,7 @@ def get_html_page(server_name: str, mcp_url: str) -> str:
     <p><strong>Add to your MCP client (e.g. VS code):</strong></p>
     <pre>{{
   "mcpServers": {{
-    "{server_name.lower().replace(" ", "-")}": {{
+    "{server_name.lower().replace(' ', '-')}": {{
       "type": "http",
       "url": "{mcp_url}",
       "headers": {{
@@ -83,7 +83,7 @@ def get_html_page(server_name: str, mcp_url: str) -> str:
 def serve_html_page(server_name: str, mcp_url: str) -> Response:
     """Serve HTML page for browser requests."""
     html = get_html_page(server_name, mcp_url)
-    return Response(content=html, media_type="text/html")
+    return Response(content=html, media_type='text/html')
 
 
 class McpPathRewriteMiddleware(BaseHTTPMiddleware):
@@ -95,9 +95,9 @@ class McpPathRewriteMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable) -> Any:
         """Rewrite the request path."""
-        if request.url.path == "/mcp":
-            request.scope["path"] = "/mcp/"
-            request.scope["raw_path"] = b"/mcp/"
+        if request.url.path == '/mcp':
+            request.scope['path'] = '/mcp/'
+            request.scope['raw_path'] = b'/mcp/'
         return await call_next(request)
 
 
@@ -148,9 +148,7 @@ class ProxyServer:
         self.tool_whitelist = tool_whitelist
 
     @staticmethod
-    def _validate_config(
-        client_type: ServerType, config: ServerParameters
-    ) -> ServerParameters | None:
+    def _validate_config(client_type: ServerType, config: ServerParameters) -> ServerParameters | None:
         """Validate and return the appropriate server parameters."""
         try:
             match client_type:
@@ -159,9 +157,9 @@ class ProxyServer:
                 case ServerType.SSE | ServerType.HTTP:
                     return RemoteServerParameters.model_validate(config)
                 case _:
-                    raise ValueError(f"Unsupported server type: {client_type}")
+                    raise ValueError(f'Unsupported server type: {client_type}')
         except ValidationError as e:
-            raise ValueError(f"Invalid server configuration: {e}") from e
+            raise ValueError(f'Invalid server configuration: {e}') from e
 
     @staticmethod
     async def create_starlette_app(server_name: str, mcp_server: Server) -> Starlette:
@@ -177,73 +175,67 @@ class ProxyServer:
         async def lifespan(_app: Starlette) -> AsyncIterator[None]:
             """Context manager for managing session manager lifecycle."""
             async with session_manager.run():
-                logger.info("Application started with StreamableHTTP session manager!")
+                logger.info('Application started with StreamableHTTP session manager!')
                 try:
                     yield
                 finally:
-                    logger.info("Application shutting down...")
+                    logger.info('Application shutting down...')
 
         async def handle_root(request: Request) -> st.Response:
             """Handle root endpoint."""
             # Handle Apify standby readiness probe
-            if "x-apify-container-server-readiness-probe" in request.headers:
+            if 'x-apify-container-server-readiness-probe' in request.headers:
                 return Response(
-                    content=b"ok",
-                    media_type="text/plain",
+                    content=b'ok',
+                    media_type='text/plain',
                     status_code=200,
                 )
 
             # Browser client logic - Check if the request is from a HTML browser
             if is_html_browser(request):
-                server_url = f"https://{request.headers.get('host', 'localhost')}"
-                mcp_url = f"{server_url}/mcp"
+                server_url = f'https://{request.headers.get("host", "localhost")}'
+                mcp_url = f'{server_url}/mcp'
                 return serve_html_page(server_name, mcp_url)
 
             return JSONResponse(
                 {
-                    "status": "running",
-                    "type": "mcp-server",
-                    "transport": "streamable-http",
-                    "endpoints": {
-                        "streamableHttp": "/mcp",
+                    'status': 'running',
+                    'type': 'mcp-server',
+                    'transport': 'streamable-http',
+                    'endpoints': {
+                        'streamableHttp': '/mcp',
                     },
                 }
             )
 
         async def handle_favicon(_request: Request) -> st.Response:
             """Handle favicon.ico requests by redirecting to Apify's favicon."""
-            return RedirectResponse(
-                url="https://apify.com/favicon.ico", status_code=301
-            )
+            return RedirectResponse(url='https://apify.com/favicon.ico', status_code=301)
 
         async def handle_oauth_authorization_server(_request: Request) -> st.Response:
             """Handle OAuth authorization server well-known endpoint."""
             try:
                 # Some MCP clients do not follow redirects, so we need to fetch the data and return it directly.
                 async with httpx.AsyncClient() as client:
-                    response = await client.get(
-                        "https://api.apify.com/.well-known/oauth-authorization-server"
-                    )
+                    response = await client.get('https://api.apify.com/.well-known/oauth-authorization-server')
                     response.raise_for_status()
                     data = response.json()
                 return JSONResponse(data, status_code=200)
             except Exception:
-                logger.exception("Error fetching OAuth authorization server data")
+                logger.exception('Error fetching OAuth authorization server data')
                 return JSONResponse(
-                    {"error": "Failed to fetch OAuth authorization server data"},
+                    {'error': 'Failed to fetch OAuth authorization server data'},
                     status_code=500,
                 )
 
         # ASGI handler for Streamable HTTP connections
-        async def handle_streamable_http(
-            scope: Scope, receive: Receive, send: Send
-        ) -> None:
+        async def handle_streamable_http(scope: Scope, receive: Receive, send: Send) -> None:
             # Check if this is a GET request from a browser
-            if scope["method"] == "GET":
+            if scope['method'] == 'GET':
                 request = Request(scope, receive)
                 if is_html_browser(request):
-                    server_url = f"https://{request.headers.get('host', 'localhost')}"
-                    mcp_url = f"{server_url}/mcp"
+                    server_url = f'https://{request.headers.get("host", "localhost")}'
+                    mcp_url = f'{server_url}/mcp'
                     response = serve_html_page(server_name, mcp_url)
                     await response(scope, receive, send)
                     return
@@ -254,14 +246,14 @@ class ProxyServer:
         return Starlette(
             debug=True,
             routes=[
-                Route("/", endpoint=handle_root),
-                Route("/favicon.ico", endpoint=handle_favicon, methods=["GET"]),
+                Route('/', endpoint=handle_root),
+                Route('/favicon.ico', endpoint=handle_favicon, methods=['GET']),
                 Route(
-                    "/.well-known/oauth-authorization-server",
+                    '/.well-known/oauth-authorization-server',
                     endpoint=handle_oauth_authorization_server,
-                    methods=["GET"],
+                    methods=['GET'],
                 ),
-                Mount("/mcp/", app=handle_streamable_http),
+                Mount('/mcp/', app=handle_streamable_http),
             ],
             lifespan=lifespan,
             middleware=[Middleware(McpPathRewriteMiddleware)],
@@ -269,20 +261,14 @@ class ProxyServer:
 
     async def _run_server(self, app: Starlette) -> None:
         """Run the Starlette app with uvicorn."""
-        config_ = uvicorn.Config(
-            app, host=self.host, port=self.port, log_level="info", access_log=True
-        )
+        config_ = uvicorn.Config(app, host=self.host, port=self.port, log_level='info', access_log=True)
         server = uvicorn.Server(config_)
         await server.serve()
 
     async def start(self) -> None:
         """Start Starlette app and connect to stdio, Streamable HTTP, or SSE based MCP server."""
-        logger.info(
-            f"Starting MCP server with client type: {self.server_type} and config {self.config}"
-        )
-        params: dict = (
-            self.config and self.config.model_dump(exclude_unset=True)
-        ) or {}
+        logger.info(f'Starting MCP server with client type: {self.server_type} and config {self.config}')
+        params: dict = (self.config and self.config.model_dump(exclude_unset=True)) or {}
 
         if self.server_type == ServerType.STDIO:
             # validate config again to prevent mypy errors
@@ -291,9 +277,7 @@ class ProxyServer:
                 stdio_client(config_) as (read_stream, write_stream),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_gateway(
-                    session, self.actor_charge_function, self.tool_whitelist
-                )
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
                 app = await self.create_starlette_app(self.server_name, mcp_server)
                 await self._run_server(app)
 
@@ -302,9 +286,7 @@ class ProxyServer:
                 sse_client(**params) as (read_stream, write_stream),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_gateway(
-                    session, self.actor_charge_function, self.tool_whitelist
-                )
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
                 app = await self.create_starlette_app(self.server_name, mcp_server)
                 await self._run_server(app)
 
@@ -314,10 +296,8 @@ class ProxyServer:
                 streamablehttp_client(**params) as (read_stream, write_stream, _),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_gateway(
-                    session, self.actor_charge_function, self.tool_whitelist
-                )
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
                 app = await self.create_starlette_app(self.server_name, mcp_server)
                 await self._run_server(app)
         else:
-            raise ValueError(f"Unknown server type: {self.server_type}")
+            raise ValueError(f'Unknown server type: {self.server_type}')

@@ -5,15 +5,15 @@ class ChargeEvents(str, Enum):
     """Event types for charging MCP operations (time-mcp-server)."""
 
     # Generic MCP operations
-    ACTOR_START = "actor-start"
-    RESOURCE_READ = "resource-read"
-    TOOL_LIST = "tool-list"
-    PROMPT_GET = "prompt-get"
-    TOOL_CALL = "tool-call"
+    ACTOR_START = 'actor-start'
+    RESOURCE_READ = 'resource-read'
+    TOOL_LIST = 'tool-list'
+    PROMPT_GET = 'prompt-get'
+    TOOL_CALL = 'tool-call'
 
     # Time MCP-specific events
-    GET_CURRENT_TIME = "get_current_time"
-    CONVERT_TIME = "convert_time"
+    GET_CURRENT_TIME = 'get_current_time'
+    CONVERT_TIME = 'convert_time'
 
 
 # Tool whitelist for MCP server
@@ -27,6 +27,6 @@ TOOL_WHITELIST = {
 
 # PPE (Pay Per Event) mapping for Apify monetization
 BILLABLE_EVENTS = {
-    "get_current_time": {"price": 0.0005},
-    "convert_time": {"price": 0.0005},
+    'get_current_time': {'price': 0.0005},
+    'convert_time': {'price': 0.0005},
 }
