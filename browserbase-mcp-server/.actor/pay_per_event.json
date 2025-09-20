@@ -1,0 +1,17 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "actor-runtime-minute": {
+        "eventTitle": "Actor runtime per minute",
+        "eventDescription": "Flat fee for each minute of Actor runtime.",
+        "eventPriceUsd": 0.003
+    },
+    "browserbase-tool-call": {
+        "eventTitle": "BrowserBase tool call",
+        "eventDescription": "Charge for each BrowserBase tool call.",
+        "eventPriceUsd": 0.036
+    }
+}
