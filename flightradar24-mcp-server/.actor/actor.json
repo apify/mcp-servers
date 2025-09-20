@@ -2,7 +2,7 @@
 	"actorSpecification": 1,
 	"name": "flightradar24-mcp-server",
 	"title": "Flightradar24 MCP Server",
-	"description": "An Apify Actor MCP server for real-time flight tracking using Flightradar24 data.",
+	"description": "MCP server for real-time flight tracking using Flightradar24 data.",
 	"version": "0.1",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
@@ -13,8 +13,6 @@
 		{ "name": "FR24_API_KEY", "description": "Your Flightradar24 API key", "required": true },
 		{ "name": "FR24_API_URL", "description": "Flightradar24 API base URL", "required": false }
 	],
-	"category": "MCP servers",
-	"image": "https://private-user-images.githubusercontent.com/33063132/395708258-719444ae-2c8b-4441-84f8-5150337d871f.png",
 	"payPerEvent": "./pay_per_event.json",
 	"dockerfile": "../Dockerfile",
 	"webServerMcpPath": "/mcp"
