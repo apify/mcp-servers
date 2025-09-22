@@ -1,0 +1,17 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "microsoft-learn-search": {
+        "eventTitle": "Microsoft Learn Search",
+        "eventDescription": "Semantic search against Microsoft official technical documentation.",
+        "eventPriceUsd": 0.02
+    },
+    "microsoft-learn-fetch": {
+        "eventTitle": "Microsoft Learn Fetch",
+        "eventDescription": "Fetch and convert a Microsoft documentation page into markdown format.",
+        "eventPriceUsd": 0.03
+    }
+}

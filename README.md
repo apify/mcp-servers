@@ -29,9 +29,10 @@ A curated collection of production-ready Model Context Protocol (MCP) servers pu
 | **[DeepL MCP Server](./deepl-mcp-server/)**                   | Translation capabilities using the DeepL API     | [![DeepL MCP Server](https://apify.com/actor-badge?actor=mcp-servers/deepl-mcp-server)](https://apify.com/mcp-servers/deepl-mcp-server)                                  | [DeepLcom](https://github.com/DeepLcom/deepl-mcp-server)                                                      |
 | **[Pure.md MCP Server](./pure-md-mcp-server/)** | Web content extraction and search capabilities powered by Pure.md | [![Pure.md MCP Server](https://apify.com/actor-badge?actor=mcp-servers/pure-md-mcp-server)](https://apify.com/mcp-servers/pure-md-mcp-server) | [Pure.md](https://github.com/puremd/puremd-mcp) |
 | **[Financial Datasets MCP Server](./financial-datasets-mcp-server/)** | Stock market data, financial statements, and cryptocurrency information | [![Financial Datasets MCP Server](https://apify.com/actor-badge?actor=mcp-servers/financial-datasets-mcp-server)](https://apify.com/mcp-servers/financial-datasets-mcp-server) | [Financial Datasets](https://github.com/financial-datasets/mcp-server) |
+| **[Microsoft Docs MCP Server](./microsoft-docs-mcp-server/)** | Access Microsoft's official documentation with semantic search | [![Microsoft Docs MCP Server](https://apify.com/actor-badge?actor=mcp-servers/microsoft-docs-mcp-server)](https://apify.com/mcp-servers/microsoft-docs-mcp-server) | [Microsoft](https://github.com/MicrosoftDocs/mcp) |
 
 ## 🙏 Credits
-These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, and others.
+These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, Microsoft, and others.
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
 
