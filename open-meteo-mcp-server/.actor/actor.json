@@ -1,0 +1,14 @@
+{
+    "actorSpecification": 1,
+    "name": "open-meteo-mcp-server",
+    "title": "Open Meteo MCP Server",
+    "description": "Apify Actor providing the Open-Meteo Model Context Protocol (MCP) server. Offers weather, air quality, marine, climate, and geocoding APIs via MCP for LLMs and automation. Supports all Open-Meteo tools and full MCP event billing.",
+    "version": "0.0",
+    "buildTag": "latest",
+    "usesStandbyMode": true,
+    "meta": {
+        "templateId": "ts-mcp-server"
+    },
+    "dockerfile": "../Dockerfile",
+    "webServerMcpPath": "/mcp"
+}

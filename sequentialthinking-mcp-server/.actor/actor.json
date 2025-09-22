@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "sqt-mcp-server",
+	"title": "Sequential Thinking MCP server",
+		"description": "An MCP server for structured sequential thinking process - breaking down complex problems, iteratively refining solutions, and exploring multiple reasoning paths",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "",
+		"description": "",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

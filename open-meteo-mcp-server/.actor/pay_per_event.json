@@ -1,0 +1,92 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "weather_forecast": {
+        "eventTitle": "Weather forecast tool",
+        "eventDescription": "Weather forecast (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "weather_archive": {
+        "eventTitle": "Weather archive tool",
+        "eventDescription": "Historical weather data (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "air_quality": {
+        "eventTitle": "Air quality tool",
+        "eventDescription": "Air quality data (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "marine_weather": {
+        "eventTitle": "Marine weather tool",
+        "eventDescription": "Marine weather data (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "elevation": {
+        "eventTitle": "Elevation tool",
+        "eventDescription": "Elevation data (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "geocoding": {
+        "eventTitle": "Geocoding tool",
+        "eventDescription": "Geocoding/location search (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "dwd_icon_forecast": {
+        "eventTitle": "DWD ICON forecast tool",
+        "eventDescription": "German weather service ICON model (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "gfs_forecast": {
+        "eventTitle": "NOAA GFS forecast tool",
+        "eventDescription": "US NOAA GFS model (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "meteofrance_forecast": {
+        "eventTitle": "Météo-France forecast tool",
+        "eventDescription": "French Météo-France model (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "ecmwf_forecast": {
+        "eventTitle": "ECMWF forecast tool",
+        "eventDescription": "European ECMWF model (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "jma_forecast": {
+        "eventTitle": "JMA forecast tool",
+        "eventDescription": "Japan Meteorological Agency model (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "metno_forecast": {
+        "eventTitle": "MET Norway forecast tool",
+        "eventDescription": "Norwegian MET model (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "gem_forecast": {
+        "eventTitle": "Environment Canada GEM forecast tool",
+        "eventDescription": "Canadian GEM model (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "flood_forecast": {
+        "eventTitle": "Flood forecast tool",
+        "eventDescription": "Flood/discharge forecast (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "seasonal_forecast": {
+        "eventTitle": "Seasonal forecast tool",
+        "eventDescription": "Seasonal forecast (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "climate_projection": {
+        "eventTitle": "Climate projection tool",
+        "eventDescription": "Climate projections (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    },
+    "ensemble_forecast": {
+        "eventTitle": "Ensemble forecast tool",
+        "eventDescription": "Ensemble forecast (Open-Meteo)",
+        "eventPriceUsd": 0.0001
+    }
+}

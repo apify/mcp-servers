@@ -1,0 +1,32 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.001
+    },
+    "get-source-languages": {
+        "eventTitle": "Get source languages",
+        "eventDescription": "Get all available source languages for translation",
+        "eventPriceUsd": 0.001
+    },
+    "get-target-languages": {
+        "eventTitle": "Get target languages",
+        "eventDescription": "Get all available target languages for translation",
+        "eventPriceUsd": 0.001
+    },
+    "get-writing-style-guides": {
+        "eventTitle": "Get writing style guides",
+        "eventDescription": "Get all available options for writing styles options",
+        "eventPriceUsd": 0.001
+    },
+    "translate-text": {
+        "eventTitle": "Translate text",
+        "eventDescription": "Translate text",
+        "eventPriceUsd": 0.1
+    },
+    "rephrase-text": {
+        "eventTitle": "Rephrase text",
+        "eventDescription": "Rephrase text",
+        "eventPriceUsd": 0.1
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.01
+    },
+    "sequential_thinking": {
+        "eventTitle": "Price for a sequential thinking tool request",
+        "eventDescription": "Flat fee for each sequential_thinking tool invocation.",
+        "eventPriceUsd": 0.05
+    }
+}

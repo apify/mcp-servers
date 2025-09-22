@@ -1,0 +1,14 @@
+{
+	"actorSpecification": 1,
+	"name": "wikipedia-mcp-server",
+	"title": "Wikipedia MCP server",
+	"description": "MCP server for Wikipedia, providing LLMs and clients with real-time access to Wikipedia articles, summaries, sections, and related information via Apify Actor.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
