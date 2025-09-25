@@ -5,8 +5,9 @@
 import { Actor, log } from 'apify';
 
 const CHARGEABLE_EVENT_NAMES = [
-    'microsoft_learn_search',
-    'microsoft_learn_fetch',
+    'microsoft_docs_search',
+    'microsoft_docs_fetch',
+    'microsoft_code_sample_search',
 ] as const;
 
 type ChargeableRequest = {
