@@ -4,26 +4,48 @@
  */
 import { Actor, log } from 'apify';
 
+const CHARGEABLE_EVENT_NAMES = [
+    'actor-start',
+    'unblock-url',
+    'search-web',
+] as const;
+
+type ChargeableRequest = {
+    method: string;
+} | {
+    method: string;
+    params?: {
+        name?: string;
+    };
+}
+
 /**
  * Charges the user for a message request based on the method type.
- * Supported method types are mapped to specific billing events for Pure.md tools.
+ * Supported method types are mapped to specific billing events.
  *
- * @param request - The request object containing the method string and params.
+ * @param request - The request object containing the method string.
  * @returns Promise<void>
  */
-export async function chargeMessageRequest(request: { method: string; params?: any }): Promise<void> {
-    const { method, params } = request;
+export async function chargeMessageRequest(request: ChargeableRequest): Promise<void> {
+    const method = request.method ?? null;
+    const name = 'params' in request ? request.params?.name : null;
 
-    // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
-    // on the method names and protocol messages
-    // Charge for specific Pure.md tool calls
-    if (method === 'tools/call' && params?.name === 'unblock-url') {
-        await Actor.charge({ eventName: 'unblock-url' });
-        log.info(`Charged for unblock-url tool: ${params.arguments?.url}`);
-    } else if (method === 'tools/call' && params?.name === 'search-web') {
-        await Actor.charge({ eventName: 'search-web' });
-        log.info(`Charged for search-web tool: ${params.arguments?.query}`);
-    // Do not charge for other methods
+    if (!method) {
+        log.warning(`Not charging for unknown method`);
+        return;
+    }
+
+    if (name) {
+        const knownEventName = CHARGEABLE_EVENT_NAMES.find(
+            (eventName) => name.includes(eventName)
+        );
+
+    if (knownEventName) {
+        await Actor.charge({ eventName: knownEventName });
+        log.info(`Charged for ${knownEventName} request: ${method}`);
+    } else {
+            log.info(`Not charging for unknown event ${name}.`);
+        }
     } else {
         log.info(`Not charging for method: ${method}`);
     }
