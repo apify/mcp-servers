@@ -5,7 +5,6 @@
 import { Actor, log } from 'apify';
 
 const CHARGEABLE_EVENT_NAMES = [
-    'actor-start',
     'tomtom-geocode',
     'tomtom-reverse-geocode',
     'tomtom-fuzzy-search',
