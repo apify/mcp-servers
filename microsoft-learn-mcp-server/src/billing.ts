@@ -4,6 +4,20 @@
  */
 import { Actor, log } from 'apify';
 
+const CHARGEABLE_EVENT_NAMES = [
+    'microsoft_learn_search',
+    'microsoft_learn_fetch',
+] as const;
+
+type ChargeableRequest = {
+    method: string;
+} | {
+    method: string;
+    params?: {
+        name?: string;
+    };
+}
+
 /**
  * Charges the user for a message request based on the method type.
  * Supported method types are mapped to specific billing events.
@@ -12,27 +26,27 @@ import { Actor, log } from 'apify';
  * @param request - The request object containing the method string and optional params.
  * @returns Promise<void>
  */
-export async function chargeMessageRequest(request: { method: string; params?: any }): Promise<void> {
-    const { method, params } = request;
+export async function chargeMessageRequest(request: ChargeableRequest): Promise<void> {
+    const method = request.method ?? null;
+    const name = 'params' in request ? request.params?.name : null;
 
-    // Charge for specific Microsoft Learn MCP Server tools
-    if (method === 'tools/call' && params?.name) {
-        const toolName = params.name;
-        if (toolName === 'microsoft_learn_search') {
-            await Actor.charge({ eventName: 'microsoft-learn-search' });
-            log.info(`Charged for Microsoft Learn search: ${toolName}`);
-            return;
-        }
-        if (toolName === 'microsoft_learn_fetch') {
-            await Actor.charge({ eventName: 'microsoft-learn-fetch' });
-            log.info(`Charged for Microsoft Learn fetch: ${toolName}`);
-            return;
-        }
+    if (!method) {
+        log.warning(`Not charging for unknown method`);
+        return;
     }
 
-    // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
-    // on the method names and protocol messages
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    // Do not charge for other methods
-    log.info(`Not charging for method: ${method}`);
+    if (name) {
+        const knownEventName = CHARGEABLE_EVENT_NAMES.find(
+            (eventName) => name.includes(eventName)
+        );
+
+        if (knownEventName) {
+            await Actor.charge({ eventName: knownEventName });
+            log.info(`Charged for ${knownEventName} request: ${method}`);
+        } else {
+            log.info(`Not charging for unknown event ${name}.`);
+        }
+    } else {
+        log.info(`Not charging for method: ${method}`);
+    }
 }
