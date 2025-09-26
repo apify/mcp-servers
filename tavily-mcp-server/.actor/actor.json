@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "tavily-mcp-server",
+	"title": "Tavily MCP Server",
+	"description": "Advanced web search and data extraction capabilities through the Tavily API, providing real-time web search, intelligent data extraction, website mapping, and web crawling tools.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
