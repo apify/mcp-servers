@@ -40,7 +40,7 @@ async def charge_mcp_operation(
 
     if event_name == ChargeEvents.CONVERT_MARKDOWN_TO_MINDMAP.value:
         logger.info(f'Charging for event: {event_name}')
-        await charge_function(event_name);
+        await charge_function(event_name, count)
     else:
         logger.info(f'Not charging for event: {event_name}')
 
