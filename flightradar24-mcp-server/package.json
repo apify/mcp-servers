@@ -1,0 +1,47 @@
+{
+  "name": "flightradar24-mcp-server",
+  "version": "0.0.1",
+  "description": "Model Context Protocol server (Apify Actor) that proxies a Flightradar24 MCP server over HTTP.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "prestart": "cd flightradar24-mcp-server && npm ci && npm run build",
+    "start": "apify run",
+    "start:prod": "node dist/main.js",
+    "start:dev": "tsx src/main.ts",
+    "build": "tsc && cd flightradar24-mcp-server && npm ci && npm run build",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "dependencies": {
+    "apify": "3.4.5",
+    "@modelcontextprotocol/sdk": "^1.17.5",
+    "@modelcontextprotocol/server-everything": "^2025.8.18",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
+    "mcp-remote": "0.1.29",
+    "zod": "^3.25.76",
+	"crawlee": "3.15.0"
+  },
+  "devDependencies": {
+    "@apify/eslint-config": "^1.0.0",
+    "@apify/tsconfig": "^0.1.1",
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.32",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "globals": "^16.2.0",
+    "prettier": "^3.5.3",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.1"
+  },
+  "overrides": {
+    "crawlee": "3.15.0",
+    "@crawlee/*": "3.15.0"
+  },
+  "author": "It's not you it's me",
+  "license": "ISC"
+}
