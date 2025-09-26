@@ -41,6 +41,13 @@ async def charge_mcp_operation(
     if not event_name:
         return
 
+    # Whitelist of chargeable events
+    whitelisted_events = {member.value for member in ChargeEvents}
+
+    if event_name not in whitelisted_events:
+        logger.warning(f"Unknown charge event '{event_name}'. Skipping charge.")
+        return
+
     try:
         await charge_function(event_name, count)
         logger.info(f'Charged for event: {event_name}')
