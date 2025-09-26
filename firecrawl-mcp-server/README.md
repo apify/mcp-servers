@@ -239,51 +239,38 @@ const CONFIG = {
 
 ---
 
-## 📦 Available Tools & Use Cases
-
-| Tool Name                 | Best for                            | Returns           |
-|---------------------------|--------------------------------------|-------------------|
-| `scrape`                  | Single page content                  | markdown/html     |
-| `batch_scrape`           | Many known URLs                      | markdown/html[]   |
-| `map`                     | Discovering URLs                     | URL[]             |
-| `crawl`                   | Multi-page extraction                | markdown/html[]   |
-| `search`                  | Web search                           | results[]         |
-| `extract`                 | Structured data                      | JSON              |
-| `deep_research`           | In-depth research                    | summary, sources  |
-| `generate_llmstxt`        | Create llms.txt for a site           | text              |
+## 📦 Available Tools Overview
+- **firecrawl_scrape** — Single page content extraction  
+- **firecrawl_map** — URL discovery on websites  
+- **firecrawl_crawl** — Multi-page extraction *(returns job ID)*  
+- **firecrawl_check_crawl_status** — Monitor crawl progress  
+- **firecrawl_search** — Web search with optional content scraping  
+- **firecrawl_extract** — Structured data extraction to JSON  
 
 ---
 
-## 🔧 Example Usage
-
-```json
-{
-  "name": "firecrawl_scrape",
-  "arguments": {
-    "url": "https://example.com",
-    "formats": ["markdown"],
-    "onlyMainContent": true,
-    "waitFor": 1000,
-    "timeout": 30000,
-    "mobile": false,
-    "includeTags": ["article", "main"],
-    "excludeTags": ["nav", "footer"],
-    "skipTlsVerification": false
-  }
-}
-```
+## 🔧 Key Usage Examples
+The examples show proper parameter usage for common scenarios like:
+- Basic page scraping with content filtering  
+- Web search with scraped results  
+- Structured data extraction with custom schemas  
 
 ---
 
-## 🔎 Choosing the Right Tool
+## 🔎 Decision Tree
+Great guidance on tool selection based on needs:
+- **Known URL** → `scrape`  
+- **Find URLs** → `map`  
+- **Search web** → `search`  
+- **Extract structured data** → `extract`  
+- **Full site coverage** → `crawl` + `status check`  
 
-- Know the exact URL?
-  - Use `scrape` (single) or `batch_scrape` (multiple)
-- Need to find URLs on a site? → `map`
-- Want to search the web? → `search`
-- Want structured data? → `extract`
-- Need full-site coverage? → `crawl`
-- Need multi-source research? → `deep_research`
+---
+
+# ⚡ Performance Optimization
+Valuable tips:
+- Use `maxAge` for caching  
+- Use `onlyMainContent` for efficiency  
 
 ---
 
