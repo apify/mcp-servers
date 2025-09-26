@@ -1,0 +1,40 @@
+{
+  "name": "actor-browserbase-mcp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "type": "module",
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "scripts": {
+      "start": "npm run start:dev",
+      "start:prod": "node dist/main.js",
+      "start:dev": "tsx src/main.ts",
+      "build": "tsc",
+      "test": "echo \"Error: oops, the Actor has no tests yet, sad!\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apify/actor-browserbase-mcp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/apify/actor-browserbase-mcp/issues"
+  },
+  "homepage": "https://github.com/apify/actor-browserbase-mcp#readme",
+  "dependencies": {
+    "@browserbasehq/mcp-server-browserbase": "^2.1.1",
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "apify": "^3.4.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@apify/tsconfig": "^0.1.1",
+    "@types/express": "^5.0.1",
+    "typescript": "^5.8.3"
+  }
+}

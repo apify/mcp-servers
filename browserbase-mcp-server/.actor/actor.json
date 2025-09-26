@@ -1,0 +1,10 @@
+{
+  "actorSpecification": 1,
+  "name": "browserbase-mcp-server",
+  "title": "Browserbase MCP Server",
+  "description": "A Model Context Protocol (MCP) server that provides browser automation capabilities using Browserbase.",
+  "version": "0.0",
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "webServerMcpPath": "/mcp"
+}
