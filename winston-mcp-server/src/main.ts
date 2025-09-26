@@ -11,6 +11,23 @@ import { Actor, log } from 'apify';
 
 import { startServer } from './server.js';
 
+await Actor.init(); // This must be called first
+
+// --- MODIFIED SECTION FOR API KEY HANDLING ---
+const { WINSTONAI_API_KEY } = process.env;
+
+if (!WINSTONAI_API_KEY) {
+    // Fail the Actor early if the essential API key is missing
+    await Actor.fail(`WINSTONAI_API_KEY environmental variable was not set. Cannot proceed.`);
+}
+
+// Prepare the environment object to be passed to the child process.
+// TypeScript will now correctly infer WINSTONAI_API_KEY as 'string' within this block.
+const envForChildProcess: NodeJS.ProcessEnv = {
+    ...process.env,
+    WINSTONAI_API_KEY, // Confidently use as string here
+};
+
 // This is an ESM project, and as such, it requires you to specify extensions in your relative imports
 // Read more about this here: https://nodejs.org/docs/latest-v18.x/api/esm.html#mandatory-file-extensions
 // Note that we need to use `.js` even when inside TS files
@@ -18,16 +35,10 @@ import { startServer } from './server.js';
 
 // Configuration constants for the MCP server
 // Command to run the Everything MCP Server
-// TODO: Do not forget to install the MCP server in package.json (using `npm install ...`)
 const MCP_COMMAND = [
     'npx',
     '-y',
-    'mcp-remote',
-    'https://api.winstonai.ai/mcp',
-    '--transport',
-    'streamable-only',
-    '--header',
-    `Authorization: Bearer ${process.env.WINSTON_AI_API_KEY || ''}`,
+    'winston-ai-mcp',
 ];
 
 // Check if the Actor is running in standby mode
@@ -51,4 +62,5 @@ if (!STANDBY_MODE) {
 await startServer({
     serverPort: SERVER_PORT,
     command: MCP_COMMAND,
+    env: envForChildProcess,
 });

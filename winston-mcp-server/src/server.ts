@@ -15,7 +15,6 @@ import { log } from 'apify';
 import type { Request, Response } from 'express';
 import express from 'express';
 
-import { chargeMessageRequest } from './billing.js';
 import { getMcpServer as getMCPServerWithCommand } from './mcp.js';
 
 let getMcpServer: null | (() => Promise<McpServer>) = null;
@@ -27,7 +26,6 @@ const transports: { [sessionId: string]: StreamableHTTPServerTransport } = {};
  * Handles POST requests to the /mcp endpoint.
  * - Initializes new sessions and transports if needed.
  * - Routes requests to the correct transport based on session ID.
- * - Charges for each message request.
  */
 async function mcpPostHandler(req: Request, res: Response) {
     // Ensure the MCP server is initialized
@@ -65,20 +63,10 @@ async function mcpPostHandler(req: Request, res: Response) {
                         sessionId: initializedSessionId,
                     });
                     transports[initializedSessionId] = transport;
-                }
+                },
             });
 
-            // Charge for each message request received on this transport
-            transport.onmessage = (message) => {
-                chargeMessageRequest(message as { method: string }).catch((error) => {
-                    log.error('Error charging for message request:', {
-                        error,
-                        sessionId: transport.sessionId || null,
-                    });
-                });
-            };
-
-            // Clean up transport when closed
+            // Cleanup transport when closed
             transport.onclose = () => {
                 const sid = transport.sessionId;
                 if (sid && transports[sid]) {
@@ -94,9 +82,6 @@ async function mcpPostHandler(req: Request, res: Response) {
             const server = await getMcpServer();
             await server.connect(transport);
 
-            // Charge for the request
-            await chargeMessageRequest(req.body);
-            
             await transport.handleRequest(req, res, req.body);
             return; // Already handled
         } else {
@@ -112,8 +97,6 @@ async function mcpPostHandler(req: Request, res: Response) {
             return;
         }
 
-        // Charge for the request
-        await chargeMessageRequest(req.body);
         // Handle the request with existing transport - no need to reconnect
         // The existing transport is already connected to the server
         await transport.handleRequest(req, res, req.body);
@@ -133,8 +116,7 @@ async function mcpPostHandler(req: Request, res: Response) {
             });
         }
     }
-};
-
+}
 /**
  * Handles GET requests to the /mcp endpoint for streaming responses.
  * - Validates session ID and resumes or establishes SSE streams as needed.
@@ -160,9 +142,7 @@ async function mcpGetHandler(req: Request, res: Response) {
 
     const transport = transports[sessionId] as StreamableHTTPServerTransport;
     await transport.handleRequest(req, res);
-};
-
-
+}
 /**
  * Handles DELETE requests to the /mcp endpoint for session termination.
  * - Cleans up and closes the transport for the given session.
@@ -189,9 +169,7 @@ async function mcpDeleteHandler(req: Request, res: Response) {
             res.status(500).send('Error processing session termination');
         }
     }
-};
-
-
+}
 /**
  * Starts the MCP HTTP server and sets up all endpoints.
  * - Initializes the MCP server factory.
@@ -201,17 +179,19 @@ async function mcpDeleteHandler(req: Request, res: Response) {
 export async function startServer(options: {
     serverPort: number;
     command: string[];
+    env?: NodeJS.ProcessEnv; // Add env here
 }) {
     log.info('Starting MCP HTTP Server', {
         serverPort: options.serverPort,
         command: options.command,
+        env: options.env ? Object.keys(options.env) : undefined, // Log keys only
     });
-    const { serverPort, command } = options;
-    // Initialize the MCP client
-    getMcpServer = async () => getMCPServerWithCommand(command);
+    const { serverPort, command, env } = options; // Destructure env
+    // Initialize the MCP client, passing the environment variables
+    getMcpServer = async () => getMCPServerWithCommand(command, { env }); // Pass env
 
     const app = express();
-    
+
     // Redirect to Apify favicon
     app.get('/favicon.ico', (_req: Request, res: Response) => {
         res.writeHead(301, { Location: "https://apify.com/favicon.ico" });
