@@ -1,0 +1,12 @@
+[project]
+name = "mcp-server-pubmed"
+version = "0.1.0"
+description = "An MCP server for searching, retrieving, and analyzing articles from PubMed"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp[cli]>=1.4.1",
+    "requests>=2.25.1",
+    "beautifulsoup4>=4.9.3",
+    "asyncio>=3.4.3",
+]

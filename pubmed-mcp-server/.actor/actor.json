@@ -1,0 +1,14 @@
+{
+	"actorSpecification": 1,
+	"name": "pubmed-mcp-server",
+	"title": "PubMed MCP server",
+	"description": "A server implementing the Model Context Protocol (MCP) for accessing and processing PubMed biomedical literature data.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
