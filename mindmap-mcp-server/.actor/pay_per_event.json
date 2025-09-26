@@ -1,0 +1,7 @@
+{
+    "convert_markdown_to_mindmap": {
+        "eventTitle": "Convert Markdown to Mindmap",
+        "eventDescription": "Fee for converting a Markdown document to a mindmap",
+        "eventPriceUsd": 0.01
+    }
+  }
