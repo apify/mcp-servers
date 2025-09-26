@@ -6,52 +6,52 @@
     },
     "get-income-statements": {
         "eventTitle": "Get income statements",
-        "eventDescription": "Fee for retrieving company income statements using the get_income_statements tool.",
+        "eventDescription": "Fee for getting income statements for a company.",
         "eventPriceUsd": 0.01
     },
     "get-balance-sheets": {
         "eventTitle": "Get balance sheets",
-        "eventDescription": "Fee for retrieving company balance sheets using the get_balance_sheets tool.",
+        "eventDescription": "Fee for getting balance sheets for a company.",
         "eventPriceUsd": 0.01
     },
     "get-cash-flow-statements": {
         "eventTitle": "Get cash flow statements",
-        "eventDescription": "Fee for retrieving company cash flow statements using the get_cash_flow_statements tool.",
+        "eventDescription": "Fee for getting cash flow statements for a company.",
         "eventPriceUsd": 0.01
     },
     "get-current-stock-price": {
         "eventTitle": "Get current stock price",
-        "eventDescription": "Fee for retrieving current stock price using the get_current_stock_price tool.",
-        "eventPriceUsd": 0.005
+        "eventDescription": "Fee for getting the current / latest price of a company.",
+        "eventPriceUsd": 0.01
     },
     "get-historical-stock-prices": {
         "eventTitle": "Get historical stock prices",
-        "eventDescription": "Fee for retrieving historical stock prices using the get_historical_stock_prices tool.",
+        "eventDescription": "Fee for getting historical stock prices for a company.",
         "eventPriceUsd": 0.01
     },
     "get-company-news": {
         "eventTitle": "Get company news",
-        "eventDescription": "Fee for retrieving company news using the get_company_news tool.",
-        "eventPriceUsd": 0.005
+        "eventDescription": "Fee for getting news for a company.",
+        "eventPriceUsd": 0.01
     },
     "get-available-crypto-tickers": {
         "eventTitle": "Get available crypto tickers",
-        "eventDescription": "Fee for retrieving available crypto tickers using the get_available_crypto_tickers tool.",
+        "eventDescription": "Fee for getting all available crypto tickers.",
         "eventPriceUsd": 0.001
     },
     "get-crypto-prices": {
         "eventTitle": "Get crypto prices",
-        "eventDescription": "Fee for retrieving crypto prices using the get_crypto_prices tool.",
-        "eventPriceUsd": 0.005
+        "eventDescription": "Fee for getting current prices for a crypto currency.",
+        "eventPriceUsd": 0.01
     },
     "get-historical-crypto-prices": {
         "eventTitle": "Get historical crypto prices",
-        "eventDescription": "Fee for retrieving historical crypto prices using the get_historical_crypto_prices tool.",
+        "eventDescription": "Fee for getting historical prices for a crypto currency.",
         "eventPriceUsd": 0.01
     },
     "get-current-crypto-price": {
         "eventTitle": "Get current crypto price",
-        "eventDescription": "Fee for retrieving current crypto price using the get_current_crypto_price tool.",
-        "eventPriceUsd": 0.005
+        "eventDescription": "Fee for getting the current / latest price of a crypto currency.",
+        "eventPriceUsd": 0.01
     }
 }
