@@ -1,0 +1,14 @@
+{
+	"actorSpecification": 1,
+	"name": "time-mcp-server",
+	"title": "Time MCP Server",
+	"description": "A Python server implementing the Model Context Protocol (MCP) for time-related operations.",
+		"version": "0.1",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
