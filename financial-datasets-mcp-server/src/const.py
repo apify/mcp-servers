@@ -12,13 +12,6 @@ class ChargeEvents(str, Enum):
     as examples. You can customize these events based on your specific MCP server needs.
     """
 
-    # Generic MCP operations (can be used for any MCP server)
-    ACTOR_START = 'actor-start'
-    RESOURCE_READ = 'resource-read'
-    TOOL_LIST = 'tool-list'
-    PROMPT_GET = 'prompt-get'
-    TOOL_CALL = 'tool-call'
-
     # Financial Datasets-specific operations
     GET_INCOME_STATEMENTS = 'get_income_statements'
     GET_BALANCE_SHEETS = 'get_balance_sheets'
