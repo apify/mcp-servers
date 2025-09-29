@@ -1,0 +1,12 @@
+{
+    "get_current_time": {
+        "eventTitle": "Get Current Time",
+        "eventDescription": "Fee for retrieving the current time in a specified timezone using the get_current_time tool.",
+        "eventPriceUsd": 0.0005
+    },
+    "convert_time": {
+        "eventTitle": "Convert Time Between Timezones",
+        "eventDescription": "Fee for converting time between timezones using the convert_time tool.",
+        "eventPriceUsd": 0.0005
+    }
+}
