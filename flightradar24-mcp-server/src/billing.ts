@@ -26,14 +26,9 @@ export async function chargeMessageRequest(request: { method: string }): Promise
     const { method } = request;
 
     // Map protocol method to event name in pay_per_event.json
-    let eventName: string | undefined;
-    if (method === 'actor-start') {
-        eventName = 'actor-start';
-    } else if (method === 'get_flight_positions') {
-        eventName = 'get_flight_positions';
-    } else if (method === 'get_flight_eta') {
-        eventName = 'get_flight_eta';
-    }
+    const eventName = ['actor-start', 'get_flight_positions', 'get_flight_eta'].includes(method)
+        ? method
+        : undefined;
 
     if (eventName && payPerEvent[eventName]) {
         await Actor.charge({ eventName });
