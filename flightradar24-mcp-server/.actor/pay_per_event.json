@@ -1,0 +1,17 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "get_flight_positions": {
+        "eventTitle": "Get real-time flight positions",
+        "eventDescription": "Flat fee for each get_flight_positions tool call.",
+        "eventPriceUsd": 0.03
+    },
+    "get_flight_eta": {
+        "eventTitle": "Get estimated arrival time for a flight",
+        "eventDescription": "Flat fee for each get_flight_eta tool call.",
+        "eventPriceUsd": 0.02
+    }
+}
