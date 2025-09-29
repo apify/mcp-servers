@@ -1,10 +1,14 @@
-
 # ⏰ Time MCP Server (Apify Actor)
 
 This Actor provides a Model Context Protocol (MCP) server for time and timezone conversion, running on the Apify platform. It enables LLMs and other clients to get current time information and perform timezone conversions using IANA timezone names, with automatic system timezone detection.
 
 ---
 
+## 🚩 Claim this MCP server
+All credits to the original authors of <https://github.com/modelcontextprotocol/servers/tree/main/src/time>
+To claim this server, please write to [ai@apify.com](mailto:ai@apify.com).
+
+---
 ## Features
 
 - **Current time lookup** in any IANA timezone
@@ -31,20 +35,6 @@ This Actor provides a Model Context Protocol (MCP) server for time and timezone 
 
 ```sh
 apify run -p
-```
-
-### MCP Client Config Example
-
-```json
-{
-    "mcpServers": {
-        "time": {
-            "type": "stdio",
-            "command": "uvx",
-            "args": ["mcp-server-time"]
-        }
-    }
-}
 ```
 
 ### Example Interactions
@@ -103,6 +93,6 @@ Each tool call is billed per event. See `.actor/pay_per_event.json` and `src/con
 
 ---
 
-## Credits & License
+## Claim this server
 
-Maintained by Apify. MIT License.
+To claim ownership or manage this MCP server, visit the [Model Context Protocol claim page](https://github.com/modelcontextprotocol/servers/tree/main/src/time).
