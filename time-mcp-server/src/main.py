@@ -28,15 +28,6 @@ MCP_SERVER_PARAMS = StdioServerParameters(
     env={},
 )
 
-# 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
-# from .models import RemoteServerParameters  # noqa: ERA001
-
-# server_type = ServerType.HTTP # or ServerType.SSE, depending on your server type # noqa: ERA001
-# MCP_SERVER_PARAMS = RemoteServerParameters( # noqa: ERA001, RUF100
-#     url='https://your-mcp-server',  # noqa: ERA001
-#     headers={'Authorization':  'Bearer YOUR-API-KEY'},  # Optional headers, e.g., for authentication  # noqa: ERA001
-# )  # noqa: ERA001, RUF100
-
 
 async def main() -> None:
     """Run the MCP Server Actor.
