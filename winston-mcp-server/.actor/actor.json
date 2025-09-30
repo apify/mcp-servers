@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "winston-mcp-server",
+	"title": "Winston AI MCP server",
+	"description": "Run the Winston AI Model Context Protocol server, giving language models real-time access to advanced AI text and image detection, plagiarism checks, and text comparison capabilities.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

@@ -1,0 +1,14 @@
+{
+    "tool-request": {
+        "eventTitle": "Generic Tool Request",
+        "eventDescription": "Fallback charge for unclassified or generic tool calls.",
+        "eventPriceUsd": 0.0005,
+        "unit": "call"
+    },
+    "winston-ai-credits-consumed": {
+        "eventTitle": "Input count based price event",
+        "eventDescription": "Event fired by input-based tools, where the price is determined by token consumption.",
+        "eventPriceUsd": 0.000058,
+        "unit": "call"
+    }
+}
