@@ -33,7 +33,6 @@ To connect to this MCP server, use the following configuration in your MCP clien
 All credits to the original authors of [https://github.com/fetchSERP/fetchserp-mcp-server-node#seo--analysis](https://github.com/fetchSERP/fetchserp-mcp-server-node#seo--analysis)
 To claim this server, please write to [ai@apify.com](mailto:ai@apify.com).
 
---- COPY PASTE SOURCE REPOSITORY GITHUB README HERE ---
 ## Features
 
 This MCP server provides access to all FetchSERP API endpoints:
