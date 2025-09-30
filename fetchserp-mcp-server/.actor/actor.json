@@ -1,0 +1,14 @@
+{
+	"actorSpecification": 1,
+	"name": "fetchserp-mcp-server",
+	"title": "FetchSERP MCP server",
+	"description": "A Model Context Protocol (MCP) server that exposes the FetchSERP API for SEO, SERP analysis, web scraping, and keyword research.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

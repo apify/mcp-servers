@@ -1,0 +1,92 @@
+{
+    "get_backlinks": {
+        "eventTitle": "Get Backlinks",
+        "eventDescription": "Get backlinks for a given domain.",
+        "eventPriceUsd": 0.002
+    },
+    "get_domain_info": {
+        "eventTitle": "Get Domain Info",
+        "eventDescription": "Get domain info including DNS records, WHOIS data, SSL certificates, and technology stack.",
+        "eventPriceUsd": 0.005
+    },
+    "get_domain_emails": {
+        "eventTitle": "Get Domain Emails",
+        "eventDescription": "Retrieve emails from a given domain.",
+        "eventPriceUsd": 0.002
+    },
+    "get_playwright_mcp": {
+        "eventTitle": "Get Playwright MCP",
+        "eventDescription": "Use GPT-4.1 to remote control a browser via a Playwright MCP server.",
+        "eventPriceUsd": 0.015
+    },
+    "get_webpage_seo_analysis": {
+        "eventTitle": "Get Webpage SEO Analysis",
+        "eventDescription": "Get SEO analysis for a given url.",
+        "eventPriceUsd": 0.005
+    },
+    "get_webpage_ai_analysis": {
+        "eventTitle": "Get Webpage AI Analysis",
+        "eventDescription": "Analyze a web page with AI.",
+        "eventPriceUsd": 0.01
+    },
+    "generate_content": {
+        "eventTitle": "Generate content for WordPress or Socials",
+        "eventDescription": "Generate content using AI with customizable prompts and models.",
+        "eventPriceUsd": 0.1
+    },
+    "get_moz_analysis": {
+        "eventTitle": "Get Moz Analysis",
+        "eventDescription": "Get Moz domain analysis data.",
+        "eventPriceUsd": 0.015
+    },
+    "get_keywords_search_volume": {
+        "eventTitle": "Get Keywords Search Volume",
+        "eventDescription": "Get search volume for given keywords.",
+        "eventPriceUsd": 0.002
+    },
+    "get_keywords_suggestions": {
+        "eventTitle": "Get Keywords Suggestions",
+        "eventDescription": "Get keyword suggestions based on a url or a list of keywords.",
+        "eventPriceUsd": 0.003
+    },
+    "get_long_tail_keywords": {
+        "eventTitle": "Get Long-Tail Keywords",
+        "eventDescription": "Generate long-tail keywords for a given keyword.",
+        "eventPriceUsd": 0.01
+    },
+    "get_serp_results": {
+        "eventTitle": "Get SERP Results",
+        "eventDescription": "Get search engine results.",
+        "eventPriceUsd": 0.002
+    },
+    "get_serp_ai_mode": {
+        "eventTitle": "Get SERP AI Mode",
+        "eventDescription": "Get SERP with AI Overview and AI Mode response.",
+        "eventPriceUsd": 0.015
+    },
+    "check_page_indexation": {
+        "eventTitle": "Check Page Indexation",
+        "eventDescription": "Check if a domain is indexed for a given keyword.",
+        "eventPriceUsd": 0.001
+    },
+    "get_domain_ranking": {
+        "eventTitle": "Get Domain Ranking",
+        "eventDescription": "Get domain ranking for a given keyword.",
+        "eventPriceUsd": 0.001
+    },
+    "scrape_domain_or_webpage": {
+        "eventTitle": "Scrape Domain or Webpage",
+        "eventDescription": "Scrape a domain or a web page without JS.",
+        "eventPriceUsd": 0.001
+    },
+    "scrape_webpage_js": {
+        "eventTitle": "Scrape Webpage with JS",
+        "eventDescription": "Scrape a web page with custom JavaScript.",
+        "eventPriceUsd": 0.005
+    },
+    "scrape_webpage_js_proxy": {
+        "eventTitle": "Scrape Webpage with JS and Proxy",
+        "eventDescription": "Scrape a web page with JS and proxy.",
+        "eventPriceUsd": 0.015
+    }
+}
