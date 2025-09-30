@@ -1,9 +1,4 @@
 {
-    "actor-start": {
-        "eventTitle": "MCP server startup",
-        "eventDescription": "Initial fee for starting the Kiwi MCP Server Actor",
-        "eventPriceUsd": 0.1
-    },
     "search-flight": {
         "eventTitle": "Flight search",
         "eventDescription": "Fee for searching flights using the Kiwi.com flight search engine.",
