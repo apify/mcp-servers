@@ -95,7 +95,9 @@ async function mcpPostHandler(req: Request, res: Response) {
             await server.connect(transport);
 
             // Charge for the request
-            await chargeMessageRequest(req.body);
+                const { method, params } = req.body;
+                const chargeParams = params && typeof params.tool === 'string' ? { tool: params.tool } : undefined;
+                await chargeMessageRequest({ method, params: chargeParams });
             
             await transport.handleRequest(req, res, req.body);
             return; // Already handled
@@ -113,7 +115,9 @@ async function mcpPostHandler(req: Request, res: Response) {
         }
 
         // Charge for the request
-        await chargeMessageRequest(req.body);
+    const { method, params } = req.body;
+    const chargeParams = params && typeof params.tool === 'string' ? { tool: params.tool } : undefined;
+    await chargeMessageRequest({ method, params: chargeParams });
         // Handle the request with existing transport - no need to reconnect
         // The existing transport is already connected to the server
         await transport.handleRequest(req, res, req.body);
