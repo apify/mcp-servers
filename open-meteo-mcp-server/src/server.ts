@@ -95,9 +95,9 @@ async function mcpPostHandler(req: Request, res: Response) {
             await server.connect(transport);
 
             // Charge for the request
-                const { method, params } = req.body;
-                const chargeParams = params && typeof params.tool === 'string' ? { tool: params.tool } : undefined;
-                await chargeMessageRequest({ method, params: chargeParams });
+            const { method, params } = req.body;
+            const chargeParams = params && typeof params.tool === 'string' ? { tool: params.tool } : undefined;
+            await chargeMessageRequest({ method, params: chargeParams });
             
             await transport.handleRequest(req, res, req.body);
             return; // Already handled
