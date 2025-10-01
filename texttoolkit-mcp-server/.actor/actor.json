@@ -1,0 +1,14 @@
+{
+	"actorSpecification": 1,
+	"name": "texttoolkit-mcp-server",
+	"title": "TextToolKit MCP server",
+	"description": "A Model Context Protocol (MCP) server providing advanced text transformation, formatting, and analysis tools for AI workflows and automation.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
