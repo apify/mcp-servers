@@ -1,0 +1,27 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "tavily-search": {
+        "eventTitle": "Price for Tavily search request",
+        "eventDescription": "Fee for performing a web search using Tavily API.",
+        "eventPriceUsd": 0.10
+    },
+    "tavily-extract": {
+        "eventTitle": "Price for Tavily extract request",
+        "eventDescription": "Fee for extracting content from web pages using Tavily API.",
+        "eventPriceUsd": 0.08
+    },
+    "tavily-map": {
+        "eventTitle": "Price for Tavily map request",
+        "eventDescription": "Fee for mapping website structure using Tavily API.",
+        "eventPriceUsd": 0.15
+    },
+    "tavily-crawl": {
+        "eventTitle": "Price for Tavily crawl request",
+        "eventDescription": "Price for Tavily crawl request",
+        "eventPriceUsd": 0.20
+    }
+}
