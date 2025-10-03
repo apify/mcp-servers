@@ -4,52 +4,52 @@
         "eventDescription": "Initial fee for starting the MCP Server Actor",
         "eventPriceUsd": 0.1
     },
-    "get-income-statements": {
+    "get_income_statements": {
         "eventTitle": "Get income statements",
         "eventDescription": "Fee for getting income statements for a company.",
         "eventPriceUsd": 0.01
     },
-    "get-balance-sheets": {
+    "get_balance_sheets": {
         "eventTitle": "Get balance sheets",
         "eventDescription": "Fee for getting balance sheets for a company.",
         "eventPriceUsd": 0.01
     },
-    "get-cash-flow-statements": {
+    "get_cash_flow_statements": {
         "eventTitle": "Get cash flow statements",
         "eventDescription": "Fee for getting cash flow statements for a company.",
         "eventPriceUsd": 0.01
     },
-    "get-current-stock-price": {
+    "get_current_stock_price": {
         "eventTitle": "Get current stock price",
         "eventDescription": "Fee for getting the current / latest price of a company.",
         "eventPriceUsd": 0.01
     },
-    "get-historical-stock-prices": {
+    "get_historical_stock_prices": {
         "eventTitle": "Get historical stock prices",
         "eventDescription": "Fee for getting historical stock prices for a company.",
         "eventPriceUsd": 0.01
     },
-    "get-company-news": {
+    "get_company_news": {
         "eventTitle": "Get company news",
         "eventDescription": "Fee for getting news for a company.",
         "eventPriceUsd": 0.01
     },
-    "get-available-crypto-tickers": {
+    "get_available_crypto_tickers": {
         "eventTitle": "Get available crypto tickers",
         "eventDescription": "Fee for getting all available crypto tickers.",
         "eventPriceUsd": 0.001
     },
-    "get-crypto-prices": {
+    "get_crypto_prices": {
         "eventTitle": "Get crypto prices",
         "eventDescription": "Fee for getting current prices for a crypto currency.",
         "eventPriceUsd": 0.01
     },
-    "get-historical-crypto-prices": {
+    "get_historical_crypto_prices": {
         "eventTitle": "Get historical crypto prices",
         "eventDescription": "Fee for getting historical prices for a crypto currency.",
         "eventPriceUsd": 0.01
     },
-    "get-current-crypto-price": {
+    "get_current_crypto_price": {
         "eventTitle": "Get current crypto price",
         "eventDescription": "Fee for getting the current / latest price of a crypto currency.",
         "eventPriceUsd": 0.01
