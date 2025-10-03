@@ -4,6 +4,23 @@
  */
 import { Actor, log } from 'apify';
 
+const CHARGEABLE_EVENT_NAMES = [
+    'actor-start',
+    'tavily-search',
+    'tavily-extract',
+    'tavily-map',
+    'tavily-crawl',
+] as const;
+
+type ChargeableRequest = {
+    method: string;
+} | {
+    method: string;
+    params?: {
+        name?: string;
+    };
+}
+
 /**
  * Charges the user for a message request based on the method type.
  * Supported method types are mapped to specific billing events.
@@ -11,44 +28,26 @@ import { Actor, log } from 'apify';
  * @param request - The request object containing the method string.
  * @returns Promise<void>
  */
-export async function chargeMessageRequest(request: { method: string }): Promise<void> {
-    const { method } = request;
+export async function chargeMessageRequest(request: ChargeableRequest): Promise<void> {
+    const method = request.method ?? null;
+    const name = 'params' in request ? request.params?.name : null;
 
-    // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
-    // on the method names and protocol messages
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
-        // Charge for tool-related requests
-    } else if (method.startsWith('tools/call') && request.method.includes('tavily-search')) {
-        await Actor.charge({ eventName: 'tavily-search' });
-        log.info(`Charged for Tavily search: ${method}`);
-    } else if (method.startsWith('tools/call') && request.method.includes('tavily-extract')) {
-        await Actor.charge({ eventName: 'tavily-extract' });
-        log.info(`Charged for Tavily extract: ${method}`);
-    } else if (method.startsWith('tools/call') && request.method.includes('tavily-map')) {
-        await Actor.charge({ eventName: 'tavily-map' });
-        log.info(`Charged for Tavily map: ${method}`);
-    } else if (method.startsWith('tools/call') && request.method.includes('tavily-crawl')) {
-        await Actor.charge({ eventName: 'tavily-crawl' });
-        log.info(`Charged for Tavily crawl: ${method}`);
-    } else if (method.startsWith('tools/')) {
-        await Actor.charge({ eventName: 'tool-request' });
-        log.info(`Charged for tool request: ${method}`);
-        // Charge for resource-related requests
-    } else if (method.startsWith('resources/')) {
-        await Actor.charge({ eventName: 'resource-request' });
-        log.info(`Charged for resource request: ${method}`);
-        // Charge for prompt-related requests
-    } else if (method.startsWith('prompts/')) {
-        await Actor.charge({ eventName: 'prompt-request' });
-        log.info(`Charged for prompt request: ${method}`);
-        // Charge for completion-related requests
-    } else if (method.startsWith('completion/')) {
-        await Actor.charge({ eventName: 'completion-request' });
-        log.info(`Charged for completion request: ${method}`);
-        // Do not charge for other methods
+    if (!method) {
+        log.warning(`Not charging for unknown method`);
+        return;
+    }
+
+    if (name) {
+        const knownEventName = CHARGEABLE_EVENT_NAMES.find(
+            (eventName) => name.includes(eventName)
+        );
+
+        if (knownEventName) {
+            await Actor.charge({ eventName: knownEventName });
+            log.info(`Charged for ${knownEventName} request: ${method}`);
+        } else {
+            log.info(`Not charging for unknown event ${name}.`);
+        }
     } else {
         log.info(`Not charging for method: ${method}`);
     }
