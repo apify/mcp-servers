@@ -1,0 +1,22 @@
+{
+    "actor-start": {
+        "eventTitle": "MCP server startup",
+        "eventDescription": "Initial fee for starting the MCP Server Actor",
+        "eventPriceUsd": 0.1
+    },
+    "define": {
+        "eventTitle": "Word definition lookup",
+        "eventDescription": "Fee for retrieving definitions using the define tool.",
+        "eventPriceUsd": 0.001
+    },
+    "example_usage": {
+        "eventTitle": "Example usage lookup",
+        "eventDescription": "Fee for retrieving example usage sentences using the example_usage tool.",
+        "eventPriceUsd": 0.001
+    },
+    "synonyms": {
+        "eventTitle": "Synonyms lookup",
+        "eventDescription": "Fee for retrieving synonyms using the synonyms tool.",
+        "eventPriceUsd": 0.001
+    }
+}

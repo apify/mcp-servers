@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "dictionary-mcp-server",
+	"title": "Dictionary MCP Server",
+	"description": "Dictionary and thesaurus MCP server proxy exposing define, example_usage, and synonyms tools over Streamable HTTP.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "python-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}
