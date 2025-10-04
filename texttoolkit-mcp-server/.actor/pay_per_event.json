@@ -1,0 +1,12 @@
+{
+    "actor-start": {
+        "eventTitle": "Actor Start Fee",
+        "eventDescription": "Fee charged when the Actor is started.",
+        "eventPriceUsd": 0.1
+    },
+    "tool": {
+        "eventTitle": "Tool Usage Fee",
+        "eventDescription": "Fee charged for each tool usage.",
+        "eventPriceUsd": 0.05
+    }
+}
