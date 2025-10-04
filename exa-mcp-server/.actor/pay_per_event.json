@@ -1,0 +1,67 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "tool-request": {
+        "eventTitle": "Generic tool request",
+        "eventDescription": "Fallback fee when tool cannot be identified.",
+        "eventPriceUsd": 0.03
+    },
+    "exa-get-code-context": {
+        "eventTitle": "Exa: get_code_context_exa",
+        "eventDescription": "Search and return relevant code/documentation context.",
+        "eventPriceUsd": 0.06
+    },
+    "exa-web-search": {
+        "eventTitle": "Exa: web_search_exa",
+        "eventDescription": "Perform real-time Exa web search.",
+        "eventPriceUsd": 0.04
+    },
+    "exa-company-research": {
+        "eventTitle": "Exa: company_research",
+        "eventDescription": "Crawl and summarize company information.",
+        "eventPriceUsd": 0.08
+    },
+    "exa-crawling": {
+        "eventTitle": "Exa: crawling",
+        "eventDescription": "Fetch and extract content from specific URLs.",
+        "eventPriceUsd": 0.02
+    },
+    "exa-linkedin-search": {
+        "eventTitle": "Exa: linkedin_search",
+        "eventDescription": "Search LinkedIn for companies and people via Exa.",
+        "eventPriceUsd": 0.09
+    },
+    "exa-deep-research-start": {
+        "eventTitle": "Exa: deep_researcher_start",
+        "eventDescription": "Start a deep research task.",
+        "eventPriceUsd": 0.12
+    },
+    "exa-deep-research-check": {
+        "eventTitle": "Exa: deep_researcher_check",
+        "eventDescription": "Check status and retrieve deep research results.",
+        "eventPriceUsd": 0.05
+    },
+    "prompt-request": {
+        "eventTitle": "Price for completing a prompt request",
+        "eventDescription": "Flat fee for completing a prompt request.",
+        "eventPriceUsd": 0.01
+    },
+    "completion-request": {
+        "eventTitle": "Price for completing a completion request",
+        "eventDescription": "Flat fee for completing a completion request.",
+        "eventPriceUsd": 0.001
+    },
+    "resource-request": {
+        "eventTitle": "Price for completing a resource request",
+        "eventDescription": "Flat fee for completing a resource request.",
+        "eventPriceUsd": 0.025
+    },
+    "list-request": {
+        "eventTitle": "Price for completing a list request",
+        "eventDescription": "Flat fee for completing a list request.",
+        "eventPriceUsd": 0.001
+    }
+}
