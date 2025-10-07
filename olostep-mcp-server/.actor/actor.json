@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "olostep-mcp-server",
+	"title": "Olostep MCP Server",
+	"description": "Model Context Protocol server for web scraping, content extraction, and Google search capabilities using Olostep API.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

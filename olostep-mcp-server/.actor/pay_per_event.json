@@ -1,0 +1,22 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "get_webpage_content": {
+        "eventTitle": "Price for webpage content extraction",
+        "eventDescription": "Flat fee for extracting and processing webpage content with markdown formatting.",
+        "eventPriceUsd": 0.08
+    },
+    "get_website_urls": {
+        "eventTitle": "Price for website URL discovery",
+        "eventDescription": "Flat fee for discovering and mapping website URLs with search relevance.",
+        "eventPriceUsd": 0.08
+    },
+    "google_search": {
+        "eventTitle": "Price for Google search",
+        "eventDescription": "Flat fee for performing Google search with structured data extraction.",
+        "eventPriceUsd": 0.08
+    }
+}
