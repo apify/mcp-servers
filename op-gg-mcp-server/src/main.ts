@@ -17,9 +17,13 @@ import { startServer } from './server.js';
 // import { router } from './routes.js';
 
 // Configuration constants for the MCP server
-// Command to run the Everything MCP Server
-// TODO: Do not forget to install the MCP server in package.json (using `npm install ...`)
-const MCP_COMMAND = ['npx', '@modelcontextprotocol/server-everything'];
+// Command to run the OP.GG MCP Server via supergateway (direct connection)
+const MCP_COMMAND = [
+    'npx',
+    'supergateway',
+    '--streamableHttp',
+    'https://mcp-api.op.gg/mcp'
+];
 
 // Check if the Actor is running in standby mode
 const STANDBY_MODE = process.env.APIFY_META_ORIGIN === 'STANDBY';
@@ -30,11 +34,13 @@ const SERVER_PORT = parseInt(process.env.ACTOR_WEB_SERVER_PORT || '3001', 10);
 await Actor.init();
 
 // Charge for Actor start
-await Actor.charge({ eventName: 'actor-start' });
+await Actor.charge({ eventName: 'apify-actor-start' });
 
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, we should not run the MCP server
-    const msg = 'This Actor is not meant to be run directly. It should be run in standby mode.';
+    const msg = 'This Actor is intended to run in standby mode. Please use an MCP client to connect.';
+    const config = '{"mcpServers":{"opgg":{"url":"https://mcp-servers--op-gg-mcp-server.apify.actor/mcp","headers":{"Authorization":"Bearer your-apify-token"}}}}';
+    log.info(`MCP Client Configuration: ${config}`);
     log.error(msg);
     await Actor.exit({ statusMessage: msg });
 }

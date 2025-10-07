@@ -1,13 +1,33 @@
 {
-    "actor-start": {
+    "apify-actor-start": {
         "eventTitle": "Price for Actor start",
         "eventDescription": "Flat fee for starting an Actor run.",
-        "eventPriceUsd": 0.1
+        "eventPriceUsd": 0.01
+    },
+    "lol-tool-request": {
+        "eventTitle": "League of Legends Tool Request",
+        "eventDescription": "Fee for executing League of Legends tool requests (champion data, summoner info, meta analysis).",
+        "eventPriceUsd": 0.05
+    },
+    "tft-tool-request": {
+        "eventTitle": "Teamfight Tactics Tool Request",
+        "eventDescription": "Fee for executing Teamfight Tactics tool requests (meta decks, item builds, champion recommendations).",
+        "eventPriceUsd": 0.04
+    },
+    "valorant-tool-request": {
+        "eventTitle": "Valorant Tool Request",
+        "eventDescription": "Fee for executing Valorant tool requests (character meta, leaderboards, match history).",
+        "eventPriceUsd": 0.04
+    },
+    "esports-tool-request": {
+        "eventTitle": "Esports Tool Request",
+        "eventDescription": "Fee for executing Esports tool requests (schedules, team standings).",
+        "eventPriceUsd": 0.03
     },
     "tool-request": {
-        "eventTitle": "Price for completing a tool request",
-        "eventDescription": "Flat fee for completing a tool request.",
-        "eventPriceUsd": 0.05
+        "eventTitle": "General Tool Request",
+        "eventDescription": "Fee for executing general tool requests.",
+        "eventPriceUsd": 0.03
     },
     "prompt-request": {
         "eventTitle": "Price for completing a prompt request",
@@ -22,7 +42,7 @@
     "resource-request": {
         "eventTitle": "Price for completing a resource request",
         "eventDescription": "Flat fee for completing a resource request.",
-        "eventPriceUsd": 0.025
+        "eventPriceUsd": 0.02
     },
     "list-request": {
         "eventTitle": "Price for completing a list request",

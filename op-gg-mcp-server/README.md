@@ -1,104 +1,86 @@
-## MCP server template
+## OP.GG MCP Server
 
-<!-- This is an Apify template readme -->
+An Apify Actor that provides access to OP.GG gaming data through the Model Context Protocol (MCP). This server enables AI agents to retrieve League of Legends, Teamfight Tactics, Valorant, and Esports data from OP.GG.
 
-A template for running and monetizing a [Model Context Protocol](https://modelcontextprotocol.io) server using [stdio](https://modelcontextprotocol.io/docs/concepts/transports#standard-input%2Foutput-stdio) transport on [Apify platform](https://docs.apify.com/platform).
-This allows you to run any stdio MCP server as a [standby Actor](https://docs.apify.com/platform/actors/development/programming-interface/standby) and connect via either the [streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http) with an [MCP client](https://modelcontextprotocol.io/clients).
+**About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com).
 
-## How to use
+## Connection URL
+MCP clients can connect to this server at:
 
-Change the `MCP_COMMAND` to spawn your stdio MCP server in `src/main.ts`, and don't forget to install the required MCP server in the `package.json` (using `npm install ...`).
-By default, this template runs an [Everything MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything) using the following command:
-
-```
-const MCP_COMMAND = [
-    'npx',
-    '@modelcontextprotocol/server-everything',
-];
+```text
+https://mcp-servers--op-gg-mcp-server.apify.actor/mcp
 ```
 
-Alternatively, you can use the [`mcp-remote`](https://www.npmjs.com/package/mcp-remote) tool to turn a remote MCP server into an Actor. For example, to connect to a remote server with authentication:
-
-```
-const MCP_COMMAND = [
-    'npx',
-    'mcp-remote',
-    'https://mcp.apify.com',
-    '--header',
-    'Authorization: Bearer TOKEN',
-];
-```
-
-Feel free to configure billing logic in `.actor/pay_per_event.json` and `src/billing.ts`.
-
-[Push your Actor](https://docs.apify.com/academy/deploying-your-code/deploying) to the Apify platform, configure [standby mode](https://docs.apify.com/platform/actors/development/programming-interface/standby), and then connect to the Actor standby URL with your MCP client using the endpoint: `https://me--my-mcp-server.apify.actor/mcp` ([streamable HTTP transport](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports#streamable-http)).
-
-**Important:** When connecting to your deployed MCP server, you must pass your Apify API token in the `Authorization` header as a Bearer token. For example:
-
-```
-Authorization: Bearer <YOUR_APIFY_API_TOKEN>
-```
-
-This is required for authentication and to access your Actor endpoint.
-
-### Pay per event
-
-This template uses the [Pay Per Event (PPE)](https://docs.apify.com/platform/actors/publishing/monetize#pay-per-event-pricing-model) monetization model, which provides flexible pricing based on defined events.
-
-To charge users, define events in JSON format and save them on the Apify platform. Here is an example schema with the `tool-request` event:
+## Client Configuration
+To connect to this MCP server, use the following configuration in your MCP client:
 
 ```json
-[
-    {
-        "tool-request": {
-            "eventTitle": "Price for completing a tool request",
-            "eventDescription": "Flat fee for completing a tool request.",
-            "eventPriceUsd": 0.05
-        }
+{
+  "mcpServers": {
+    "opgg": {
+      "url": "https://mcp-servers--op-gg-mcp-server.apify.actor/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_APIFY_TOKEN"
+      }
     }
-]
+  }
+}
 ```
 
-In the Actor, trigger the event with:
+**Note:** Replace `YOUR_APIFY_TOKEN` with your actual Apify API token. You can find your token in the [Apify Console](https://console.apify.com/account/integrations).
 
-```typescript
-await Actor.charge({ eventName: 'tool-request' });
-```
+## Available Tools
 
-This approach allows you to programmatically charge users directly from your Actor, covering the costs of execution and related services.
+The OP.GG MCP Server provides access to 20+ tools across multiple gaming platforms:
 
-To set up the PPE model for this Actor:
+### League of Legends
+- **lol-champion-leader-board**: Get ranking board data for League of Legends champions
+- **lol-champion-analysis**: Provides analysis data for League of Legends champions (counter and ban/pick data available in the "weakCounters" field)
+- **lol-champion-meta-data**: Retrieves meta data for a specific champion, including statistics and performance metrics
+- **lol-champion-skin-sale**: Retrieves information about champion skins that are currently on sale
+- **lol-summoner-search**: Search for League of Legends summoner information and stats
+- **lol-champion-positions-data**: Retrieves position statistics data for League of Legends champions, including win rates and pick rates by position
+- **lol-summoner-game-history**: Retrieve recent game history for a League of Legends summoner
+- **lol-summoner-renewal**: Refresh and update League of Legends summoner match history and stats
 
-- **Configure Pay Per Event**: establish the Pay Per Event pricing schema in the Actor's **Monetization settings**. First, set the **Pricing model** to `Pay per event` and add the schema. An example schema can be found in [pay_per_event.json](.actor/pay_per_event.json).
+### Esports (League of Legends)
+- **esports-lol-schedules**: Get upcoming LoL match schedules
+- **esports-lol-team-standings**: Get team standings for a LoL league
 
-## Resources
+### Teamfight Tactics (TFT)
+- **tft-meta-trend-deck-list**: TFT deck list tool for retrieving current meta decks
+- **tft-meta-item-combinations**: TFT tool for retrieving information about item combinations and recipes
+- **tft-champion-item-build**: TFT tool for retrieving champion item build information
+- **tft-recommend-champion-for-item**: TFT tool for retrieving champion recommendations for a specific item
+- **tft-play-style-comment**: This tool provides comments on the playstyle of TFT champions
 
-- [What is Anthropic's Model Context Protocol?](https://blog.apify.com/what-is-model-context-protocol/)
-- [How to use MCP with Apify Actors](https://blog.apify.com/how-to-use-mcp/)
-- [Apify MCP server](https://mcp.apify.com)
-- [Apify MCP server documentation](https://docs.apify.com/platform/integrations/mcp)
-- [Apify MCP client](https://apify.com/jiri.spilka/tester-mcp-client)
-- [Model Context Protocol documentation](https://modelcontextprotocol.io)
-- [TypeScript tutorials in Academy](https://docs.apify.com/academy/node-js)
-- [Apify SDK documentation](https://docs.apify.com/sdk/js/)
+### Valorant
+- **valorant-meta-maps**: Valorant map meta data
+- **valorant-meta-characters**: Valorant character meta data
+- **valorant-leaderboard**: Fetch Valorant leaderboard by region
+- **valorant-agents-composition-with-map**: Retrieve agent composition data for a Valorant map
+- **valorant-characters-statistics**: Retrieve character statistics data for Valorant, optionally filtered by map
+- **valorant-player-match-history**: Retrieve match history for a Valorant player using their game name and tag line
 
+## Features
 
-## Getting started
+- **Real-time Gaming Data**: Access current game statistics, leaderboards, and meta information
+- **Multi-Game Support**: Covers League of Legends, Teamfight Tactics, Valorant, and Esports
+- **Player Analytics**: Get detailed player statistics and match histories
+- **Meta Analysis**: Retrieve current meta trends, champion builds, and strategic data
+- **Competitive Insights**: Access professional esports schedules and team standings
 
-For complete information [see this article](https://docs.apify.com/platform/actors/development#build-actor-locally). To run the Actor use the following command:
+## 🚩 Claim this MCP server
+All credits to the original authors of [https://github.com/opgginc/opgg-mcp](https://github.com/opgginc/opgg-mcp)
 
-```bash
-apify run
-```
-
-## Deploy to Apify
-
-### Connect Git repository to Apify
-
-If you've created a Git repository for the project, you can easily connect to Apify:
-
-1. Go to [Actor creation page](https://console.apify.com/actors/new)
-2. Click on **Link Git Repository** button
+## References
+To learn more about Apify and Actors, take a look at the following resources:
+- [Apify SDK for JavaScript documentation](https://docs.apify.com/sdk/js)
+- [Apify SDK for Python documentation](https://docs.apify.com/sdk/python)
+- [Apify Platform documentation](https://docs.apify.com/platform)
+- [Apify MCP Server](https://docs.apify.com/platform/integrations/mcp)
+- [Webinar: Building and Monetizing MCP Servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)
+- [Join our developer community on Discord](https://discord.com/invite/jyEM2PRvMU)
 
 ### Push project on your local machine to Apify
 
