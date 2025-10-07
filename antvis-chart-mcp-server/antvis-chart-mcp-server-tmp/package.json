@@ -1,0 +1,64 @@
+{
+  "name": "@antv/mcp-server-chart",
+  "description": "A Model Context Protocol server for generating charts using AntV. This is a TypeScript-based MCP server that provides chart generation capabilities. It allows you to create various types of charts through MCP tools.",
+  "version": "0.9.1",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "exports": {
+    "./sdk": "./build/sdk.js"
+  },
+  "scripts": {
+    "prebuild": "rm -rf build/*",
+    "build": "tsc && tsc-alias -p tsconfig.json",
+    "postbuild": "chmod +x build/index.js",
+    "start": "npx @modelcontextprotocol/inspector node build/index.js",
+    "prepare": "husky && npm run build",
+    "prepublishOnly": "npm run build",
+    "test": "vitest"
+  },
+  "lint-staged": {
+    "*.{ts,js,json}": [
+      "biome check --write",
+      "biome format --write",
+      "biome lint"
+    ]
+  },
+  "bin": {
+    "mcp-server-chart": "./build/index.js"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "files": ["build"],
+  "keywords": ["antv", "mcp", "data-visualization", "chart", "graph", "map"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/antvis/mcp-server-chart"
+  },
+  "author": {
+    "name": "AntV",
+    "url": "https://antv.antgroup.com/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.4",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "zod": "^3.25.16",
+    "zod-to-json-schema": "^3.24.5"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@modelcontextprotocol/inspector": "^0.16.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.15.21",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
+  }
+}
