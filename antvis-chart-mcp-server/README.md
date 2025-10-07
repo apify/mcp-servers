@@ -2,6 +2,8 @@
 
 A Model Context Protocol server for generating charts using [AntV](https://github.com/antvis/). This server provides chart generation and data analysis capabilities with support for 25+ chart types including area, bar, line, pie, radar, scatter plots, maps, and specialized visualizations like treemaps, sankey diagrams, and word clouds.
 
+**Chart Output:** All chart generation tools return direct links to high-quality PNG images of the generated charts, making them easy to view, share, and embed in documents or applications.
+
 **About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com).
 
 ## Connection URL
