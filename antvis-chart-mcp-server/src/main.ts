@@ -17,9 +17,8 @@ import { startServer } from './server.js';
 // import { router } from './routes.js';
 
 // Configuration constants for the MCP server
-// Command to run the Everything MCP Server
-// TODO: Do not forget to install the MCP server in package.json (using `npm install ...`)
-const MCP_COMMAND = ['npx', '@modelcontextprotocol/server-everything'];
+// Command to run the AntV Chart MCP Server
+const MCP_COMMAND = ['npx', '@antv/mcp-server-chart'];
 
 // Check if the Actor is running in standby mode
 const STANDBY_MODE = process.env.APIFY_META_ORIGIN === 'STANDBY';

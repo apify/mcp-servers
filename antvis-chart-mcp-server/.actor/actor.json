@@ -1,8 +1,8 @@
 {
 	"actorSpecification": 1,
 	"name": "antvis-chart-mcp-server",
-	"title": "TypeScript MCP server",
-	"description": "TypeScript Model Context Protocol server.",
+	"title": "AntV Chart MCP Server",
+	"description": "A Model Context Protocol server for generating charts using AntV. This server provides chart generation and data analysis capabilities with support for 25+ chart types including area, bar, line, pie, radar, scatter plots, maps, and specialized visualizations like treemaps, sankey diagrams, and word clouds.",
 	"version": "0.0",
 	"buildTag": "latest",
 	"usesStandbyMode": true,
