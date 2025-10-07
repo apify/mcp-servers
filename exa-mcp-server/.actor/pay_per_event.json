@@ -1,8 +1,8 @@
 {
-    "actor-start": {
-        "eventTitle": "Price for Actor start",
-        "eventDescription": "Flat fee for starting an Actor run.",
-        "eventPriceUsd": 0.1
+    "apify-actor-start": {
+        "eventTitle": "Synthetic Actor start (covered first 5s)",
+        "eventDescription": "Synthetic start event charged automatically by Apify. Do not charge manually in code.",
+        "eventPriceUsd": 0.00005
     },
     "tool-request": {
         "eventTitle": "Generic tool request",

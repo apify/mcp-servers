@@ -18,5 +18,7 @@
 		"required": []
 	},
 	"dockerfile": "../Dockerfile",
-	"webServerMcpPath": "/mcp"
+	"webServerMcpPath": "/mcp",
+	"minMemoryMbytes": 256,
+	"maxMemoryMbytes": 1024
 }

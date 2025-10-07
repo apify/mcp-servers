@@ -24,8 +24,9 @@ export async function chargeMessageRequest(request: { method: string; params?: M
     // on the method names and protocol messages
     // Charge for list requests (e.g., tools/list, resources/list, etc.)
     if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
+        const result = await Actor.charge({ eventName: 'list-request' });
         log.info(`Charged for list request: ${method}`);
+        await handleChargeLimit(result);
         // Charge for tool-related requests
     } else if (method.startsWith('tools/')) {
         // Try to infer specific tool name from request params for better pricing transparency
@@ -43,22 +44,42 @@ export async function chargeMessageRequest(request: { method: string; params?: M
             deep_researcher_check: 'exa-deep-research-check',
         };
         const eventName = exaToolToEvent[toolName] || 'tool-request';
-        await Actor.charge({ eventName });
+        const result = await Actor.charge({ eventName });
         log.info(`Charged for tool request: ${method} -> ${eventName} (tool=${toolName})`);
+        await handleChargeLimit(result);
         // Charge for resource-related requests
     } else if (method.startsWith('resources/')) {
-        await Actor.charge({ eventName: 'resource-request' });
+        const result = await Actor.charge({ eventName: 'resource-request' });
         log.info(`Charged for resource request: ${method}`);
+        await handleChargeLimit(result);
         // Charge for prompt-related requests
     } else if (method.startsWith('prompts/')) {
-        await Actor.charge({ eventName: 'prompt-request' });
+        const result = await Actor.charge({ eventName: 'prompt-request' });
         log.info(`Charged for prompt request: ${method}`);
+        await handleChargeLimit(result);
         // Charge for completion-related requests
     } else if (method.startsWith('completion/')) {
-        await Actor.charge({ eventName: 'completion-request' });
+        const result = await Actor.charge({ eventName: 'completion-request' });
         log.info(`Charged for completion request: ${method}`);
+        await handleChargeLimit(result);
         // Do not charge for other methods
     } else {
         log.info(`Not charging for method: ${method}`);
+    }
+}
+
+// If the event or overall limit is reached, gracefully end the Actor.
+async function handleChargeLimit(result: {
+    eventChargeLimitReached?: boolean;
+    chargeableWithinLimit?: Record<string, number>;
+}) {
+    // Only act on explicit eventChargeLimitReached to avoid false positives when PPE is disabled
+    if (result.eventChargeLimitReached) {
+        log.warning('Charging limit reached for this event. Finishing the Actor run.');
+        await Actor.exit();
+        return;
+    }
+    if (result.chargeableWithinLimit) {
+        log.info('Chargeable within limit state', { chargeableWithinLimit: result.chargeableWithinLimit });
     }
 }

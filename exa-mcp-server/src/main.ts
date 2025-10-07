@@ -18,11 +18,24 @@ import { startServer } from './server.js';
 
 // Configuration constants for the MCP server
 // Use a remote Exa MCP server via mcp-remote with streamable (http) transport.
-// EXA_API_KEY is optional; if provided, it's appended as exaApiKey query param.
-const { EXA_API_KEY } = process.env;
+// EXA_API_KEY can be included in the URL. Optionally, limit tools via EXA_ENABLED_TOOLS (comma-separated or JSON array).
+const { EXA_API_KEY, EXA_ENABLED_TOOLS } = process.env;
 const EXA_URL_BASE = 'https://mcp.exa.ai/mcp';
-const EXA_URL = EXA_API_KEY ? `${EXA_URL_BASE}?exaApiKey=${encodeURIComponent(EXA_API_KEY)}` : EXA_URL_BASE;
-const MCP_COMMAND = ['npx', 'mcp-remote', EXA_URL, '--transport', 'streamable-only'];
+const exaUrlObj = new URL(EXA_URL_BASE);
+if (EXA_API_KEY) exaUrlObj.searchParams.set('exaApiKey', EXA_API_KEY);
+if (EXA_ENABLED_TOOLS && EXA_ENABLED_TOOLS.trim().length > 0) {
+    // Accept comma-separated list or JSON array; always send as JSON array in the URL
+    const tools = EXA_ENABLED_TOOLS.trim().startsWith('[')
+        ? EXA_ENABLED_TOOLS.trim()
+        : JSON.stringify(
+              EXA_ENABLED_TOOLS.split(',')
+                  .map((s) => s.trim())
+                  .filter((s) => s.length > 0),
+          );
+    exaUrlObj.searchParams.set('enabledTools', tools);
+}
+const EXA_URL = exaUrlObj.toString();
+const MCP_COMMAND = ['npx', 'mcp-remote', EXA_URL, '--transport', 'http-first'];
 
 // Check if the Actor is running in standby mode
 const STANDBY_MODE = process.env.APIFY_META_ORIGIN === 'STANDBY';
@@ -32,8 +45,7 @@ const SERVER_PORT = parseInt(process.env.ACTOR_WEB_SERVER_PORT || '3001', 10);
 // The init() call configures the Actor for its environment. It's recommended to start every Actor with an init()
 await Actor.init();
 
-// Charge for Actor start
-await Actor.charge({ eventName: 'actor-start' });
+// Note: EXA_API_KEY is optional per Exa docs. When provided, it's appended to the URL.
 
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, don't start the server. Print connection config and exit successfully.
@@ -46,23 +58,24 @@ if (!STANDBY_MODE) {
             },
         },
     };
-    const msg = `This Actor is intended to run in standby mode. Please use an MCP client to connect. Client config (single line): ${JSON.stringify(
-        cfg,
-    )}`;
+    const msg = `This Actor is intended to run in standby mode. Please use an MCP client to connect. Client config: ${JSON.stringify(cfg)}`;
     log.info(msg);
     await Actor.exit({ statusMessage: msg });
 }
 
 // In standby mode, log the MCP client configuration to help users connect
-log.info(`Standby mode: MCP client config (single line): ${JSON.stringify({
-    mcpServers: {
-        exa: {
-            type: 'http',
-            url: 'https://mcp-servers--exa-mcp-server.apify.actor/mcp',
-            headers: { Authorization: 'Bearer your-apify-token' },
+{
+    const cfg = {
+        mcpServers: {
+            exa: {
+                type: 'http',
+                url: 'https://mcp-servers--exa-mcp-server.apify.actor/mcp',
+                headers: { Authorization: 'Bearer your-apify-token' },
+            },
         },
-    },
-})}`);
+    };
+    log.info(`Standby mode: MCP client config: ${JSON.stringify(cfg)}`);
+}
 
 await startServer({
     serverPort: SERVER_PORT,
