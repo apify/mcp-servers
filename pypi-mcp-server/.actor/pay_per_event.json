@@ -1,0 +1,12 @@
+{
+  "apify-actor-start": {
+    "eventTitle": "MCP server startup",
+    "eventDescription": "Initial fee for starting the MCP Server Actor.",
+    "eventPriceUsd": 0.10
+  },
+  "tool-call": {
+    "eventTitle": "PyPI tool call",
+    "eventDescription": "Flat fee for any PyPI Query MCP tool invocation.",
+    "eventPriceUsd": 0.001
+  }
+}

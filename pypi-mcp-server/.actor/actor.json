@@ -1,0 +1,14 @@
+{
+  "actorSpecification": 1,
+  "name": "pypi-query-mcp-server",
+  "title": "PyPI Query MCP Server",
+  "description": "An Apify Actor that proxies the pypi-query-mcp-server over Streamable HTTP with optional charging and tool whitelisting.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "usesStandbyMode": true,
+  "meta": {
+    "templateId": "python-mcp-server"
+  },
+  "dockerfile": "../Dockerfile",
+  "webServerMcpPath": "/mcp"
+}
