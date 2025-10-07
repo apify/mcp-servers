@@ -4,7 +4,7 @@ from enum import Enum
 class ChargeEvents(str, Enum):
     """Chargeable events."""
 
-    ACTOR_START = 'actor-start'
+    ACTOR_START = 'apify-actor-start'
     TOOL_CALL = 'tool-call'  # flat fee for ANY PyPI tool invocation
 
 
