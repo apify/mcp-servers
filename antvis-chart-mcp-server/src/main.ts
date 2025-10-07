@@ -29,7 +29,7 @@ const SERVER_PORT = parseInt(process.env.ACTOR_WEB_SERVER_PORT || '3001', 10);
 await Actor.init();
 
 // Charge for Actor start
-await Actor.charge({ eventName: 'actor-start' });
+await Actor.charge({ eventName: 'apify-actor-start' });
 
 if (!STANDBY_MODE) {
     // If the Actor is not in standby mode, we should not run the MCP server
