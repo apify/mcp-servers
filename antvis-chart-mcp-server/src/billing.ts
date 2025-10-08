@@ -45,26 +45,32 @@ const CHART_BILLING_MAP = {
 };
 
 /**
- * Charges the user for a chart generation request based on the chart type.
- * Different chart types have different pricing tiers based on complexity.
+ * Charges the user for a chart generation request by analyzing the method string.
+ * Extracts tool name from the method and applies appropriate billing tier.
  *
- * @param toolName - The name of the chart generation tool being called
+ * @param method - The full method string that may contain a chart tool name
  * @returns Promise<void>
  */
-export async function chargeChartRequest(toolName: string): Promise<void> {
-    const billingEvent = CHART_BILLING_MAP[toolName as keyof typeof CHART_BILLING_MAP];
+export async function chargeChartRequest(method: string): Promise<void> {
+    // Find if any chart tool name is contained in the method string
+    const chartToolNames = Object.keys(CHART_BILLING_MAP);
 
-    if (billingEvent) {
-        await Actor.charge({ eventName: billingEvent });
-        log.info(`Charged for chart generation: ${toolName} -> ${billingEvent}`);
-    } else {
-        log.warning(`Unknown chart tool, not charging: ${toolName}`);
+    for (const toolName of chartToolNames) {
+        if (method.includes(toolName)) {
+            const billingEvent = CHART_BILLING_MAP[toolName as keyof typeof CHART_BILLING_MAP];
+            await Actor.charge({ eventName: billingEvent });
+            log.info(`Charged for chart generation: ${toolName} -> ${billingEvent} (found in method: ${method})`);
+            return;
+        }
     }
+
+    // If no specific chart tool found, don't charge
+    log.info(`No chart tool found in method: ${method} - not charging`);
 }
 
 /**
  * Charges the user for a message request based on the method type.
- * Supported method types are mapped to specific billing events.
+ * For tool-related requests, delegates to chargeChartRequest.
  *
  * @param request - The request object containing the method string.
  * @returns Promise<void>
@@ -72,30 +78,11 @@ export async function chargeChartRequest(toolName: string): Promise<void> {
 export async function chargeMessageRequest(request: { method: string }): Promise<void> {
     const { method } = request;
 
-    // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
-    // on the method names and protocol messages
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
-        // Charge for tool-related requests - this will handle chart generation
-    } else if (method.startsWith('tools/call')) {
-        // For tools/call, we'll handle charging in the server middleware based on the specific tool
-        log.info(`Tool call request: ${method} - will charge based on specific chart type`);
-        // Charge for resource-related requests
-    } else if (method.startsWith('resources/')) {
-        await Actor.charge({ eventName: 'resource-request' });
-        log.info(`Charged for resource request: ${method}`);
-        // Charge for prompt-related requests
-    } else if (method.startsWith('prompts/')) {
-        await Actor.charge({ eventName: 'prompt-request' });
-        log.info(`Charged for prompt request: ${method}`);
-        // Charge for completion-related requests
-    } else if (method.startsWith('completion/')) {
-        await Actor.charge({ eventName: 'completion-request' });
-        log.info(`Charged for completion request: ${method}`);
-        // Do not charge for other methods
+    // Check if this is a tool-related request
+    if (method.startsWith('tool')) {
+        log.info(`Tool request detected: ${method}`);
+        await chargeChartRequest(method);
     } else {
-        log.info(`Not charging for method: ${method}`);
+        log.info(`Not charging for method: ${method} - chart generation server only charges for tool calls`);
     }
 }
