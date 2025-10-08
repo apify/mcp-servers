@@ -46,26 +46,21 @@ const CHART_BILLING_MAP = {
 
 /**
  * Charges the user for a chart generation request by analyzing the method string.
- * Extracts tool name from the method and applies appropriate billing tier.
  *
- * @param method - The full method string that may contain a chart tool name
+ * @param method - name of the tool
  * @returns Promise<void>
  */
-export async function chargeChartRequest(method: string): Promise<void> {
+export async function chargeChartRequest(name: string): Promise<void> {
     // Find if any chart tool name is contained in the method string
-    const chartToolNames = Object.keys(CHART_BILLING_MAP);
-
-    for (const toolName of chartToolNames) {
-        if (method.includes(toolName)) {
-            const billingEvent = CHART_BILLING_MAP[toolName as keyof typeof CHART_BILLING_MAP];
-            await Actor.charge({ eventName: billingEvent });
-            log.info(`Charged for chart generation: ${toolName} -> ${billingEvent} (found in method: ${method})`);
-            return;
-        }
+    const chargeEvent = CHART_BILLING_MAP[name as keyof typeof CHART_BILLING_MAP];
+    if (chargeEvent) {
+        await Actor.charge({ eventName: chargeEvent });
+        log.info(`Charged for chart generation: ${name} -> ${chargeEvent}`);
+        return;
     }
 
     // If no specific chart tool found, don't charge
-    log.info(`No chart tool found in method: ${method} - not charging`);
+    log.info(`No chart tool found for name: ${name} - not charging`);
 }
 
 /**
@@ -75,13 +70,13 @@ export async function chargeChartRequest(method: string): Promise<void> {
  * @param request - The request object containing the method string.
  * @returns Promise<void>
  */
-export async function chargeMessageRequest(request: { method: string }): Promise<void> {
-    const { method } = request;
+export async function chargeMessageRequest(request: { method: string, params?: { name?: string } }): Promise<void> {
+    const { method, params: { name = '' } = {} } = request;
 
     // Check if this is a tool-related request
     if (method.startsWith('tool')) {
         log.info(`Tool request detected: ${method}`);
-        await chargeChartRequest(method);
+        await chargeChartRequest(name);
     } else {
         log.info(`Not charging for method: ${method} - chart generation server only charges for tool calls`);
     }

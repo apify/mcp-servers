@@ -11,29 +11,26 @@ import { Actor, log } from 'apify';
  * @param request - The request object containing the method string.
  * @returns Promise<void>
  */
-export async function chargeMessageRequest(request: { method: string }): Promise<void> {
-    const { method } = request;
+export async function chargeMessageRequest(request: { method: string; params: { name?: string } }): Promise<void> {
+    const { method, params: { name = '' } } = request;
+    if (method !== 'tools/call') {
+        log.info(`Not charging for method: ${method}`);
+        return;
+    }
 
-    // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
-    // on the method names and protocol messages
-    // Charge for League of Legends tool requests
-    if (method.startsWith('tools/call') && method.includes('lol-')) {
+    if (name.includes('lol_')) {
         await Actor.charge({ eventName: 'lol-tool-request' });
         log.info(`Charged for LoL tool request: ${method}`);
         // Charge for Teamfight Tactics tool requests
-    } else if (method.startsWith('tools/call') && method.includes('tft-')) {
+    } else if (name.includes('tft_')) {
         await Actor.charge({ eventName: 'tft-tool-request' });
         log.info(`Charged for TFT tool request: ${method}`);
         // Charge for Valorant tool requests
-    } else if (method.startsWith('tools/call') && method.includes('valorant-')) {
+    } else if (name.includes('valorant_')) {
         await Actor.charge({ eventName: 'valorant-tool-request' });
         log.info(`Charged for Valorant tool request: ${method}`);
         // Charge for Esports tool requests
-    } else if (method.startsWith('tools/call') && method.includes('esports-')) {
-        await Actor.charge({ eventName: 'esports-tool-request' });
-        log.info(`Charged for Esports tool request: ${method}`);
-        // Do not charge for other methods
     } else {
-        log.info(`Not charging for method: ${method}`);
+        log.info(`No billing event matched for tool name: ${name} - not charging`);
     }
 }
