@@ -23,30 +23,5 @@
         "eventTitle": "Esports Tool Request",
         "eventDescription": "Fee for executing Esports tool requests (schedules, team standings).",
         "eventPriceUsd": 0.03
-    },
-    "tool-request": {
-        "eventTitle": "General Tool Request",
-        "eventDescription": "Fee for executing general tool requests.",
-        "eventPriceUsd": 0.03
-    },
-    "prompt-request": {
-        "eventTitle": "Price for completing a prompt request",
-        "eventDescription": "Flat fee for completing a prompt request.",
-        "eventPriceUsd": 0.01
-    },
-    "completion-request": {
-        "eventTitle": "Price for completing a completion request",
-        "eventDescription": "Flat fee for completing a completion request.",
-        "eventPriceUsd": 0.001
-    },
-    "resource-request": {
-        "eventTitle": "Price for completing a resource request",
-        "eventDescription": "Flat fee for completing a resource request.",
-        "eventPriceUsd": 0.02
-    },
-    "list-request": {
-        "eventTitle": "Price for completing a list request",
-        "eventDescription": "Flat fee for completing a list request.",
-        "eventPriceUsd": 0.001
     }
 }

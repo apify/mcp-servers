@@ -16,12 +16,8 @@ export async function chargeMessageRequest(request: { method: string }): Promise
 
     // See https://modelcontextprotocol.io/specification/2025-06-18/server for more details
     // on the method names and protocol messages
-    // Charge for list requests (e.g., tools/list, resources/list, etc.)
-    if (method.endsWith('/list')) {
-        await Actor.charge({ eventName: 'list-request' });
-        log.info(`Charged for list request: ${method}`);
-        // Charge for League of Legends tool requests
-    } else if (method.startsWith('tools/call') && method.includes('lol-')) {
+    // Charge for League of Legends tool requests
+    if (method.startsWith('tools/call') && method.includes('lol-')) {
         await Actor.charge({ eventName: 'lol-tool-request' });
         log.info(`Charged for LoL tool request: ${method}`);
         // Charge for Teamfight Tactics tool requests
@@ -36,22 +32,6 @@ export async function chargeMessageRequest(request: { method: string }): Promise
     } else if (method.startsWith('tools/call') && method.includes('esports-')) {
         await Actor.charge({ eventName: 'esports-tool-request' });
         log.info(`Charged for Esports tool request: ${method}`);
-        // Charge for general tool-related requests
-    } else if (method.startsWith('tools/')) {
-        await Actor.charge({ eventName: 'tool-request' });
-        log.info(`Charged for tool request: ${method}`);
-        // Charge for resource-related requests
-    } else if (method.startsWith('resources/')) {
-        await Actor.charge({ eventName: 'resource-request' });
-        log.info(`Charged for resource request: ${method}`);
-        // Charge for prompt-related requests
-    } else if (method.startsWith('prompts/')) {
-        await Actor.charge({ eventName: 'prompt-request' });
-        log.info(`Charged for prompt request: ${method}`);
-        // Charge for completion-related requests
-    } else if (method.startsWith('completion/')) {
-        await Actor.charge({ eventName: 'completion-request' });
-        log.info(`Charged for completion request: ${method}`);
         // Do not charge for other methods
     } else {
         log.info(`Not charging for method: ${method}`);
