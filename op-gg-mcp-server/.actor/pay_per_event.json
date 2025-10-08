@@ -18,10 +18,5 @@
         "eventTitle": "Valorant Tool Request",
         "eventDescription": "Fee for executing Valorant tool requests (character meta, leaderboards, match history).",
         "eventPriceUsd": 0.04
-    },
-    "esports-tool-request": {
-        "eventTitle": "Esports Tool Request",
-        "eventDescription": "Fee for executing Esports tool requests (schedules, team standings).",
-        "eventPriceUsd": 0.03
     }
 }

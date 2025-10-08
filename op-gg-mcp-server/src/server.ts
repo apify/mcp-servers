@@ -70,7 +70,7 @@ async function mcpPostHandler(req: Request, res: Response) {
 
             // Charge for each message request received on this transport
             transport.onmessage = (message) => {
-                chargeMessageRequest(message as { method: string }).catch((error) => {
+                chargeMessageRequest(message as { method: string; params: { name?: string } }).catch((error) => {
                     log.error('Error charging for message request:', {
                         error,
                         sessionId: transport.sessionId || null,
