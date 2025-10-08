@@ -1,0 +1,22 @@
+{
+	"actorSpecification": 1,
+	"name": "antvis-chart-mcp-server",
+	"title": "AntV Chart MCP Server",
+	"description": "A Model Context Protocol server for generating charts using AntV. This server provides chart generation and data analysis capabilities with support for 25+ chart types including area, bar, line, pie, radar, scatter plots, maps, and specialized visualizations like treemaps, sankey diagrams, and word clouds.",
+	"version": "0.0",
+	"buildTag": "latest",
+	"usesStandbyMode": true,
+	"meta": {
+		"templateId": "ts-mcp-server"
+	},
+	"input": {
+		"title": "Actor input schema",
+		"description": "This is Actor input schema",
+		"type": "object",
+		"schemaVersion": 1,
+		"properties": {},
+		"required": []
+	},
+	"dockerfile": "../Dockerfile",
+	"webServerMcpPath": "/mcp"
+}

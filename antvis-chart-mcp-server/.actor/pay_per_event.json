@@ -1,0 +1,32 @@
+{
+    "actor-start": {
+        "eventTitle": "Price for Actor start",
+        "eventDescription": "Flat fee for starting an Actor run.",
+        "eventPriceUsd": 0.1
+    },
+    "generate-basic-chart": {
+        "eventTitle": "Basic Chart Generation",
+        "eventDescription": "Fee for generating basic charts (area, bar, column, line, pie).",
+        "eventPriceUsd": 0.05
+    },
+    "generate-advanced-chart": {
+        "eventTitle": "Advanced Chart Generation",
+        "eventDescription": "Fee for generating advanced charts (radar, sankey, treemap, violin, boxplot, histogram).",
+        "eventPriceUsd": 0.08
+    },
+    "generate-map-chart": {
+        "eventTitle": "Map Chart Generation",
+        "eventDescription": "Fee for generating map visualizations (district-map, pin-map, path-map).",
+        "eventPriceUsd": 0.10
+    },
+    "generate-diagram": {
+        "eventTitle": "Diagram Generation",
+        "eventDescription": "Fee for generating diagrams (flowchart, fishbone, mind-map, organization-chart, network-graph).",
+        "eventPriceUsd": 0.07
+    },
+    "generate-specialty-chart": {
+        "eventTitle": "Specialty Chart Generation",
+        "eventDescription": "Fee for generating specialty visualizations (liquid, venn, word-cloud, funnel, dual-axes).",
+        "eventPriceUsd": 0.06
+    }
+}
