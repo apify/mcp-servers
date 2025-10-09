@@ -48,10 +48,15 @@ Charge for standard MCP operations with flat rates:
 
 ```json
 {
-    "actor-start": {
-        "eventTitle": "MCP server startup",
-        "eventDescription": "Initial fee for starting the Actor MCP Server",
-        "eventPriceUsd": 0.1
+    "apify-actor-start": {
+        "eventTitle": "Synthetic Actor start (covered first 5s)",
+        "eventDescription": "Synthetic start event charged automatically by Apify. Do not charge manually in code.",
+        "eventPriceUsd": 0.00005
+    },
+    "tool-list": {
+        "eventTitle": "MCP tool listing",
+        "eventDescription": "Fee for listing available tools",
+        "eventPriceUsd": 0.0001
     },
     "tool-call": {
         "eventTitle": "MCP tool call",
@@ -77,10 +82,10 @@ Charge per tool based on functionality:
 
 ```json
 {
-    "actor-start": {
-        "eventTitle": "MCP server startup",
-    "eventDescription": "Initial fee for starting the Dictionary MCP Server Actor",
-        "eventPriceUsd": 0.1
+    "apify-actor-start": {
+        "eventTitle": "Synthetic Actor start (covered first 5s)",
+        "eventDescription": "Synthetic start event charged automatically by Apify. Do not charge manually in code.",
+        "eventPriceUsd": 0.00005
     },
     "define": {
         "eventTitle": "Word definition lookup",

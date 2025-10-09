@@ -1,8 +1,13 @@
 {
-    "actor-start": {
-        "eventTitle": "MCP server startup",
-        "eventDescription": "Initial fee for starting the MCP Server Actor",
-        "eventPriceUsd": 0.1
+    "apify-actor-start": {
+        "eventTitle": "Synthetic Actor start (covered first 5s)",
+        "eventDescription": "Synthetic start event charged automatically by Apify. Do not charge manually in code.",
+        "eventPriceUsd": 0.00005
+    },
+    "tool-list": {
+        "eventTitle": "MCP tool listing",
+        "eventDescription": "Fee for listing available tools.",
+        "eventPriceUsd": 0.0001
     },
     "define": {
         "eventTitle": "Word definition lookup",
