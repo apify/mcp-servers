@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import TOOL_WHITELIST
 from .models import ServerType
 from .server import ProxyServer
 
@@ -56,9 +56,8 @@ async def main() -> None:
 
     Flow:
     1. Initializes the Actor
-    2. Charges for Actor startup
-    3. Creates and starts the proxy server
-    4. Configures charging for MCP operations using Actor.charge
+    2. Creates and starts the proxy server (only in STANDBY mode)
+    3. Configures charging for MCP tool operations using Actor.charge (no system event charging)
 
     Charging:
     - Generic MCP events (tool list/call, resource, etc.)
@@ -67,7 +66,10 @@ async def main() -> None:
     async with Actor:
         # Initialize and charge for Actor startup
         Actor.log.info('Starting MCP Server Actor (PyPI Query MCP)')
-        await Actor.charge(ChargeEvents.ACTOR_START.value)
+        # NOTE: Removed charging for ACTOR_START. System events like 'apify-actor-start'
+        # are not billable and attempting to charge them results in ApifyApiError:
+        #   Event "apify-actor-start" is system event and cannot be charged.
+        # If you need a startup charge, define a custom event name (e.g. 'actor-custom-start').
 
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
