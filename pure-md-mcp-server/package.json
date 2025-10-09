@@ -12,6 +12,7 @@
         "body-parser": "^2.2.0",
         "dotenv": "^17.2.2",
         "express": "^5.1.0",
+        "puremd-mcp": "^1.0.3",
         "zod": "^3.25.76"
     },
     "devDependencies": {
