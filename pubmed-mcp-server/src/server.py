@@ -175,15 +175,17 @@ class ProxyServer:
     def _log_request(request: Request) -> None:
         """Log incoming MCP transport request for diagnostics."""
         logger.info(
-            'MCP transport request',
+            "MCP transport request",
             extra={
-                'method': request.method,
-                'path': str(request.url.path),
-                'mcp_session_id': request.headers.get('mcp-session-id'),
+                "method": request.method,
+                "path": str(request.url.path),
+                "mcp_session_id": request.headers.get("mcp-session-id"),
             },
         )
 
-    def _touch_session(self, session_id: str, session_manager: StreamableHTTPSessionManager) -> None:
+    def _touch_session(
+        self, session_id: str, session_manager: StreamableHTTPSessionManager
+    ) -> None:
         """Record activity for a session and (re)schedule inactivity termination."""
         self._session_last_activity[session_id] = time.time()
 
@@ -199,27 +201,27 @@ class ProxyServer:
                 last = self._session_last_activity.get(session_id, 0)
                 if time.time() - last < self._session_timeout_secs * 0.9:
                     return  # Activity happened; skip
-                logger.info(f'Terminating idle MCP session {session_id}')
+                logger.info(f"Terminating idle MCP session {session_id}")
 
                 # Craft an internal ASGI DELETE request to close the session
                 scope = {
-                    'type': 'http',
-                    'http_version': '1.1',
-                    'method': 'DELETE',
-                    'scheme': 'http',
-                    'path': '/mcp/',
-                    'raw_path': b'/mcp/',
-                    'query_string': b'',
-                    'headers': [
-                        (b'mcp-session-id', session_id.encode('utf-8')),
-                        (b'accept', b'application/json, text/event-stream'),
+                    "type": "http",
+                    "http_version": "1.1",
+                    "method": "DELETE",
+                    "scheme": "http",
+                    "path": "/mcp/",
+                    "raw_path": b"/mcp/",
+                    "query_string": b"",
+                    "headers": [
+                        (b"mcp-session-id", session_id.encode("utf-8")),
+                        (b"accept", b"application/json, text/event-stream"),
                     ],
-                    'server': (self.host, self.port),
-                    'client': ('127.0.0.1', 0),
+                    "server": (self.host, self.port),
+                    "client": ("127.0.0.1", 0),
                 }
 
                 async def _receive() -> dict[str, Any]:
-                    return {'type': 'http.request', 'body': b'', 'more_body': False}
+                    return {"type": "http.request", "body": b"", "more_body": False}
 
                 async def _send(_message: dict[str, Any]) -> None:
                     # Ignore internal response
@@ -231,7 +233,7 @@ class ProxyServer:
             except asyncio.CancelledError:
                 return
             except Exception:
-                logger.exception('Failed to terminate idle session')
+                logger.exception("Failed to terminate idle session")
 
         self._session_timers[session_id] = asyncio.create_task(_idle_close())
 
@@ -255,16 +257,18 @@ class ProxyServer:
         """Create a send wrapper that captures session ID from response headers."""
 
         async def capturing_send(message: dict[str, Any]) -> None:
-            if message.get('type') == 'http.response.start':
-                headers = {k.decode('latin-1').lower(): v.decode('latin-1') for k, v in message.get('headers', [])}
-                if sid := headers.get('mcp-session-id'):
-                    session_id_from_resp['sid'] = sid
+            if message.get("type") == "http.response.start":
+                headers = {
+                    k.decode("latin-1").lower(): v.decode("latin-1")
+                    for k, v in message.get("headers", [])
+                }
+                if sid := headers.get("mcp-session-id"):
+                    session_id_from_resp["sid"] = sid
             await send(message)
 
         return capturing_send
 
-    @staticmethod
-    async def create_starlette_app(server_name: str, mcp_server: Server) -> Starlette:
+    async def create_starlette_app(self, mcp_server: Server) -> Starlette:
         """Create a Starlette app that exposes /mcp endpoint for Streamable HTTP transport."""
         event_store = InMemoryEventStore()
         session_manager = StreamableHTTPSessionManager(
@@ -297,7 +301,7 @@ class ProxyServer:
             if is_html_browser(request):
                 server_url = f"https://{request.headers.get('host', 'localhost')}"
                 mcp_url = f"{server_url}/mcp"
-                return serve_html_page(server_name, mcp_url)
+                return serve_html_page(self.server_name, mcp_url)
 
             return JSONResponse(
                 {
@@ -341,35 +345,35 @@ class ProxyServer:
             # Check if this is a GET request from a browser
             request = Request(scope, receive)
             self._log_request(request)
-            if scope['method'] == 'GET' and is_html_browser(request):
-                server_url = f'https://{request.headers.get("host", "localhost")}'
-                mcp_url = f'{server_url}/mcp'
-                response = serve_html_page(server_name, mcp_url)
+            if scope["method"] == "GET" and is_html_browser(request):
+                server_url = f"https://{request.headers.get('host', 'localhost')}"
+                mcp_url = f"{server_url}/mcp"
+                response = serve_html_page(self.server_name, mcp_url)
                 # Send the HTML response
                 await response(scope, receive, send)
                 return
 
-            if scope['method'] == 'DELETE':
+            if scope["method"] == "DELETE":
                 await session_manager.handle_request(scope, receive, send)
-                if req_sid := request.headers.get('mcp-session-id'):
+                if req_sid := request.headers.get("mcp-session-id"):
                     self._cleanup_session_last_activity(req_sid)
                     self._cleanup_session_timer(req_sid)
                 return
 
             # For non-browser requests or non-GET requests, delegate to session manager
             # Wrap `send` to capture the session ID from response headers of initialization
-            session_id_from_resp: dict[str, str | None] = {'sid': None}
+            session_id_from_resp: dict[str, str | None] = {"sid": None}
             capturing_send = self._create_capturing_send(send, session_id_from_resp)
 
             # Log and touch existing session if present on request
-            if req_sid := request.headers.get('mcp-session-id'):
+            if req_sid := request.headers.get("mcp-session-id"):
                 self._touch_session(req_sid, session_manager)
 
             await session_manager.handle_request(scope, receive, capturing_send)  # type: ignore[arg-type]
 
             # If this was an initialization (no session id in request), capture from response and touch
-            if not req_sid and session_id_from_resp['sid']:
-                self._touch_session(session_id_from_resp['sid'], session_manager)
+            if not req_sid and session_id_from_resp["sid"]:
+                self._touch_session(session_id_from_resp["sid"], session_manager)
 
         return Starlette(
             debug=True,

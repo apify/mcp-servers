@@ -161,8 +161,7 @@ class ProxyServer:
         except ValidationError as e:
             raise ValueError(f'Invalid server configuration: {e}') from e
 
-    @staticmethod
-    async def create_starlette_app(server_name: str, mcp_server: Server) -> Starlette:
+    async def create_starlette_app(self, mcp_server: Server) -> Starlette:
         """Create a Starlette app that exposes /mcp endpoint for Streamable HTTP transport."""
         event_store = InMemoryEventStore()
         session_manager = StreamableHTTPSessionManager(
@@ -195,7 +194,7 @@ class ProxyServer:
             if is_html_browser(request):
                 server_url = f'https://{request.headers.get("host", "localhost")}'
                 mcp_url = f'{server_url}/mcp'
-                return serve_html_page(server_name, mcp_url)
+                return serve_html_page(self.server_name, mcp_url)
 
             return JSONResponse(
                 {
