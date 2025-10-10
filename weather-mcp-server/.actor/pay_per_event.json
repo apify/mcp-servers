@@ -1,9 +1,4 @@
 {
-    "actor-start": {
-        "eventTitle": "Weather MCP server startup",
-        "eventDescription": "Initial fee for starting the Weather MCP Server Actor",
-        "eventPriceUsd": 0.01
-    },
     "get_current_weather": {
         "eventTitle": "Current weather lookup",
         "eventDescription": "Fee for getting current weather information for a specific city using the get_current_weather tool.",
