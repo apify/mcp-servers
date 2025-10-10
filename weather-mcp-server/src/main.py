@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import TOOL_WHITELIST
 from .models import ServerType
 from .server import ProxyServer
 
@@ -58,9 +58,8 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
-        # Initialize and charge for Actor startup
+        # Initialize Actor
         Actor.log.info('Starting MCP Server Actor')
-        await Actor.charge(ChargeEvents.ACTOR_START.value)
 
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
@@ -69,7 +68,7 @@ async def main() -> None:
                 f'Connect to {url}/mcp to establish a connection.\n'
                 'Learn more at https://mcp.apify.com/'
             )
-            Actor.log.warning(msg)
+            Actor.log.info(msg)
             await Actor.exit(status_message=msg)
             return
 
@@ -81,7 +80,7 @@ async def main() -> None:
                 f"""
                 {{
                     "mcpServers": {{
-                        "weather-mcp-server": {{
+                        "{SERVER_NAME}": {{
                             "url": "{url}/mcp",
                         }}
                     }}

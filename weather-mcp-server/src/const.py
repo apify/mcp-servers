@@ -1,5 +1,7 @@
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 60
+
 
 class ChargeEvents(str, Enum):
     """Event types for charging MCP operations.
