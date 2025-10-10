@@ -1,14 +1,12 @@
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
+
 
 class ChargeEvents(str, Enum):
     """Event types for charging MCP operations for Wikipedia MCP server."""
 
     # Generic MCP operations
-    ACTOR_START = 'actor-start'
-    RESOURCE_READ = 'resource-read'
-    TOOL_LIST = 'tool-list'
-    PROMPT_GET = 'prompt-get'
     TOOL_CALL = 'tool-call'
 
     # Wikipedia MCP tool events

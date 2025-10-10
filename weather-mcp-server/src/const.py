@@ -1,6 +1,6 @@
 from enum import Enum
 
-SESSION_TIMEOUT_SECS = 60
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
 
 
 class ChargeEvents(str, Enum):
@@ -11,17 +11,13 @@ class ChargeEvents(str, Enum):
     that can be charged for.
 
     The template includes both generic MCP operations and specific weather operations
-    for the weather MCP server.
+    as examples. You can customize these events based on your specific MCP server needs.
     """
 
     # Generic MCP operations (can be used for any MCP server)
-    ACTOR_START = 'actor-start'
-    RESOURCE_READ = 'resource-read'
-    TOOL_LIST = 'tool-list'
-    PROMPT_GET = 'prompt-get'
     TOOL_CALL = 'tool-call'
 
-    # Weather-specific operations
+    # Weather-specific operations (example for domain-specific charging)
     GET_CURRENT_WEATHER = 'get_current_weather'
     GET_WEATHER_BY_DATETIME_RANGE = 'get_weather_by_datetime_range'
     GET_CURRENT_DATETIME = 'get_current_datetime'

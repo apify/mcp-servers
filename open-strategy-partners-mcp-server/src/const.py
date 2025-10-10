@@ -1,17 +1,13 @@
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
+
 
 class ChargeEvents(str, Enum):
     """Event types for charging MCP operations for OSP MCP server."""
 
     # Generic MCP events used by the gateway
-    ACTOR_START = "actor-start"
-    TOOL_LIST = "tool-list"
     TOOL_CALL = "tool-call"
-    RESOURCE_LIST = "resource-list"
-    RESOURCE_READ = "resource-read"
-    PROMPT_LIST = "prompt-list"
-    PROMPT_GET = "prompt-get"
 
     # Domain-specific events for OSP
     GENERATE_VALUE_MAP = "generate-value-map"

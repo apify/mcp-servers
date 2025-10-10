@@ -227,21 +227,32 @@ class ProxyServer:
 
         # ASGI handler for Streamable HTTP connections
         async def handle_streamable_http(scope: Scope, receive: Receive, send: Send) -> None:
-            # Check if this is a GET request from a browser
-            if scope['method'] == 'GET':
-                # Create a Request object to check headers
-                request = Request(scope, receive)
-                # Check if the request is from an HTML browser
-                if is_html_browser(request):
-                    server_url = f'{request.url.scheme}://{request.headers.get("host", "localhost")}'
-                    mcp_url = f'{server_url}/mcp'
-                    response = serve_html_page(server_name, mcp_url)
-                    # Send the HTML response
-                    await response(scope, receive, send)
-                    return
+            request = Request(scope, receive)
+            self._log_request(request)
+            if scope['method'] == 'GET' and is_html_browser(request):
+                server_url = f'{request.url.scheme}://{request.headers.get("host", "localhost")}'
+                mcp_url = f'{server_url}/mcp'
+                response = serve_html_page(self.server_name, mcp_url)
+                await response(scope, receive, send)
+                return
 
-            # For non-browser requests or non-GET requests, delegate to session manager
-            await session_manager.handle_request(scope, receive, send)
+            if scope['method'] == 'DELETE':
+                await session_manager.handle_request(scope, receive, send)
+                if req_sid := request.headers.get('mcp-session-id'):
+                    self._cleanup_session_last_activity(req_sid)
+                    self._cleanup_session_timer(req_sid)
+                return
+
+            session_id_from_resp: dict[str, str | None] = {'sid': None}
+            capturing_send = self._create_capturing_send(send, session_id_from_resp)
+
+            if req_sid := request.headers.get('mcp-session-id'):
+                self._touch_session(req_sid, session_manager)
+
+            await session_manager.handle_request(scope, receive, capturing_send)  # type: ignore[arg-type]
+
+            if not req_sid and session_id_from_resp['sid']:
+                self._touch_session(session_id_from_resp['sid'], session_manager)
 
         return Starlette(
             debug=True,
@@ -278,7 +289,7 @@ class ProxyServer:
                 ClientSession(read_stream, write_stream) as session,
             ):
                 mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.SSE:
@@ -287,7 +298,7 @@ class ProxyServer:
                 ClientSession(read_stream, write_stream) as session,
             ):
                 mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.HTTP:
@@ -297,7 +308,7 @@ class ProxyServer:
                 ClientSession(read_stream, write_stream) as session,
             ):
                 mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
         else:
             raise ValueError(f'Unknown server type: {self.server_type}')

@@ -1,5 +1,7 @@
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
+
 
 class ChargeEvents(str, Enum):
     """Event types for charging MCP operations.
@@ -13,28 +15,16 @@ class ChargeEvents(str, Enum):
     """
 
     # Generic MCP operations (can be used for any MCP server)
-    ACTOR_START = 'actor-start'
-    RESOURCE_READ = 'resource-read'
-    TOOL_LIST = 'tool-list'
-    PROMPT_GET = 'prompt-get'
     TOOL_CALL = 'tool-call'
 
     # Calculator-specific operations (example for domain-specific charging)
     CALCULATE = 'calculate'
 
 
-# Authorized tools list for MCP server
-# Only tools listed here will be allowed to execute.
-# To add new authorized tools, simply add the tool value to this list.
-AUTHORIZED_TOOLS = [
-    ChargeEvents.CALCULATE.value,
-]
-
-
-# Helper function to get ChargeEvents enum from tool name
-def get_charge_event(tool_name: str) -> ChargeEvents | None:
-    """Get the ChargeEvents enum member from a tool name string."""
-    for event in ChargeEvents:
-        if event.value == tool_name:
-            return event
-    return None
+# Tool whitelist for MCP server
+# Only tools listed here will be present to the user and allowed to execute.
+# Format of the dictionary: {tool_name: (charge_event_name, default_count)}
+# To add new authorized tools, add an entry with the tool name and its charging configuration.
+TOOL_WHITELIST = {
+    ChargeEvents.CALCULATE.value: (ChargeEvents.CALCULATE.value, 1),
+}

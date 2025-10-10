@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import TOOL_WHITELIST
 from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
@@ -53,9 +53,8 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
-        # Initialize and charge for Actor startup
+        # Initialize Actor
         Actor.log.info('Starting MCP Server Actor')
-        await Actor.charge(ChargeEvents.ACTOR_START.value)
 
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
