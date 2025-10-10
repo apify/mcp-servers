@@ -4,7 +4,7 @@ import os
 from apify import Actor
 from mcp.client.stdio import StdioServerParameters
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import SESSION_TIMEOUT_SECS, TOOL_WHITELIST, ChargeEvents
 from .models import ServerType
 from .server import ProxyServer
 

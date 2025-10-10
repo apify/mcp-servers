@@ -1,6 +1,8 @@
 # Pay-per-event (PPE) mapping for Apify monetization
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
+
 PPE_EVENT_MAP = {
     "search_pubmed_key_words": "searchPubmedKeywords",
     "search_pubmed_advanced": "searchPubmedAdvanced",
