@@ -125,6 +125,7 @@ class ProxyServer:
         server_type: ServerType,
         actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
         tool_whitelist: dict[str, tuple[str, int]] | None = None,
+        session_timeout_secs: int = SESSION_TIMEOUT_SECS,
     ) -> None:
         """Initialize the proxy server.
 
@@ -141,6 +142,7 @@ class ProxyServer:
             tool_whitelist: Optional dict mapping tool names to (event_name, default_count) tuples.
                            If provided, only whitelisted tools will be allowed and charged.
                            If None, all tools are allowed without specific charging.
+            session_timeout_secs: Inactivity timeout in seconds before terminating idle sessions
         """
         self.server_name = server_name
         self.server_type = server_type
@@ -153,35 +155,7 @@ class ProxyServer:
         self._session_last_activity: dict[str, float] = {}
         self._session_timers: dict[str, asyncio.Task] = {}
         # Inactivity window (seconds) before we terminate a session (DELETE)
-        self._session_timeout_secs: int = SESSION_TIMEOUT_SECS
-
-    @staticmethod
-    def _validate_config(
-        client_type: ServerType, config: ServerParameters
-    ) -> ServerParameters | None:
-        """Validate and return the appropriate server parameters."""
-        try:
-            match client_type:
-                case ServerType.STDIO:
-                    return StdioServerParameters.model_validate(config)
-                case ServerType.SSE | ServerType.HTTP:
-                    return RemoteServerParameters.model_validate(config)
-                case _:
-                    raise ValueError(f"Unsupported server type: {client_type}")
-        except ValidationError as e:
-            raise ValueError(f"Invalid server configuration: {e}") from e
-
-    @staticmethod
-    def _log_request(request: Request) -> None:
-        """Log incoming MCP transport request for diagnostics."""
-        logger.info(
-            "MCP transport request",
-            extra={
-                "method": request.method,
-                "path": str(request.url.path),
-                "mcp_session_id": request.headers.get("mcp-session-id"),
-            },
-        )
+        self._session_timeout_secs: int = session_timeout_secs
 
     def _touch_session(
         self, session_id: str, session_manager: StreamableHTTPSessionManager
@@ -249,6 +223,35 @@ class ProxyServer:
             if not timer.done():
                 timer.cancel()
             del self._session_timers[session_id]
+
+    @staticmethod
+    def _validate_config(
+        client_type: ServerType, config: ServerParameters
+    ) -> ServerParameters | None:
+        """Validate and return the appropriate server parameters."""
+        try:
+            match client_type:
+                case ServerType.STDIO:
+                    return StdioServerParameters.model_validate(config)
+                case ServerType.SSE | ServerType.HTTP:
+                    return RemoteServerParameters.model_validate(config)
+                case _:
+                    raise ValueError(f"Unsupported server type: {client_type}")
+        except ValidationError as e:
+            raise ValueError(f"Invalid server configuration: {e}") from e
+
+    @staticmethod
+    def _log_request(request: Request) -> None:
+        """Log incoming MCP transport request for diagnostics."""
+        logger.info(
+            "MCP transport request",
+            extra={
+                "method": request.method,
+                "path": str(request.url.path),
+                "mcp_session_id": request.headers.get("mcp-session-id"),
+            },
+        )
+
 
     @staticmethod
     def _create_capturing_send(
@@ -418,7 +421,7 @@ class ProxyServer:
                 mcp_server = await create_gateway(
                     session, self.actor_charge_function, self.tool_whitelist
                 )
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.SSE:
@@ -429,7 +432,7 @@ class ProxyServer:
                 mcp_server = await create_gateway(
                     session, self.actor_charge_function, self.tool_whitelist
                 )
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.HTTP:
@@ -441,7 +444,7 @@ class ProxyServer:
                 mcp_server = await create_gateway(
                     session, self.actor_charge_function, self.tool_whitelist
                 )
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
         else:
             raise ValueError(f"Unknown server type: {self.server_type}")

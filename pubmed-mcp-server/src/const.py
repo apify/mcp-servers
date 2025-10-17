@@ -16,6 +16,7 @@ class ChargeEvents(str, Enum):
     """Event types for charging PubMed MCP operations."""
 
     ACTOR_START = "actor-start"
+    TOOL_CALL = "tool-call"
     SEARCH_PUBMED_KEYWORDS = "searchPubmedKeywords"
     SEARCH_PUBMED_ADVANCED = "searchPubmedAdvanced"
     GET_PUBMED_ARTICLE_METADATA = "getPubmedArticleMetadata"

@@ -4,7 +4,7 @@ import os
 from apify import Actor
 from mcp.client.stdio import StdioServerParameters
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import SESSION_TIMEOUT_SECS, TOOL_WHITELIST, ChargeEvents
 from .models import ServerType
 from .server import ProxyServer
 
@@ -13,7 +13,7 @@ server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
     command="python",
     args=["pubmed_server.py"],
-    cwd="/usr/src/app/PubMed-MCP-Server",  # <- correct path in container
+    cwd="/home/jirka/apify/mcp-servers/pubmed-mcp-server/PubMed-MCP-Server",  # <- correct path in container
     env={"PYTHONUNBUFFERED": "1"},
 )
 
@@ -22,20 +22,10 @@ STANDBY_MODE = os.environ.get("APIFY_META_ORIGIN") == "STANDBY"
 # Bind to all interfaces (0.0.0.0) as this is running in a containerized environment (Apify Actor)
 # The container's network is isolated, so this is safe
 HOST = "0.0.0.0"  # noqa: S104 - Required for container networking at Apify platform
-PORT = (
-    Actor.is_at_home() and int(os.environ.get("ACTOR_STANDBY_PORT") or "5001")
-) or 5001
+PORT = (Actor.is_at_home() and int(os.environ.get("ACTOR_STANDBY_PORT") or "5001")) or 5001
 SERVER_NAME = "pubmed-mcp-server"  # Name of the MCP server, without spaces
 
-# 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
-# from .models import RemoteServerParameters  # noqa: ERA001
-
-# server_type = ServerType.HTTP # or ServerType.SSE, depending on your server type # noqa: ERA001
-# MCP_SERVER_PARAMS = RemoteServerParameters( # noqa: ERA001, RUF100
-#     url='https://your-mcp-server',  # noqa: ERA001
-#     headers={'Authorization':  'Bearer YOUR-API-KEY'},  # Optional headers, e.g., for authentication  # noqa: ERA001
-# )  # noqa: ERA001, RUF100
-# ------------------------------------------------------------------------------
+session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
 
 
 async def main() -> None:
@@ -111,6 +101,7 @@ async def main() -> None:
                 server_type,
                 actor_charge_function=Actor.charge,
                 tool_whitelist=TOOL_WHITELIST,
+                session_timeout_secs=session_timeout_secs,
             )
             await proxy_server.start()
         except Exception as e:
