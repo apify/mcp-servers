@@ -326,12 +326,14 @@ class ProxyServer:
 
         # ASGI handler for Streamable HTTP connections
         async def handle_streamable_http(scope: Scope, receive: Receive, send: Send) -> None:
+            # Check if this is a GET request from a browser
             request = Request(scope, receive)
             self._log_request(request)
             if scope['method'] == 'GET' and is_html_browser(request):
                 server_url = f'https://{request.headers.get("host", "localhost")}'
                 mcp_url = f'{server_url}/mcp'
                 response = serve_html_page(self.server_name, mcp_url)
+                # Send the HTML response
                 await response(scope, receive, send)
                 return
 
@@ -342,14 +344,18 @@ class ProxyServer:
                     self._cleanup_session_timer(req_sid)
                 return
 
+            # For non-browser requests or non-GET requests, delegate to session manager
+            # Wrap `send` to capture the session ID from response headers of initialization
             session_id_from_resp: dict[str, str | None] = {'sid': None}
             capturing_send = self._create_capturing_send(send, session_id_from_resp)
 
+            # Log and touch existing session if present on request
             if req_sid := request.headers.get('mcp-session-id'):
                 self._touch_session(req_sid, session_manager)
 
             await session_manager.handle_request(scope, receive, capturing_send)  # type: ignore[arg-type]
 
+            # If this was an initialization (no session id in request), capture from response and touch
             if not req_sid and session_id_from_resp['sid']:
                 self._touch_session(session_id_from_resp['sid'], session_manager)
 

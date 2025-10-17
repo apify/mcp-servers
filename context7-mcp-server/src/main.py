@@ -54,12 +54,6 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
-        # Initialize Actor
-        Actor.log.info('Starting MCP Server Actor')
-
-        Actor.log.info('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        Actor.log.info(MCP_SERVER_PARAMS)
-
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
             msg = (
