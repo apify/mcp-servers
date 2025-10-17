@@ -69,9 +69,6 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
-        # Initialize; startup charging is handled by Apify synthetic event automatically
-        Actor.log.info('Starting MCP Server Actor')
-
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
             msg = (
