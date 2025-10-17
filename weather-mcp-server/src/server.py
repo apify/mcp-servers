@@ -5,7 +5,6 @@ Heavily inspired by: https://github.com/sparfenyuk/mcp-proxy
 
 from __future__ import annotations
 
-from agnost import track
 import asyncio
 import contextlib
 import logging
@@ -14,6 +13,7 @@ from typing import TYPE_CHECKING, Any
 
 import httpx
 import uvicorn
+from agnost import track
 from mcp.client.session import ClientSession
 from mcp.client.sse import sse_client
 from mcp.client.stdio import StdioServerParameters, stdio_client
