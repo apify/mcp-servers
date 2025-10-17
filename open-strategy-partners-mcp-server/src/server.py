@@ -116,7 +116,7 @@ class ProxyServer:
     The charging function should accept an event name and optional parameters.
     """
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         server_name: str,
         config: ServerParameters,
@@ -125,6 +125,7 @@ class ProxyServer:
         server_type: ServerType,
         actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
         tool_whitelist: dict[str, tuple[str, int]] | None = None,
+        session_timeout_secs: int = SESSION_TIMEOUT_SECS,
     ) -> None:
         """Initialize the proxy server.
 
@@ -141,6 +142,7 @@ class ProxyServer:
             tool_whitelist: Optional dict mapping tool names to (event_name, default_count) tuples.
                            If provided, only whitelisted tools will be allowed and charged.
                            If None, all tools are allowed without specific charging.
+            session_timeout_secs: Inactivity timeout in seconds before terminating idle sessions
         """
         self.server_name = server_name
         self.server_type = server_type
@@ -153,7 +155,7 @@ class ProxyServer:
         self._session_last_activity: dict[str, float] = {}
         self._session_timers: dict[str, asyncio.Task] = {}
         # Inactivity window (seconds) before we terminate a session (DELETE)
-        self._session_timeout_secs: int = SESSION_TIMEOUT_SECS
+        self._session_timeout_secs: int = session_timeout_secs
 
     @staticmethod
     def _log_request(request: Request) -> None:
@@ -167,9 +169,7 @@ class ProxyServer:
             },
         )
 
-    def _touch_session(
-        self, session_id: str, session_manager: StreamableHTTPSessionManager
-    ) -> None:
+    def _touch_session(self, session_id: str, session_manager: StreamableHTTPSessionManager) -> None:
         """Record activity for a session and (re)schedule inactivity termination."""
         self._session_last_activity[session_id] = time.time()
 
@@ -185,27 +185,27 @@ class ProxyServer:
                 last = self._session_last_activity.get(session_id, 0)
                 if time.time() - last < self._session_timeout_secs * 0.9:
                     return  # Activity happened; skip
-                logger.info(f"Terminating idle MCP session {session_id}")
+                logger.info(f'Terminating idle MCP session {session_id}')
 
                 # Craft an internal ASGI DELETE request to close the session
                 scope = {
-                    "type": "http",
-                    "http_version": "1.1",
-                    "method": "DELETE",
-                    "scheme": "http",
-                    "path": "/mcp/",
-                    "raw_path": b"/mcp/",
-                    "query_string": b"",
-                    "headers": [
-                        (b"mcp-session-id", session_id.encode("utf-8")),
-                        (b"accept", b"application/json, text/event-stream"),
+                    'type': 'http',
+                    'http_version': '1.1',
+                    'method': 'DELETE',
+                    'scheme': 'http',
+                    'path': '/mcp/',
+                    'raw_path': b'/mcp/',
+                    'query_string': b'',
+                    'headers': [
+                        (b'mcp-session-id', session_id.encode('utf-8')),
+                        (b'accept', b'application/json, text/event-stream'),
                     ],
-                    "server": (self.host, self.port),
-                    "client": ("127.0.0.1", 0),
+                    'server': (self.host, self.port),
+                    'client': ('127.0.0.1', 0),
                 }
 
                 async def _receive() -> dict[str, Any]:
-                    return {"type": "http.request", "body": b"", "more_body": False}
+                    return {'type': 'http.request', 'body': b'', 'more_body': False}
 
                 async def _send(_message: dict[str, Any]) -> None:
                     # Ignore internal response
@@ -217,7 +217,7 @@ class ProxyServer:
             except asyncio.CancelledError:
                 return
             except Exception:
-                logger.exception("Failed to terminate idle session")
+                logger.exception('Failed to terminate idle session')
 
         self._session_timers[session_id] = asyncio.create_task(_idle_close())
 
@@ -235,9 +235,7 @@ class ProxyServer:
             del self._session_timers[session_id]
 
     @staticmethod
-    def _validate_config(
-        client_type: ServerType, config: ServerParameters
-    ) -> ServerParameters | None:
+    def _validate_config(client_type: ServerType, config: ServerParameters) -> ServerParameters | None:
         """Validate and return the appropriate server parameters."""
         try:
             match client_type:
@@ -246,9 +244,9 @@ class ProxyServer:
                 case ServerType.SSE | ServerType.HTTP:
                     return RemoteServerParameters.model_validate(config)
                 case _:
-                    raise ValueError(f"Unsupported server type: {client_type}")
+                    raise ValueError(f'Unsupported server type: {client_type}')
         except ValidationError as e:
-            raise ValueError(f"Invalid server configuration: {e}") from e
+            raise ValueError(f'Invalid server configuration: {e}') from e
 
     @staticmethod
     def _create_capturing_send(
@@ -257,13 +255,10 @@ class ProxyServer:
         """Create a send wrapper that captures session ID from response headers."""
 
         async def capturing_send(message: dict[str, Any]) -> None:
-            if message.get("type") == "http.response.start":
-                headers = {
-                    k.decode("latin-1").lower(): v.decode("latin-1")
-                    for k, v in message.get("headers", [])
-                }
-                if sid := headers.get("mcp-session-id"):
-                    session_id_from_resp["sid"] = sid
+            if message.get('type') == 'http.response.start':
+                headers = {k.decode('latin-1').lower(): v.decode('latin-1') for k, v in message.get('headers', [])}
+                if sid := headers.get('mcp-session-id'):
+                    session_id_from_resp['sid'] = sid
             await send(message)
 
         return capturing_send
@@ -281,105 +276,102 @@ class ProxyServer:
         async def lifespan(_app: Starlette) -> AsyncIterator[None]:
             """Context manager for managing session manager lifecycle."""
             async with session_manager.run():
-                logger.info("Application started with StreamableHTTP session manager!")
+                logger.info('Application started with StreamableHTTP session manager!')
                 try:
                     yield
                 finally:
-                    logger.info("Application shutting down...")
+                    logger.info('Application shutting down...')
 
         async def handle_root(request: Request) -> st.Response:
             """Handle root endpoint."""
             # Handle Apify standby readiness probe
-            if "x-apify-container-server-readiness-probe" in request.headers:
+            if 'x-apify-container-server-readiness-probe' in request.headers:
                 return Response(
-                    content=b"ok",
-                    media_type="text/plain",
+                    content=b'ok',
+                    media_type='text/plain',
                     status_code=200,
                 )
 
             # Browser client logic - Check if the request is from a HTML browser
             if is_html_browser(request):
-                server_url = f"https://{request.headers.get('host', 'localhost')}"
-                mcp_url = f"{server_url}/mcp"
+                server_url = f'https://{request.headers.get("host", "localhost")}'
+                mcp_url = f'{server_url}/mcp'
                 return serve_html_page(self.server_name, mcp_url)
 
             return JSONResponse(
                 {
-                    "status": "running",
-                    "type": "mcp-server",
-                    "transport": "streamable-http",
-                    "endpoints": {
-                        "streamableHttp": "/mcp",
+                    'status': 'running',
+                    'type': 'mcp-server',
+                    'transport': 'streamable-http',
+                    'endpoints': {
+                        'streamableHttp': '/mcp',
                     },
                 }
             )
 
         async def handle_favicon(_request: Request) -> st.Response:
             """Handle favicon.ico requests by redirecting to Apify's favicon."""
-            return RedirectResponse(
-                url="https://apify.com/favicon.ico", status_code=301
-            )
+            return RedirectResponse(url='https://apify.com/favicon.ico', status_code=301)
 
         async def handle_oauth_authorization_server(_request: Request) -> st.Response:
             """Handle OAuth authorization server well-known endpoint."""
             try:
                 # Some MCP clients do not follow redirects, so we need to fetch the data and return it directly.
                 async with httpx.AsyncClient() as client:
-                    response = await client.get(
-                        "https://api.apify.com/.well-known/oauth-authorization-server"
-                    )
+                    response = await client.get('https://api.apify.com/.well-known/oauth-authorization-server')
                     response.raise_for_status()
                     data = response.json()
                 return JSONResponse(data, status_code=200)
             except Exception:
-                logger.exception("Error fetching OAuth authorization server data")
-                return JSONResponse(
-                    {"error": "Failed to fetch OAuth authorization server data"},
-                    status_code=500,
-                )
+                logger.exception('Error fetching OAuth authorization server data')
+                return JSONResponse({'error': 'Failed to fetch OAuth authorization server data'}, status_code=500)
 
         # ASGI handler for Streamable HTTP connections
-        async def handle_streamable_http(
-            scope: Scope, receive: Receive, send: Send
-        ) -> None:
+        async def handle_streamable_http(scope: Scope, receive: Receive, send: Send) -> None:
+            # Check if this is a GET request from a browser
             request = Request(scope, receive)
             self._log_request(request)
-            if scope["method"] == "GET" and is_html_browser(request):
-                server_url = f"https://{request.headers.get('host', 'localhost')}"
-                mcp_url = f"{server_url}/mcp"
+            if scope['method'] == 'GET' and is_html_browser(request):
+                server_url = f'https://{request.headers.get("host", "localhost")}'
+                mcp_url = f'{server_url}/mcp'
                 response = serve_html_page(self.server_name, mcp_url)
+                # Send the HTML response
                 await response(scope, receive, send)
                 return
 
-            if scope["method"] == "DELETE":
+            if scope['method'] == 'DELETE':
                 await session_manager.handle_request(scope, receive, send)
-                if req_sid := request.headers.get("mcp-session-id"):
+                if req_sid := request.headers.get('mcp-session-id'):
                     self._cleanup_session_last_activity(req_sid)
                     self._cleanup_session_timer(req_sid)
                 return
 
-            session_id_from_resp: dict[str, str | None] = {"sid": None}
+            # For non-browser requests or non-GET requests, delegate to session manager
+            # Wrap `send` to capture the session ID from response headers of initialization
+            session_id_from_resp: dict[str, str | None] = {'sid': None}
             capturing_send = self._create_capturing_send(send, session_id_from_resp)
 
-            if req_sid := request.headers.get("mcp-session-id"):
+            # Log and touch existing session if present on request
+            if req_sid := request.headers.get('mcp-session-id'):
                 self._touch_session(req_sid, session_manager)
 
             await session_manager.handle_request(scope, receive, capturing_send)  # type: ignore[arg-type]
 
-            if not req_sid and session_id_from_resp["sid"]:
-                self._touch_session(session_id_from_resp["sid"], session_manager)
+            # If this was an initialization (no session id in request), capture from response and touch
+            if not req_sid and session_id_from_resp['sid']:
+                self._touch_session(session_id_from_resp['sid'], session_manager)
 
         return Starlette(
             debug=True,
             routes=[
-                Route("/", endpoint=handle_root),
-                Route("/favicon.ico", endpoint=handle_favicon, methods=["GET"]),
+                Route('/', endpoint=handle_root),
+                Route('/favicon.ico', endpoint=handle_favicon, methods=['GET']),
                 Route(
-                    "/.well-known/oauth-authorization-server",
+                    '/.well-known/oauth-authorization-server',
                     endpoint=handle_oauth_authorization_server,
-                    methods=["GET"],
+                    methods=['GET'],
                 ),
-                Mount("/mcp/", app=handle_streamable_http),
+                Mount('/mcp/', app=handle_streamable_http),
             ],
             lifespan=lifespan,
             middleware=[Middleware(McpPathRewriteMiddleware)],
@@ -387,20 +379,14 @@ class ProxyServer:
 
     async def _run_server(self, app: Starlette) -> None:
         """Run the Starlette app with uvicorn."""
-        config_ = uvicorn.Config(
-            app, host=self.host, port=self.port, log_level="info", access_log=True
-        )
+        config_ = uvicorn.Config(app, host=self.host, port=self.port, log_level='info', access_log=True)
         server = uvicorn.Server(config_)
         await server.serve()
 
     async def start(self) -> None:
         """Start Starlette app and connect to stdio, Streamable HTTP, or SSE based MCP server."""
-        logger.info(
-            f"Starting MCP server with client type: {self.server_type} and config {self.config}"
-        )
-        params: dict = (
-            self.config and self.config.model_dump(exclude_unset=True)
-        ) or {}
+        logger.info(f'Starting MCP server with client type: {self.server_type} and config {self.config}')
+        params: dict = (self.config and self.config.model_dump(exclude_unset=True)) or {}
 
         if self.server_type == ServerType.STDIO:
             # validate config again to prevent mypy errors
@@ -409,9 +395,7 @@ class ProxyServer:
                 stdio_client(config_) as (read_stream, write_stream),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_gateway(
-                    session, self.actor_charge_function, self.tool_whitelist
-                )
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
                 app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
@@ -420,9 +404,7 @@ class ProxyServer:
                 sse_client(**params) as (read_stream, write_stream),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_gateway(
-                    session, self.actor_charge_function, self.tool_whitelist
-                )
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
                 app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
@@ -432,10 +414,8 @@ class ProxyServer:
                 streamablehttp_client(**params) as (read_stream, write_stream, _),
                 ClientSession(read_stream, write_stream) as session,
             ):
-                mcp_server = await create_gateway(
-                    session, self.actor_charge_function, self.tool_whitelist
-                )
+                mcp_server = await create_gateway(session, self.actor_charge_function, self.tool_whitelist)
                 app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
         else:
-            raise ValueError(f"Unknown server type: {self.server_type}")
+            raise ValueError(f'Unknown server type: {self.server_type}')
