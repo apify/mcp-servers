@@ -3,6 +3,9 @@
 # Simple MCP Servers Deployment Script
 # Usage: ./deploy_servers.sh [python|typescript|all] [server1 server2 ...]
 
+# dictionary is not working
+# docfork is not working
+
 set -e
 
 # Colors
