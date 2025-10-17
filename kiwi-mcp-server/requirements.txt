@@ -1,6 +1,7 @@
 apify < 4.0.0
 apify-client < 3.0.0
 fastapi==0.118.2
+httpx>=0.24.0
 mcp==1.16.0
 pydantic>=2.0.0
 uv>=0.7.8
