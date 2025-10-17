@@ -383,7 +383,7 @@ class ProxyServer:
                 ClientSession(read_stream, write_stream) as session,
             ):
                 mcp_server = await create_gateway(session, self.actor_charge_function)
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.SSE:
@@ -392,7 +392,7 @@ class ProxyServer:
                 ClientSession(read_stream, write_stream) as session,
             ):
                 mcp_server = await create_gateway(session, self.actor_charge_function)
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
 
         elif self.server_type == ServerType.HTTP:
@@ -402,7 +402,7 @@ class ProxyServer:
                 ClientSession(read_stream, write_stream) as session,
             ):
                 mcp_server = await create_gateway(session, self.actor_charge_function)
-                app = await self.create_starlette_app(self.server_name, mcp_server)
+                app = await self.create_starlette_app(mcp_server)
                 await self._run_server(app)
         else:
             raise ValueError(f'Unknown server type: {self.server_type}')

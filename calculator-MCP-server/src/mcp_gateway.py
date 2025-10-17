@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Any
 
 from mcp import server, types
 
-from .const import AUTHORIZED_TOOLS, ChargeEvents, get_charge_event
+from .const import TOOL_WHITELIST, ChargeEvents, get_charge_event
 
 if TYPE_CHECKING:
     from collections.abc import Awaitable, Callable
@@ -149,10 +149,10 @@ async def create_gateway(  # noqa: PLR0915
             # Safe diagnostic logging for every tool call
             logger.info(f"Received tool call, tool: '{tool_name}', arguments: {arguments}")
 
-            if tool_name not in AUTHORIZED_TOOLS:
+            if tool_name not in TOOL_WHITELIST:
                 # Block unauthorized tools
                 error_message = f"The requested tool '{tool_name or 'unknown'}' is not authorized."
-                error_message += f'Authorized tools are: {AUTHORIZED_TOOLS}'
+                error_message += f'Authorized tools are: {list(TOOL_WHITELIST.keys())}'
                 logger.error(f'Blocking unauthorized tool call for: {tool_name or "unknown tool"}')
                 return types.ServerResult(
                     types.CallToolResult(content=[types.TextContent(type='text', text=error_message)], isError=True),
