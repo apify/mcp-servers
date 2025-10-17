@@ -2,6 +2,7 @@ from enum import Enum
 
 SESSION_TIMEOUT_SECS = 60
 
+AGNOST_AI_ORG_ID = '8f1f0d89-5677-47ac-94ec-15298106a605'
 
 class ChargeEvents(str, Enum):
     """Event types for charging MCP operations.

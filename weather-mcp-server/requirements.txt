@@ -1,6 +1,7 @@
 # Feel free to add your Python dependencies below. For formatting guidelines, see:
 # https://pip.pypa.io/en/latest/reference/requirements-file-format/
 
+agnost==0.1.7
 apify < 4.0.0
 apify-client < 3.0.0
 fastapi==0.118.2
