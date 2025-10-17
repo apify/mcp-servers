@@ -124,6 +124,7 @@ class ProxyServer:
         port: int,
         server_type: ServerType,
         actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
+        session_timeout_secs: int = SESSION_TIMEOUT_SECS,
     ) -> None:
         """Initialize the proxy server.
 
@@ -137,6 +138,7 @@ class ProxyServer:
                            Should accept (event_name: str, count: int).
                            Typically, Actor.charge in Apify Actors.
                            If None, no charging will occur.
+            session_timeout_secs: Inactivity timeout in seconds before terminating idle sessions
         """
         self.server_name = server_name
         self.server_type = server_type
@@ -148,7 +150,7 @@ class ProxyServer:
         self._session_last_activity: dict[str, float] = {}
         self._session_timers: dict[str, asyncio.Task] = {}
         # Inactivity window (seconds) before we terminate a session (DELETE)
-        self._session_timeout_secs: int = SESSION_TIMEOUT_SECS
+        self._session_timeout_secs: int = session_timeout_secs
 
     @staticmethod
     def _log_request(request: Request) -> None:

@@ -33,13 +33,12 @@ TOOL_WHITELIST = {
 }
 
 
-
 def get_charge_event(tool_name: str) -> ChargeEvents | None:
     """Get the charge event for a given tool name.
-    
+
     Args:
         tool_name: The name of the tool
-        
+
     Returns:
         The charge event for the tool, or None if not found
     """

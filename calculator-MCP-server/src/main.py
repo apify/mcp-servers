@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import ChargeEvents
+from .const import SESSION_TIMEOUT_SECS, ChargeEvents
 from .models import ServerType
 from .server import ProxyServer
 
@@ -20,6 +20,8 @@ from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(command='uv', args=['run', 'mcp-server-calculator'])
+
+session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
 
 
 async def main() -> None:
@@ -83,7 +85,13 @@ async def main() -> None:
             # Pass Actor.charge to enable charging for MCP operations
             # The proxy server will use this to charge for different operations
             proxy_server = ProxyServer(
-                SERVER_NAME, MCP_SERVER_PARAMS, HOST, PORT, server_type, actor_charge_function=Actor.charge
+                SERVER_NAME,
+                MCP_SERVER_PARAMS,
+                HOST,
+                PORT,
+                server_type,
+                actor_charge_function=Actor.charge,
+                session_timeout_secs=session_timeout_secs,
             )
             await proxy_server.start()
         except Exception as e:

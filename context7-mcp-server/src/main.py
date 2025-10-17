@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST
+from .const import SESSION_TIMEOUT_SECS, TOOL_WHITELIST
 from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
@@ -23,6 +23,8 @@ MCP_SERVER_PARAMS = RemoteServerParameters(
     url='https://mcp.context7.com/mcp',  # Context7 MCP server URL
     headers={'Authorization': f'Bearer {os.getenv("CONTEXT7_API_KEY")}'},
 )
+
+session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
 
 
 async def main() -> None:
@@ -90,6 +92,7 @@ async def main() -> None:
                 server_type,
                 actor_charge_function=Actor.charge,
                 tool_whitelist=TOOL_WHITELIST,
+                session_timeout_secs=session_timeout_secs,
             )
             await proxy_server.start()
         except Exception as e:
