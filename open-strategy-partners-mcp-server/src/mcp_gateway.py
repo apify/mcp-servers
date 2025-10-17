@@ -26,9 +26,7 @@ logger = logging.getLogger("apify")
 
 
 async def charge_mcp_operation(
-    charge_function: Callable[[str, int], Awaitable[Any]] | None,
-    event_name: str | None,
-    count: int = 1,
+    charge_function: Callable[[str, int], Awaitable[Any]] | None, event_name: str | None, count: int = 1
 ) -> None:
     """Charge for an MCP operation.
 
@@ -45,13 +43,13 @@ async def charge_mcp_operation(
 
     try:
         await charge_function(event_name, count)
-        logger.info(f"Charged for event: {event_name}")
+        logger.info(f'Charged for event: {event_name}')
     except Exception:
-        logger.exception(f"Failed to charge for event {event_name}")
+        logger.exception(f'Failed to charge for event {event_name}')
         # Don't raise the exception - we want the operation to continue even if charging fails
 
 
-async def create_gateway(
+async def create_gateway(  # noqa: PLR0915
     client_session: ClientSession,
     actor_charge_function: Callable[[str, int], Awaitable[Any]] | None = None,
     tool_whitelist: dict[str, tuple[str, int]] | None = None,
@@ -68,17 +66,15 @@ async def create_gateway(
                        If provided, only whitelisted tools will be allowed and charged.
                        If None, all tools are allowed without specific charging.
     """
-    logger.debug("Sending initialization request to remote MCP server...")
+    logger.debug('Sending initialization request to remote MCP server...')
     response = await client_session.initialize()
     capabilities: types.ServerCapabilities = response.capabilities
 
-    logger.debug("Configuring proxied MCP server...")
-    app: server.Server = server.Server(
-        name=response.serverInfo.name, version=response.serverInfo.version
-    )
+    logger.debug('Configuring proxied MCP server...')
+    app: server.Server = server.Server(name=response.serverInfo.name, version=response.serverInfo.version)
 
     if capabilities.prompts:
-        logger.debug("Capabilities: adding Prompts...")
+        logger.debug('Capabilities: adding Prompts...')
 
         async def _list_prompts(_: Any) -> types.ServerResult:
             result = await client_session.list_prompts()
@@ -88,16 +84,14 @@ async def create_gateway(
 
         async def _get_prompt(req: types.GetPromptRequest) -> types.ServerResult:
             # Uncomment the line below to charge for getting prompts
-            # await charge_mcp_operation(actor_charge_function, ChargeEvents.PROMPT_GET)
-            result = await client_session.get_prompt(
-                req.params.name, req.params.arguments
-            )
+            # await charge_mcp_operation(actor_charge_function, ChargeEvents.PROMPT_GET) # noqa: ERA001
+            result = await client_session.get_prompt(req.params.name, req.params.arguments)
             return types.ServerResult(result)
 
         app.request_handlers[types.GetPromptRequest] = _get_prompt
 
     if capabilities.resources:
-        logger.debug("Capabilities: adding Resources...")
+        logger.debug('Capabilities: adding Resources...')
 
         async def _list_resources(_: Any) -> types.ServerResult:
             result = await client_session.list_resources()
@@ -109,20 +103,18 @@ async def create_gateway(
             result = await client_session.list_resource_templates()
             return types.ServerResult(result)
 
-        app.request_handlers[types.ListResourceTemplatesRequest] = (
-            _list_resource_templates
-        )
+        app.request_handlers[types.ListResourceTemplatesRequest] = _list_resource_templates
 
         async def _read_resource(req: types.ReadResourceRequest) -> types.ServerResult:
             # Uncomment the line below to charge for reading resources
-            # await charge_mcp_operation(actor_charge_function, ChargeEvents.RESOURCE_READ)
+            # await charge_mcp_operation(actor_charge_function, ChargeEvents.RESOURCE_READ)  # noqa: ERA001
             result = await client_session.read_resource(req.params.uri)
             return types.ServerResult(result)
 
         app.request_handlers[types.ReadResourceRequest] = _read_resource
 
     if capabilities.logging:
-        logger.debug("Capabilities: adding Logging...")
+        logger.debug('Capabilities: adding Logging...')
 
         async def _set_logging_level(req: types.SetLevelRequest) -> types.ServerResult:
             await client_session.set_logging_level(req.params.level)
@@ -131,26 +123,22 @@ async def create_gateway(
         app.request_handlers[types.SetLevelRequest] = _set_logging_level
 
     if capabilities.resources:
-        logger.debug("Capabilities: adding Resources...")
+        logger.debug('Capabilities: adding Resources...')
 
-        async def _subscribe_resource(
-            req: types.SubscribeRequest,
-        ) -> types.ServerResult:
+        async def _subscribe_resource(req: types.SubscribeRequest) -> types.ServerResult:
             await client_session.subscribe_resource(req.params.uri)
             return types.ServerResult(types.EmptyResult())
 
         app.request_handlers[types.SubscribeRequest] = _subscribe_resource
 
-        async def _unsubscribe_resource(
-            req: types.UnsubscribeRequest,
-        ) -> types.ServerResult:
+        async def _unsubscribe_resource(req: types.UnsubscribeRequest) -> types.ServerResult:
             await client_session.unsubscribe_resource(req.params.uri)
             return types.ServerResult(types.EmptyResult())
 
         app.request_handlers[types.UnsubscribeRequest] = _unsubscribe_resource
 
     if capabilities.tools:
-        logger.debug("Capabilities: adding Tools...")
+        logger.debug('Capabilities: adding Tools...')
 
         async def _list_tools(_: Any) -> types.ServerResult:
             tools = await client_session.list_tools()
@@ -160,12 +148,9 @@ async def create_gateway(
                 authorized_tools = []
                 for tool in tools.tools:
                     if tool.name in tool_whitelist:
-                        authorized_tools.append(tool)
+                        authorized_tools.append(tool)  # noqa: PERF401
                 tools.tools = authorized_tools
 
-            await charge_mcp_operation(
-                actor_charge_function, ChargeEvents.TOOL_LIST.value
-            )
             return types.ServerResult(tools)
 
         app.request_handlers[types.ListToolsRequest] = _list_tools
@@ -175,50 +160,36 @@ async def create_gateway(
             arguments = req.params.arguments or {}
 
             # Safe diagnostic logging for every tool call
-            logger.info(
-                f"Received tool call, tool: '{tool_name}', arguments: {arguments}"
-            )
+            logger.info(f"Received tool call, tool: '{tool_name}', arguments: {arguments}")
 
             # Tool whitelisting and charging logic
             if tool_whitelist and tool_name not in tool_whitelist:
                 error_message = (
                     f"The requested tool '{tool_name or 'unknown'}' is not authorized."
-                    f" Authorized tools are: {list(tool_whitelist.keys())}"
+                    f' Authorized tools are: {list(tool_whitelist.keys())}'
                 )
-                logger.error(
-                    f"Blocking unauthorized tool call for: {tool_name or 'unknown tool'}"
-                )
+                logger.error(f'Blocking unauthorized tool call for: {tool_name or "unknown tool"}')
                 return types.ServerResult(
-                    types.CallToolResult(
-                        content=[types.TextContent(type="text", text=error_message)],
-                        isError=True,
-                    ),
+                    types.CallToolResult(content=[types.TextContent(type='text', text=error_message)], isError=True),
                 )
 
             try:
                 logger.info(f"Tool call. Tool: '{tool_name}', Arguments: {arguments}")
                 result = await client_session.call_tool(tool_name, arguments)
-                logger.info(f"Tool executed successfully: {tool_name}")
+                logger.info(f'Tool executed successfully: {tool_name}')
 
                 # Determine event name and count for charging (default to TOOL_CALL if not whitelisted)
                 default_tool_call = ChargeEvents.TOOL_CALL.value, 1
                 event_name, default_count = (
-                    tool_whitelist.get(tool_name, default_tool_call)
-                    if tool_whitelist
-                    else default_tool_call
+                    tool_whitelist.get(tool_name, default_tool_call) if tool_whitelist else default_tool_call
                 )
-                await charge_mcp_operation(
-                    actor_charge_function, event_name, default_count
-                )
+                await charge_mcp_operation(actor_charge_function, event_name, default_count)
                 return types.ServerResult(result)
             except Exception as e:
                 error_details = f"SERVER FAILED. Tool: '{tool_name}'. Arguments: {arguments}. Full exception: {e}"
                 logger.exception(error_details)
                 return types.ServerResult(
-                    types.CallToolResult(
-                        content=[types.TextContent(type="text", text=error_details)],
-                        isError=True,
-                    ),
+                    types.CallToolResult(content=[types.TextContent(type='text', text=error_details)], isError=True),
                 )
 
         app.request_handlers[types.CallToolRequest] = _call_tool

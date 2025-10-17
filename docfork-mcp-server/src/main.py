@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import SESSION_TIMEOUT_SECS, TOOL_WHITELIST
 from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
@@ -16,13 +16,15 @@ HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify plat
 PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or 5001
 SERVER_NAME = 'docfork-mcp-server'  # Name of the MCP server, without spaces
 
-
+# 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
 server_type = ServerType.HTTP  # Use HTTP streamable transport for Docfork MCP server
 MCP_SERVER_PARAMS = RemoteServerParameters(  # noqa: ERA001, RUF100
     url='https://mcp.docfork.com/mcp',  # Docfork MCP server URL
     headers=None,  # No authentication required for Docfork
 )  # noqa: ERA001, RUF100
 # ------------------------------------------------------------------------------
+
+session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
 
 
 async def main() -> None:
@@ -53,10 +55,6 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
-        # Initialize and charge for Actor startup
-        Actor.log.info('Starting MCP Server Actor')
-        await Actor.charge(ChargeEvents.ACTOR_START.value)
-
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
             msg = (
@@ -93,6 +91,7 @@ async def main() -> None:
                 server_type,
                 actor_charge_function=Actor.charge,
                 tool_whitelist=TOOL_WHITELIST,
+                session_timeout_secs=session_timeout_secs,
             )
             await proxy_server.start()
         except Exception as e:

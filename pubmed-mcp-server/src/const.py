@@ -1,6 +1,8 @@
 # Pay-per-event (PPE) mapping for Apify monetization
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
+
 PPE_EVENT_MAP = {
     "search_pubmed_key_words": "searchPubmedKeywords",
     "search_pubmed_advanced": "searchPubmedAdvanced",
@@ -14,6 +16,7 @@ class ChargeEvents(str, Enum):
     """Event types for charging PubMed MCP operations."""
 
     ACTOR_START = "actor-start"
+    TOOL_CALL = "tool-call"
     SEARCH_PUBMED_KEYWORDS = "searchPubmedKeywords"
     SEARCH_PUBMED_ADVANCED = "searchPubmedAdvanced"
     GET_PUBMED_ARTICLE_METADATA = "getPubmedArticleMetadata"
