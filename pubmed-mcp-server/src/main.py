@@ -13,7 +13,7 @@ server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
     command="python",
     args=["pubmed_server.py"],
-    cwd="/home/jirka/apify/mcp-servers/pubmed-mcp-server/PubMed-MCP-Server",  # <- correct path in container
+    cwd="/usr/src/app/PubMed-MCP-Server",  # <- correct path in container
     env={"PYTHONUNBUFFERED": "1"},
 )
 
