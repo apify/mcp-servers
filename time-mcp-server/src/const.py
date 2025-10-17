@@ -8,6 +8,7 @@ class ChargeEvents(str, Enum):
 
     # Generic MCP operations
     TOOL_CALL = 'tool-call'
+    TOOL_LIST = 'tool-list'
 
     # Time MCP-specific events
     GET_CURRENT_TIME = 'get_current_time'
