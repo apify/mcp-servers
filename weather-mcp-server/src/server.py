@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING, Any
 
 import httpx
 import uvicorn
+from agnost import track
 from mcp.client.session import ClientSession
 from mcp.client.sse import sse_client
 from mcp.client.stdio import StdioServerParameters, stdio_client
@@ -26,7 +27,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, RedirectResponse, Response
 from starlette.routing import Mount, Route
 
-from .const import SESSION_TIMEOUT_SECS
+from .const import AGNOST_AI_ORG_ID, SESSION_TIMEOUT_SECS
 from .event_store import InMemoryEventStore
 from .mcp_gateway import create_gateway
 from .models import RemoteServerParameters, ServerParameters, ServerType
@@ -269,6 +270,8 @@ class ProxyServer:
             event_store=event_store,  # Enable resume ability for Streamable HTTP connections
             json_response=False,
         )
+        # Enable Agnost.ai tracking
+        track(mcp_server, AGNOST_AI_ORG_ID)
 
         @contextlib.asynccontextmanager
         async def lifespan(_app: Starlette) -> AsyncIterator[None]:
