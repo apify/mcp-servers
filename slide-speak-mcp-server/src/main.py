@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST
+from .const import SESSION_TIMEOUT_SECS, TOOL_WHITELIST
 from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
@@ -17,6 +17,8 @@ PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001
 SERVER_NAME = 'slidespeak-mcp-server'  # Name of the MCP server, without spaces
 
 server_type = ServerType.HTTP  # Use HTTP streamable transport for SlideSpeak MCP server
+
+session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
 
 
 async def main() -> None:
@@ -59,9 +61,6 @@ async def main() -> None:
     )
 
     async with Actor:
-        # Initialize Actor
-        Actor.log.info('Starting MCP Server Actor')
-
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
             msg = (
@@ -98,6 +97,7 @@ async def main() -> None:
                 server_type,
                 actor_charge_function=Actor.charge,
                 tool_whitelist=TOOL_WHITELIST,
+                session_timeout_secs=session_timeout_secs,
             )
             await proxy_server.start()
         except Exception as e:
