@@ -9,6 +9,7 @@
 	"meta": {
 		"templateId": "python-mcp-server"
 	},
+	"environmentVariables": { "FINANCIAL_DATASETS_API_KEY": "@FINANCIAL_DATASETS_API_KEY" },
 	"input": {
 		"title": "Actor input schema",
 		"description": "This is Actor input schema",

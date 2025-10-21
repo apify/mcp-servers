@@ -9,6 +9,7 @@
   "meta": {
     "templateId": "python-mcp-server"
   },
+  "environmentVariables": { "SLIDESPEAK_API_KEY": "@SLIDESPEAK_API_KEY" },
   "input": {
     "title": "SlideSpeak MCP Server Input",
     "type": "object",
