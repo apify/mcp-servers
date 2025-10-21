@@ -1,5 +1,5 @@
-apify<3.0.0
-apify_client<2.0.0
+apify==3.0.1
+apify_client==2.2.0
 mcp-server-calculator==0.2.0
 fastapi==0.116.1
 httpx>=0.24.0
