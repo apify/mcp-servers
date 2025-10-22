@@ -3,18 +3,18 @@
 # You can also use any other image from Docker Hub.
 FROM apify/actor-python:3.13
 
+# Install npm and markmap-cli as root before switching to myuser
+RUN apt-get -q update && apt-get -y install npm
+
+# Install markmap-cli globally using npm
+RUN npm install -g markmap-cli
+
 USER myuser
 
 # Second, copy just requirements.txt into the Actor image,
 # since it should be the only file that affects the dependency installation in the next step,
 # in order to speed up the build.
 COPY --chown=myuser:myuser requirements.txt ./
-
-# Install NPX
-RUN apt-get -q update && apt-get -y install npm
-
-# Install markmap-cli globally using npm
-RUN npm install -g markmap-cli
 
 # Install the packages specified in requirements.txt,
 # print the installed Python version, pip version,

@@ -142,6 +142,7 @@ class ProxyServer:
             tool_whitelist: Optional dict mapping tool names to (event_name, default_count) tuples.
                            If provided, only whitelisted tools will be allowed and charged.
                            If None, all tools are allowed without specific charging.
+            session_timeout_secs: Inactivity timeout in seconds before terminating idle sessions.
         """
         self.server_name = server_name
         self.server_type = server_type
