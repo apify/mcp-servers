@@ -1,10 +1,11 @@
 #!/bin/bash
-
 # Simple MCP Servers Deployment Script
 # Usage: ./deploy_servers.sh [python|typescript|all] [server1 server2 ...]
+# Vibe-coded!!! Please take with a grain of salt.
 
-# dictionary is not working
-# docfork is not working
+# dictionary - when run it install dependencies
+# docfork is not working - NO TOOLS
+# pubmed - Failed to parse JSONRPC message from server:
 
 set -e
 
@@ -17,7 +18,6 @@ NC='\033[0m'
 # Server configurations: "server_name:type:env_vars"
 declare -A SERVERS=(
     # Python servers
-    ["weather-mcp-server"]="python:"
     ["calculator-MCP-server"]="python:"
     ["context7-mcp-server"]="python:CONTEXT7_API_KEY"
     ["dictionary-mcp-server"]="python:"
@@ -27,9 +27,10 @@ declare -A SERVERS=(
     ["mindmap-mcp-server"]="python:"
     ["open-strategy-partners-mcp-server"]="python:"
     ["pubmed-mcp-server"]="python:"
-    ["pypi-mcp-server"]="python:PYPI_INDEX_URL,PYPI_INDEX_URLS,PYPI_EXTRA_INDEX_URLS,PYPI_CACHE_TTL,PYPI_LOG_LEVEL,PYPI_REQUEST_TIMEOUT,PYPI_PRIVATE_PYPI_URL,PYPI_PRIVATE_PYPI_USERNAME,PYPI_PRIVATE_PYPI_PASSWORD,PYPI_DEPENDENCY_MAX_DEPTH,PYPI_DEPENDENCY_MAX_CONCURRENT,PYPI_ENABLE_SECURITY_ANALYSIS"
+    ["pypi-mcp-server"]="python:"
     ["slide-speak-mcp-server"]="python:SLIDESPEAK_API_KEY"
     ["time-mcp-server"]="python:"
+    ["weather-mcp-server"]="python:"
     ["wikipedia-mcp-server"]="python:WIKIPEDIA_LANGUAGE"
     
     # TypeScript servers
@@ -90,6 +91,96 @@ add_secrets() {
     done
 }
 
+# Update actor with standby configuration
+update_actor_standby() {
+    local server="$1"
+    
+    # Get username from auth file
+    local username=$(jq -r '.username' ~/.apify/auth.json 2>/dev/null || echo "")
+    
+    # Get actor name from actor.json file
+    local actor_name=$(jq -r '.name' ".actor/actor.json" 2>/dev/null || echo "")
+    
+    if [[ -z "$username" || -z "$actor_name" ]]; then
+        echo -e "${RED}Could not get username or actor name for $server${NC}"
+        return 1
+    fi
+    
+    # Construct full actor name
+    local full_actor_name="$username/$actor_name"
+    
+    # Get actor ID from apify CLI
+    local actor_id=$(apify actors info "$full_actor_name" --json 2>/dev/null | jq -r '.id' 2>/dev/null || echo "")
+    
+    if [[ -z "$actor_id" || "$actor_id" == "null" ]]; then
+        echo -e "${RED}Could not get actor ID for $server${NC}"
+        return 1
+    fi
+    
+    # Get API token from apify auth file
+    local api_token=$(jq -r '.token' ~/.apify/auth.json 2>/dev/null || echo "")
+    
+    if [[ -z "$api_token" ]]; then
+        echo -e "${RED}Could not get API token${NC}"
+        return 1
+    fi
+    
+    # Prepare standby configuration JSON
+    local standby_config='{
+        "actorStandby": {
+            "isEnabled": true,
+            "disableStandbyFieldsOverride": false,
+            "maxRequestsPerActorRun": 100,
+            "desiredRequestsPerActorRun": 50,
+            "idleTimeoutSecs": 300,
+            "build": "latest",
+            "memoryMbytes": 512,
+            "shouldPassActorInput": false
+        }
+    }'
+    
+    echo "Updating actor standby configuration for $server..."
+    
+    # Update actor using Apify API
+    local response=$(curl -s -L -X PUT "https://api.apify.com/v2/acts/$actor_id" \
+        -H "Content-Type: application/json" \
+        -H "Accept: application/json" \
+        -H "Authorization: Bearer $api_token" \
+        -d "$standby_config" 2>/dev/null)
+    
+    if [[ $? -eq 0 ]]; then
+        echo -e "${GREEN}Successfully updated standby configuration for $server${NC}"
+        
+        # Extract standby URL from response
+        local standby_url=$(echo "$response" | jq -r '.data.standbyUrl' 2>/dev/null || echo "")
+        
+        if [[ -n "$standby_url" && "$standby_url" != "null" ]]; then
+            # Append /mcp to the standby URL
+            local mcp_url="${standby_url}/mcp"
+            echo "Standby URL: $standby_url"
+            echo "MCP URL: $mcp_url"
+            
+            # Create or append to standby_urls.json in the root directory
+            local standby_file="../standby_urls.json"
+            
+            # Create file if it doesn't exist
+            if [[ ! -f "$standby_file" ]]; then
+                echo '{"mcpUrls": []}' > "$standby_file"
+            fi
+            
+            # Add URL to mcpUrls array with deduplication
+            jq --arg url "$mcp_url" '.mcpUrls = (.mcpUrls + [$url] | unique)' "$standby_file" > "$standby_file.tmp" && mv "$standby_file.tmp" "$standby_file"
+            
+            echo -e "${GREEN}Added MCP URL to standby_urls.json${NC}"
+        else
+            echo -e "${RED}Could not extract standby URL from response${NC}"
+        fi
+    else
+        echo -e "${RED}Failed to update standby configuration for $server${NC}"
+        return 1
+    fi
+}
+
 # Deploy a single server
 deploy_server() {
     local server="$1"
@@ -110,28 +201,19 @@ deploy_server() {
         return 1
     fi
     
-    cd "$server"
+    pushd "$server" > /dev/null
     add_secrets "$server" "$env_vars"
     
     if apify push; then
         echo -e "${GREEN}Deployed $server${NC}"
-        # Try to get actor info to find the standby URL
-        local actor_info=$(apify actors info "$server" --json 2>/dev/null || echo "")
-        if [[ -n "$actor_info" ]]; then
-            local standby_url=$(echo "$actor_info" | jq -r '.defaultRunOptions.build' 2>/dev/null || echo "")
-            if [[ -n "$standby_url" && "$standby_url" != "null" ]]; then
-                echo "Standby URL: $standby_url"
-            else
-                echo "Console: https://console.apify.com/actors/$server"
-            fi
-        else
-            echo "Console: https://console.apify.com/actors/$server"
-        fi
+        
+        # Update actor with standby configuration
+        update_actor_standby "$server"
     else
         echo -e "${RED}Failed to deploy $server${NC}"
     fi
     
-    cd ..
+    popd > /dev/null
 }
 
 # Main function

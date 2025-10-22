@@ -13,6 +13,8 @@ dev = [
 [tool.ruff]
 line-length = 120
 include = ["*.py"]
+exclude = ["open-strategy-partners-mcp-server/osp_marketing_tools", "pubmed-mcp-server/PubMed-MCP-Server"]
+
 
 [tool.ruff.lint]
 select = ["ALL"]
