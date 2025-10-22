@@ -38,13 +38,13 @@ if TYPE_CHECKING:
     from starlette import types as st
     from starlette.types import Receive, Scope, Send
 
-logger = logging.getLogger("apify")
+logger = logging.getLogger('apify')
 
 
 def is_html_browser(request: Request) -> bool:
     """Detect if the request is from an HTML browser based on Accept header."""
-    accept_header = request.headers.get("accept", "")
-    return "text/html" in accept_header
+    accept_header = request.headers.get('accept', '')
+    return 'text/html' in accept_header
 
 
 def get_html_page(server_name: str, mcp_url: str) -> str:
@@ -70,7 +70,7 @@ def get_html_page(server_name: str, mcp_url: str) -> str:
     <p><strong>Add to your MCP client (e.g. VS code):</strong></p>
     <pre>{{
   "mcpServers": {{
-    "{server_name.lower().replace(" ", "-")}": {{
+    "{server_name.lower().replace(' ', '-')}": {{
       "type": "http",
       "url": "{mcp_url}",
       "headers": {{
@@ -86,7 +86,7 @@ def get_html_page(server_name: str, mcp_url: str) -> str:
 def serve_html_page(server_name: str, mcp_url: str) -> Response:
     """Serve HTML page for browser requests."""
     html = get_html_page(server_name, mcp_url)
-    return Response(content=html, media_type="text/html")
+    return Response(content=html, media_type='text/html')
 
 
 class McpPathRewriteMiddleware(BaseHTTPMiddleware):
@@ -98,9 +98,9 @@ class McpPathRewriteMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next: Callable) -> Any:
         """Rewrite the request path."""
-        if request.url.path == "/mcp":
-            request.scope["path"] = "/mcp/"
-            request.scope["raw_path"] = b"/mcp/"
+        if request.url.path == '/mcp':
+            request.scope['path'] = '/mcp/'
+            request.scope['raw_path'] = b'/mcp/'
         return await call_next(request)
 
 
@@ -161,11 +161,11 @@ class ProxyServer:
     def _log_request(request: Request) -> None:
         """Log incoming MCP transport request for diagnostics."""
         logger.info(
-            "MCP transport request",
+            'MCP transport request',
             extra={
-                "method": request.method,
-                "path": str(request.url.path),
-                "mcp_session_id": request.headers.get("mcp-session-id"),
+                'method': request.method,
+                'path': str(request.url.path),
+                'mcp_session_id': request.headers.get('mcp-session-id'),
             },
         )
 
@@ -324,7 +324,10 @@ class ProxyServer:
                 return JSONResponse(data, status_code=200)
             except Exception:
                 logger.exception('Error fetching OAuth authorization server data')
-                return JSONResponse({'error': 'Failed to fetch OAuth authorization server data'}, status_code=500)
+                return JSONResponse(
+                    {'error': 'Failed to fetch OAuth authorization server data'},
+                    status_code=500,
+                )
 
         # ASGI handler for Streamable HTTP connections
         async def handle_streamable_http(scope: Scope, receive: Receive, send: Send) -> None:

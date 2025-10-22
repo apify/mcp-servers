@@ -1,3 +1,0 @@
-[tool.ruff]
-exclude = ["osp_marketing_tools"]
-extend-select = ["RUF100"]

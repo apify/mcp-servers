@@ -33,13 +33,14 @@ class EventEntry:
 
 class InMemoryEventStore(EventStore):
     """Simple in-memory implementation of the EventStore interface for resumability.
+
     This is primarily intended for examples and testing, not for production use
     where a persistent storage solution would be more appropriate.
 
     This implementation keeps only the last N events per stream for memory efficiency.
-    """  # noqa: D205
+    """
 
-    def __init__(self, max_events_per_stream: int = 100):  # noqa: ANN204
+    def __init__(self, max_events_per_stream: int = 100) -> None:
         """Initialize the event store.
 
         Args:
@@ -52,7 +53,7 @@ class InMemoryEventStore(EventStore):
         self.event_index: dict[EventId, EventEntry] = {}
 
     async def store_event(self, stream_id: StreamId, message: JSONRPCMessage) -> EventId:
-        """Stores an event with a generated event ID."""  # noqa: D401
+        """Store an event with a generated event ID."""
         event_id = str(uuid4())
         event_entry = EventEntry(event_id=event_id, stream_id=stream_id, message=message)
 

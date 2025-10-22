@@ -22,11 +22,13 @@ if TYPE_CHECKING:
 
     from mcp.client.session import ClientSession
 
-logger = logging.getLogger("apify")
+logger = logging.getLogger('apify')
 
 
 async def charge_mcp_operation(
-    charge_function: Callable[[str, int], Awaitable[Any]] | None, event_name: str | None, count: int = 1
+    charge_function: Callable[[str, int], Awaitable[Any]] | None,
+    event_name: str | None,
+    count: int = 1,
 ) -> None:
     """Charge for an MCP operation.
 
@@ -84,7 +86,6 @@ async def create_gateway(  # noqa: PLR0915
 
         async def _get_prompt(req: types.GetPromptRequest) -> types.ServerResult:
             # Uncomment the line below to charge for getting prompts
-            # await charge_mcp_operation(actor_charge_function, ChargeEvents.PROMPT_GET) # noqa: ERA001
             result = await client_session.get_prompt(req.params.name, req.params.arguments)
             return types.ServerResult(result)
 
@@ -107,7 +108,6 @@ async def create_gateway(  # noqa: PLR0915
 
         async def _read_resource(req: types.ReadResourceRequest) -> types.ServerResult:
             # Uncomment the line below to charge for reading resources
-            # await charge_mcp_operation(actor_charge_function, ChargeEvents.RESOURCE_READ)  # noqa: ERA001
             result = await client_session.read_resource(req.params.uri)
             return types.ServerResult(result)
 
@@ -170,7 +170,10 @@ async def create_gateway(  # noqa: PLR0915
                 )
                 logger.error(f'Blocking unauthorized tool call for: {tool_name or "unknown tool"}')
                 return types.ServerResult(
-                    types.CallToolResult(content=[types.TextContent(type='text', text=error_message)], isError=True),
+                    types.CallToolResult(
+                        content=[types.TextContent(type='text', text=error_message)],
+                        isError=True,
+                    ),
                 )
 
             try:
@@ -189,7 +192,10 @@ async def create_gateway(  # noqa: PLR0915
                 error_details = f"SERVER FAILED. Tool: '{tool_name}'. Arguments: {arguments}. Full exception: {e}"
                 logger.exception(error_details)
                 return types.ServerResult(
-                    types.CallToolResult(content=[types.TextContent(type='text', text=error_details)], isError=True),
+                    types.CallToolResult(
+                        content=[types.TextContent(type='text', text=error_details)],
+                        isError=True,
+                    ),
                 )
 
         app.request_handlers[types.CallToolRequest] = _call_tool
