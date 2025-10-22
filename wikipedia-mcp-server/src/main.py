@@ -14,7 +14,9 @@ STANDBY_MODE = os.environ.get('APIFY_META_ORIGIN') == 'STANDBY'
 # Bind to all interfaces (0.0.0.0) as this is running in a containerized environment (Apify Actor)
 # The container's network is isolated, so this is safe
 HOST = '0.0.0.0'  # noqa: S104 - Required for container networking at Apify platform
-PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or int(os.environ.get('ACTOR_WEB_SERVER_PORT') or os.environ.get('PORT', '4321'))
+PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001')) or int(
+    os.environ.get('ACTOR_WEB_SERVER_PORT') or os.environ.get('PORT', '4321')
+)
 SERVER_NAME = 'wikipedia'
 
 
@@ -89,7 +91,7 @@ async def main() -> None:
                 }}
                 """
             )
-            
+
             # Start the Wikipedia MCP server in the background
             proc = start_wikipedia_mcp()
             try:
@@ -98,7 +100,7 @@ async def main() -> None:
                 # Set up the proxy to connect to the local MCP server
                 mcp_url = 'http://127.0.0.1:8000/sse'  # Correct port and path for wikipedia-mcp SSE
                 mcp_params = RemoteServerParameters(url=mcp_url)
-                
+
                 # Pass Actor.charge to enable charging for MCP operations
                 # The proxy server will use this to charge for different operations
                 session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
