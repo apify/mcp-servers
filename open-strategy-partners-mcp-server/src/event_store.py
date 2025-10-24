@@ -1,3 +1,10 @@
+# Source https://github.com/modelcontextprotocol/python-sdk/blob/3978c6e1b91e8830e82d97ab3c4e3b6559972021/examples/servers/simple-streamablehttp/mcp_simple_streamablehttp/event_store.py
+"""In-memory event store for demonstrating resumability functionality.
+
+This is a simple implementation intended for examples and testing,
+not for production use where a persistent storage solution would be more appropriate.
+"""
+
 import logging
 from collections import deque
 from dataclasses import dataclass
@@ -26,13 +33,14 @@ class EventEntry:
 
 class InMemoryEventStore(EventStore):
     """Simple in-memory implementation of the EventStore interface for resumability.
+
     This is primarily intended for examples and testing, not for production use
     where a persistent storage solution would be more appropriate.
 
     This implementation keeps only the last N events per stream for memory efficiency.
     """
 
-    def __init__(self, max_events_per_stream: int = 100):
+    def __init__(self, max_events_per_stream: int = 100) -> None:
         """Initialize the event store.
 
         Args:
@@ -44,14 +52,10 @@ class InMemoryEventStore(EventStore):
         # event_id -> EventEntry for quick lookup
         self.event_index: dict[EventId, EventEntry] = {}
 
-    async def store_event(
-        self, stream_id: StreamId, message: JSONRPCMessage
-    ) -> EventId:
-        """Stores an event with a generated event ID."""
+    async def store_event(self, stream_id: StreamId, message: JSONRPCMessage) -> EventId:
+        """Store an event with a generated event ID."""
         event_id = str(uuid4())
-        event_entry = EventEntry(
-            event_id=event_id, stream_id=stream_id, message=message
-        )
+        event_entry = EventEntry(event_id=event_id, stream_id=stream_id, message=message)
 
         # Get or create deque for this stream
         if stream_id not in self.streams:
@@ -76,7 +80,7 @@ class InMemoryEventStore(EventStore):
     ) -> StreamId | None:
         """Replays events that occurred after the specified event ID."""
         if last_event_id not in self.event_index:
-            logger.warning(f"Event ID {last_event_id} not found in store")
+            logger.warning(f'Event ID {last_event_id} not found in store')
             return None
 
         # Get the stream and find events after the last one

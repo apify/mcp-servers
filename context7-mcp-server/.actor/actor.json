@@ -9,6 +9,7 @@
 	"meta": {
 		"templateId": "python-mcp-server"
 	},
+	"environmentVariables": { "CONTEXT7_API_KEY":  "@CONTEXT7_API_KEY" },
 	"input": {
 		"title": "Actor input schema",
 		"description": "This is Actor input schema",

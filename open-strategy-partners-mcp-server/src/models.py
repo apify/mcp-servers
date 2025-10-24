@@ -9,9 +9,9 @@ from pydantic import BaseModel, ConfigDict
 class ServerType(str, Enum):
     """Type of server to connect."""
 
-    STDIO = "stdio"  # Connect to a stdio server
-    SSE = "sse"  # Connect to an SSE server
-    HTTP = "http"  # Connect to an HTTP server (Streamable HTTP)
+    STDIO = 'stdio'  # Connect to a stdio server
+    SSE = 'sse'  # Connect to an SSE server
+    HTTP = 'http'  # Connect to an HTTP server (Streamable HTTP)
 
 
 class RemoteServerParameters(BaseModel):

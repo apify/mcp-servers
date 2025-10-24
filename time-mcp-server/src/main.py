@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import SESSION_TIMEOUT_SECS, TOOL_WHITELIST
 from .models import ServerType
 from .server import ProxyServer
 
@@ -28,6 +28,8 @@ MCP_SERVER_PARAMS = StdioServerParameters(
     env={},
 )
 
+session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
+
 
 async def main() -> None:
     """Run the MCP Server Actor.
@@ -37,6 +39,7 @@ async def main() -> None:
     2. Charges for Actor startup
     3. Creates and starts the proxy server
     4. Configures charging for MCP operations using Actor.charge
+
     CHARGING STRATEGIES:
     The template supports multiple charging approaches:
 
@@ -46,12 +49,10 @@ async def main() -> None:
        - Charge for prompt operations (PROMPT_LIST, PROMPT_GET)
        - Charge for tool listing (TOOL_LIST)
 
-    2. DOMAIN-SPECIFIC CHARGING (example):
+    2. DOMAIN-SPECIFIC CHARGING (time-mcp-server example):
        - Charge different amounts for different tools
-       - search_papers: $0.01 per search
-       - list_papers: $0.001 per listing
-       - download_paper: $0.005 per download
-       - read_paper: $0.02 per paper read
+       - get_current_time: $0.0005 per call
+       - convert_time: $0.0005 per call
 
     3. NO CHARGING:
        - Comment out all charging lines for free service
@@ -59,9 +60,8 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
-        # Initialize and charge for Actor startup
+        # Initialize Actor
         Actor.log.info('Starting MCP Server Actor')
-        await Actor.charge(ChargeEvents.ACTOR_START.value)
 
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
@@ -99,6 +99,7 @@ async def main() -> None:
                 server_type,
                 actor_charge_function=Actor.charge,
                 tool_whitelist=TOOL_WHITELIST,
+                session_timeout_secs=session_timeout_secs,
             )
             await proxy_server.start()
         except Exception as e:

@@ -1,5 +1,7 @@
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
+
 
 class ChargeEvents(str, Enum):
     """Event types for charging MCP operations.
@@ -12,29 +14,35 @@ class ChargeEvents(str, Enum):
     as examples. You can customize these events based on your specific MCP server needs.
     """
 
-    # Generic MCP operations (can be used for any MCP server)
+    # Actor lifecycle events
     ACTOR_START = 'actor-start'
-    RESOURCE_READ = 'resource-read'
-    TOOL_LIST = 'tool-list'
-    PROMPT_GET = 'prompt-get'
+
+    # Generic MCP operations (can be used for any MCP server)
     TOOL_CALL = 'tool-call'
 
     # Calculator-specific operations (example for domain-specific charging)
     CALCULATE = 'calculate'
 
 
-# Authorized tools list for MCP server
-# Only tools listed here will be allowed to execute.
-# To add new authorized tools, simply add the tool value to this list.
-AUTHORIZED_TOOLS = [
-    ChargeEvents.CALCULATE.value,
-]
+# Tool whitelist for MCP server
+# Only tools listed here will be present to the user and allowed to execute.
+# Format of the dictionary: {tool_name: (charge_event_name, default_count)}
+# To add new authorized tools, add an entry with the tool name and its charging configuration.
+TOOL_WHITELIST = {
+    ChargeEvents.CALCULATE.value: (ChargeEvents.CALCULATE.value, 1),
+}
 
 
-# Helper function to get ChargeEvents enum from tool name
 def get_charge_event(tool_name: str) -> ChargeEvents | None:
-    """Get the ChargeEvents enum member from a tool name string."""
-    for event in ChargeEvents:
-        if event.value == tool_name:
-            return event
+    """Get the charge event for a given tool name.
+
+    Args:
+        tool_name: The name of the tool
+
+    Returns:
+        The charge event for the tool, or None if not found
+    """
+    if tool_name in TOOL_WHITELIST:
+        charge_event_name = TOOL_WHITELIST[tool_name][0]
+        return ChargeEvents(charge_event_name)
     return None

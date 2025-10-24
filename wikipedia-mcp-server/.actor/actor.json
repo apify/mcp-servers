@@ -9,6 +9,7 @@
 	"meta": {
 		"templateId": "python-mcp-server"
 	},
+	"environmentVariables": { "WIKIPEDIA_LANGUAGE": "@WIKIPEDIA_LANGUAGE" },
 	"dockerfile": "../Dockerfile",
 	"webServerMcpPath": "/mcp"
 }

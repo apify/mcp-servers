@@ -1,5 +1,7 @@
 from enum import Enum
 
+SESSION_TIMEOUT_SECS = 300  # 5 minutes
+
 
 class ChargeEvents(str, Enum):
     """Event types for charging MCP operations.
@@ -8,12 +10,11 @@ class ChargeEvents(str, Enum):
     when running as an Apify Actor. Each event corresponds to a specific operation
     that can be charged for.
 
-    The template includes both generic MCP operations and specific arXiv operations
+    The template includes both generic MCP operations and specific financial datasets operations
     as examples. You can customize these events based on your specific MCP server needs.
     """
 
     # Generic MCP operations (can be used for any MCP server)
-    ACTOR_START = 'actor-start'
     TOOL_CALL = 'tool-call'
 
     # Financial Datasets-specific operations

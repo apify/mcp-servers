@@ -4,7 +4,7 @@ import os
 
 from apify import Actor
 
-from .const import TOOL_WHITELIST, ChargeEvents
+from .const import SESSION_TIMEOUT_SECS, TOOL_WHITELIST
 from .models import RemoteServerParameters, ServerType
 from .server import ProxyServer
 
@@ -22,6 +22,8 @@ MCP_SERVER_PARAMS = RemoteServerParameters(  # noqa: ERA001, RUF100
     headers=None,  # No authentication required for Kiwi MCP server
 )  # noqa: ERA001, RUF100
 # ------------------------------------------------------------------------------
+
+session_timeout_secs = int(os.getenv('SESSION_TIMEOUT_SECS', SESSION_TIMEOUT_SECS))
 
 
 async def main() -> None:
@@ -55,10 +57,6 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
-        # Initialize and charge for Actor startup
-        Actor.log.info('Starting MCP Server Actor')
-        await Actor.charge(ChargeEvents.ACTOR_START.value)
-
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
             msg = (
@@ -95,6 +93,7 @@ async def main() -> None:
                 server_type,
                 actor_charge_function=Actor.charge,
                 tool_whitelist=TOOL_WHITELIST,
+                session_timeout_secs=session_timeout_secs,
             )
             await proxy_server.start()
         except Exception as e:
