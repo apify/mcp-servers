@@ -156,6 +156,7 @@ class ProxyServer:
         self._session_timers: dict[str, asyncio.Task] = {}
         # Inactivity window (seconds) before we terminate a session (DELETE)
         self._session_timeout_secs: int = SESSION_TIMEOUT_SECS
+        self._agnost_org_id: str | None = os.environ.get('AGNOST_AI_ORG_ID')
 
     @staticmethod
     def _log_request(request: Request) -> None:
@@ -272,8 +273,7 @@ class ProxyServer:
             json_response=False,
         )
         # Enable Agnost.ai tracking
-        if org_id := os.environ.get('AGNOST_AI_ORG_ID'):
-            track(mcp_server, org_id)
+        self._agnost_org_id and track(mcp_server, self._agnost_org_id)
 
         @contextlib.asynccontextmanager
         async def lifespan(_app: Starlette) -> AsyncIterator[None]:
