@@ -8,6 +8,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import logging
+import os
 import time
 from typing import TYPE_CHECKING, Any
 
@@ -27,7 +28,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse, RedirectResponse, Response
 from starlette.routing import Mount, Route
 
-from .const import AGNOST_AI_ORG_ID, SESSION_TIMEOUT_SECS
+from .const import SESSION_TIMEOUT_SECS
 from .event_store import InMemoryEventStore
 from .mcp_gateway import create_gateway
 from .models import RemoteServerParameters, ServerParameters, ServerType
@@ -155,6 +156,7 @@ class ProxyServer:
         self._session_timers: dict[str, asyncio.Task] = {}
         # Inactivity window (seconds) before we terminate a session (DELETE)
         self._session_timeout_secs: int = SESSION_TIMEOUT_SECS
+        self._agnost_org_id: str | None = os.environ.get('AGNOST_AI_ORG_ID')
 
     @staticmethod
     def _log_request(request: Request) -> None:
@@ -271,7 +273,7 @@ class ProxyServer:
             json_response=False,
         )
         # Enable Agnost.ai tracking
-        track(mcp_server, AGNOST_AI_ORG_ID)
+        self._agnost_org_id and track(mcp_server, self._agnost_org_id)
 
         @contextlib.asynccontextmanager
         async def lifespan(_app: Starlette) -> AsyncIterator[None]:
