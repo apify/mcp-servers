@@ -182,8 +182,8 @@ Example:
 ```python
 server_type = ServerType.STDIO
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uv',
-    args=['tool', 'run', 'casual-mcp-server-words'],
+    command='casual-mcp-server-words',
+    args=[],
     env={},  # Optional environment variables
 )
 ```
