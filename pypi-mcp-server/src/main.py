@@ -1,6 +1,7 @@
-"""Main entry point for the MCP Server Actor (PyPI Query MCP via stdio/uvx)."""
+"""Main entry point for the MCP Server Actor (PyPI Query MCP via stdio)."""
 
 import os
+from pathlib import Path
 
 from apify import Actor
 
@@ -17,19 +18,21 @@ PORT = (Actor.is_at_home() and int(os.environ.get('ACTOR_STANDBY_PORT') or '5001
 SERVER_NAME = 'pypi-query-mcp-server'  # Name of the MCP server, without spaces
 
 # ------------------------------------------------------------------------------
-# We use stdio transport and launch the PyPI Query MCP Server via `uvx`.
-# See: pip install pypi-query-mcp-server  (runtime fetched by uvx with --from)
+# We use stdio transport and launch the PyPI Query MCP Server via its CLI entrypoint.
+# The CLI (`pypi-query-mcp`) is pre-installed via requirements.txt to avoid cold installs.
 # ------------------------------------------------------------------------------
 
 from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
+tool_path_hint = os.pathsep.join(p for p in (os.environ.get('PATH'), str(Path.home() / '.local' / 'bin')) if p)
+
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uvx',
-    # Explicitly pull the entry from PyPI and run it.
-    args=['--from', 'pypi-query-mcp-server', 'pypi-query-mcp'],
+    command='pypi-query-mcp',
+    args=[],
     # Pass-through environment variables supported by the PyPI Query MCP server.
     env={
+        'PATH': tool_path_hint,
         # Public index / mirrors
         'PYPI_INDEX_URL': os.getenv('PYPI_INDEX_URL', 'https://pypi.org/pypi'),
         'PYPI_INDEX_URLS': os.getenv('PYPI_INDEX_URLS', ''),  # comma-separated mirrors
@@ -58,16 +61,18 @@ async def main() -> None:
 
     Flow:
     1. Initializes the Actor
-    2. Creates and starts the proxy server (only in STANDBY mode)
-    3. Configures charging for MCP tool operations using Actor.charge (no system event charging)
+    2. Relies on Apify's synthetic `apify-actor-start` event for startup charging
+    3. Creates and starts the proxy server (only in STANDBY mode)
+    4. Configures charging for MCP tool operations using Actor.charge (no system event charging)
 
     Charging:
     - Generic MCP events (tool list/call, resource, etc.)
     - PyPI-specific tool events via TOOL_WHITELIST (see const.py)
     """
     async with Actor:
-        # Initialize and charge for Actor startup
+        # Startup charging is handled by the Apify synthetic event; avoid manual Actor.charge here.
         Actor.log.info('Starting MCP Server Actor (PyPI Query MCP)')
+        Actor.log.info('Startup charge handled via Apify synthetic event "apify-actor-start"')
         # NOTE: Removed charging for ACTOR_START. System events like 'apify-actor-start'
         # are not billable and attempting to charge them results in ApifyApiError:
         #   Event "apify-actor-start" is system event and cannot be charged.
