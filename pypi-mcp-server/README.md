@@ -98,7 +98,7 @@ This server exposes the PyPI tools provided by the upstream server (whitelisted 
 
 ## Environment Variables
 
-The proxy launches the upstream server via `uvx` (stdio) and forwards these environment variables:
+The proxy launches the upstream server via the pre-installed `pypi-query-mcp` CLI (stdio) and forwards these environment variables. The CLI is added through `requirements.txt`, so startup does not need to download packages.
 
 - Public indexes & mirrors  
   - `PYPI_INDEX_URL` (default: `https://pypi.org/pypi`)  
