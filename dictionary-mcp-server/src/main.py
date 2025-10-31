@@ -22,10 +22,14 @@ SERVER_NAME = 'dictionary-mcp-server'  # Name of the MCP server, without spaces
 from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
+tool_path_hint = os.pathsep.join(
+    path for path in (os.environ.get('PATH'), os.path.join(os.path.expanduser('~'), '.local', 'bin')) if path
+)
+
 MCP_SERVER_PARAMS = StdioServerParameters(
-    command='uv',
-    args=['tool', 'run', 'casual-mcp-server-words'],
-    env={},  # No extra env needed for Dictionary server
+    command='casual-mcp-server-words',
+    args=[],
+    env={'PATH': tool_path_hint},  # Ensure the CLI from pip install is on PATH to avoid cold installs
 )
 
 # 2) If you are connecting to a Streamable HTTP or SSE server, you need to provide the url and headers if needed
@@ -46,7 +50,7 @@ async def main() -> None:
 
     This function:
     1. Initializes the Actor
-    2. Charges for Actor startup
+    2. Relies on Apify's synthetic `apify-actor-start` event for startup charging
     3. Creates and starts the proxy server
     4. Configures charging for MCP operations using Actor.charge
 
@@ -71,6 +75,7 @@ async def main() -> None:
     Charging events are defined in .actor/pay_per_event.json
     """
     async with Actor:
+        Actor.log.info('Startup charge handled via Apify synthetic event "apify-actor-start"')
         url = os.environ.get('ACTOR_STANDBY_URL', HOST)
         if not STANDBY_MODE:
             msg = (
