@@ -1,6 +1,7 @@
 """Main entry point for the MCP Server Actor."""
 
 import os
+from pathlib import Path
 
 from apify import Actor
 
@@ -23,7 +24,12 @@ from mcp.client.stdio import StdioServerParameters  # noqa: E402
 
 server_type = ServerType.STDIO
 tool_path_hint = os.pathsep.join(
-    path for path in (os.environ.get('PATH'), os.path.join(os.path.expanduser('~'), '.local', 'bin')) if path
+    path
+    for path in (
+        os.environ.get('PATH'),
+        str(Path.home() / '.local' / 'bin'),
+    )
+    if path
 )
 
 MCP_SERVER_PARAMS = StdioServerParameters(
