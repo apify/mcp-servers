@@ -264,7 +264,7 @@ class ProxyServer:
 
         return capturing_send
 
-    async def create_starlette_app(self, mcp_server: Server) -> Starlette:
+    async def create_starlette_app(self, mcp_server: Server) -> Starlette:  # noqa: PLR0915
         """Create a Starlette app that exposes /mcp endpoint for Streamable HTTP transport."""
         event_store = InMemoryEventStore()
         session_manager = StreamableHTTPSessionManager(
@@ -273,6 +273,7 @@ class ProxyServer:
             json_response=False,
         )
         # Enable Agnost.ai tracking
+        logger.info(f'Agnost.ai tracking is: {"enabled" if self._agnost_org_id else "disabled"}')
         self._agnost_org_id and track(mcp_server, self._agnost_org_id)
 
         @contextlib.asynccontextmanager
