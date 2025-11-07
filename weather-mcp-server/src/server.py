@@ -264,7 +264,7 @@ class ProxyServer:
 
         return capturing_send
 
-    async def create_starlette_app(self, mcp_server: Server) -> Starlette:
+    async def create_starlette_app(self, mcp_server: Server) -> Starlette:  # noqa: PLR0915
         """Create a Starlette app that exposes /mcp endpoint for Streamable HTTP transport."""
         event_store = InMemoryEventStore()
         session_manager = StreamableHTTPSessionManager(
