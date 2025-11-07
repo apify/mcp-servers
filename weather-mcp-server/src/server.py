@@ -273,6 +273,7 @@ class ProxyServer:
             json_response=False,
         )
         # Enable Agnost.ai tracking
+        logger.info(f'Agnost.ai tracking is: {"enabled" if self._agnost_org_id else "disabled"}')
         self._agnost_org_id and track(mcp_server, self._agnost_org_id)
 
         @contextlib.asynccontextmanager

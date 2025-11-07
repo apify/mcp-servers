@@ -9,6 +9,7 @@
 	"meta": {
 		"templateId": "python-mcp-server"
 	},
+	"environmentVariables": { "AGNOST_AI_ORG_ID":  "@AGNOST_AI_ORG_ID" },
 	"input": {
 		"title": "Actor input schema",
 		"description": "This is Actor input schema",
