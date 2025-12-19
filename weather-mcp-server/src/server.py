@@ -158,15 +158,15 @@ class ProxyServer:
         self._session_timeout_secs: int = SESSION_TIMEOUT_SECS
         self._agnost_org_id: str | None = os.environ.get('AGNOST_AI_ORG_ID')
 
-    @staticmethod
-    def _log_request(request: Request) -> None:
+    @classmethod
+    def _log_request(cls, request: Request) -> None:
         """Log incoming MCP transport request for diagnostics."""
         logger.info(
             'MCP transport request',
             extra={
                 'method': request.method,
                 'path': str(request.url.path),
-                'mcp_session_id': request.headers.get('mcp-session-id'),
+                'mcp_session_id': cls._get_session_id_from_headers(request.headers),
             },
         )
 
@@ -184,6 +184,8 @@ class ProxyServer:
                 await asyncio.sleep(self._session_timeout_secs)
                 # Verify that no new activity occurred during wait
                 last = self._session_last_activity.get(session_id, 0)
+                # If the session has been idle for less than 90% of the timeout period,
+                # skip termination to avoid closing sessions too early after activity.
                 if time.time() - last < self._session_timeout_secs * 0.9:
                     return  # Activity happened; skip
                 logger.info(f'Terminating idle MCP session {session_id}')
@@ -236,6 +238,26 @@ class ProxyServer:
             del self._session_timers[session_id]
 
     @staticmethod
+    def _get_session_id_from_headers(headers: Any) -> str | None:
+        """Extract session ID from headers, trying both hyphen and underscore variants.
+
+        HTTP headers are case-insensitive per spec, and Starlette's Request.headers
+        handles this automatically. We only need to check for hyphen vs underscore variants.
+
+        Args:
+            headers: Either a Starlette Request.headers object or a dict
+
+        Returns:
+            Session ID string if found, None otherwise
+        """
+        # Try both hyphen and underscore variants
+        # Case is handled automatically by Starlette's case-insensitive headers
+        for key in ('mcp-session-id', 'mcp_session_id'):
+            if value := headers.get(key):
+                return value
+        return None
+
+    @staticmethod
     def _validate_config(client_type: ServerType, config: ServerParameters) -> ServerParameters | None:
         """Validate and return the appropriate server parameters."""
         try:
@@ -249,16 +271,16 @@ class ProxyServer:
         except ValidationError as e:
             raise ValueError(f'Invalid server configuration: {e}') from e
 
-    @staticmethod
+    @classmethod
     def _create_capturing_send(
-        send: Send, session_id_from_resp: dict[str, str | None]
+        cls, send: Send, session_id_from_resp: dict[str, str | None]
     ) -> Callable[[dict[str, Any]], Awaitable[None]]:
         """Create a send wrapper that captures session ID from response headers."""
 
         async def capturing_send(message: dict[str, Any]) -> None:
             if message.get('type') == 'http.response.start':
                 headers = {k.decode('latin-1').lower(): v.decode('latin-1') for k, v in message.get('headers', [])}
-                if sid := headers.get('mcp-session-id'):
+                if sid := cls._get_session_id_from_headers(headers):
                     session_id_from_resp['sid'] = sid
             await send(message)
 
@@ -345,7 +367,7 @@ class ProxyServer:
 
             if scope['method'] == 'DELETE':
                 await session_manager.handle_request(scope, receive, send)
-                if req_sid := request.headers.get('mcp-session-id'):
+                if req_sid := self._get_session_id_from_headers(request.headers):
                     self._cleanup_session_last_activity(req_sid)
                     self._cleanup_session_timer(req_sid)
                 return
@@ -356,7 +378,7 @@ class ProxyServer:
             capturing_send = self._create_capturing_send(send, session_id_from_resp)
 
             # Log and touch existing session if present on request
-            if req_sid := request.headers.get('mcp-session-id'):
+            if req_sid := self._get_session_id_from_headers(request.headers):
                 self._touch_session(req_sid, session_manager)
 
             await session_manager.handle_request(scope, receive, capturing_send)  # type: ignore[arg-type]
