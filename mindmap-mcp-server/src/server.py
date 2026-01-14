@@ -165,7 +165,7 @@ class ProxyServer:
             extra={
                 'method': request.method,
                 'path': str(request.url.path),
-                'mcp_session_id': request.headers.get('mcp-session-id'),
+                'mcp_session_id': ProxyServer._get_session_id_from_headers(request.headers),
             },
         )
 
@@ -235,6 +235,14 @@ class ProxyServer:
             del self._session_timers[session_id]
 
     @staticmethod
+    def _get_session_id_from_headers(headers: Any) -> str | None:
+        """Extract session ID from headers supporting dash and underscore variants."""
+        for key in ('mcp-session-id', 'mcp_session_id'):
+            if value := headers.get(key):
+                return value
+        return None
+
+    @staticmethod
     def _validate_config(client_type: ServerType, config: ServerParameters) -> ServerParameters | None:
         """Validate and return the appropriate server parameters."""
         try:
@@ -257,7 +265,7 @@ class ProxyServer:
         async def capturing_send(message: dict[str, Any]) -> None:
             if message.get('type') == 'http.response.start':
                 headers = {k.decode('latin-1').lower(): v.decode('latin-1') for k, v in message.get('headers', [])}
-                if sid := headers.get('mcp-session-id'):
+                if sid := ProxyServer._get_session_id_from_headers(headers):
                     session_id_from_resp['sid'] = sid
             await send(message)
 
@@ -341,7 +349,7 @@ class ProxyServer:
 
             if scope['method'] == 'DELETE':
                 await session_manager.handle_request(scope, receive, send)
-                if req_sid := request.headers.get('mcp-session-id'):
+                if req_sid := self._get_session_id_from_headers(request.headers):
                     self._cleanup_session_last_activity(req_sid)
                     self._cleanup_session_timer(req_sid)
                 return
@@ -352,7 +360,7 @@ class ProxyServer:
             capturing_send = self._create_capturing_send(send, session_id_from_resp)
 
             # Log and touch existing session if present on request
-            if req_sid := request.headers.get('mcp-session-id'):
+            if req_sid := self._get_session_id_from_headers(request.headers):
                 self._touch_session(req_sid, session_manager)
 
             await session_manager.handle_request(scope, receive, capturing_send)  # type: ignore[arg-type]
