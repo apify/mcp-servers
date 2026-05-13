@@ -28,9 +28,10 @@ A curated collection of production-ready Model Context Protocol (MCP) servers pu
 | **[National Parks MCP Server](./national-parks/)** | Geographic and park information | [![National Parks MCP Server](https://apify.com/actor-badge?actor=agentify/national-parks-mcp-server)](https://apify.com/agentify/national-parks-mcp-server)       | [KyrieTangSheng](https://github.com/KyrieTangSheng/mcp-server-nationalparks) |
 | **[Context7 MCP Server](./context7-mcp-server/)** | Up-to-date code docs for any programming library | [![Context7 MCP Server](https://apify.com/actor-badge?actor=agentify/context7-mcp-server)](https://apify.com/agentify/context7-mcp-server)                         | [Upstash](https://github.com/upstash/context7) |
 | **[DeepL MCP Server](./deepl-mcp-server/)** | Translation capabilities using the DeepL API | [![DeepL MCP Server](https://apify.com/actor-badge?actor=agentify/deepl-mcp-server)](https://apify.com/agentify/deepl-mcp-server)                                  | [DeepLcom](https://github.com/DeepLcom/deepl-mcp-server) |
+| **[Wolfram MCP Server](./wolfram-mcp-server/)** | Wolfram\|Alpha, Wolfram Language kernel, and Knowledgebase access | [![Wolfram MCP Server](https://apify.com/actor-badge?actor=agentify/wolfram-mcp-server)](https://apify.com/agentify/wolfram-mcp-server) | [Wolfram](https://www.wolfram.com/artificial-intelligence/mcp-service/) |
 
 ## 🙏 Credits
-These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, Microsoft, and others.
+These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, Microsoft, Wolfram, and others.
 
 🚩 **Claim this MCP server** – If you are the original developer and would like to claim ownership or have any concerns, please write to [ai@apify.com](mailto:ai@apify.com).
 

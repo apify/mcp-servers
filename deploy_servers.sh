@@ -61,6 +61,7 @@ declare -A SERVERS=(
     ["texttoolkit-mcp-server"]="typescript:"
     ["tomtom-mcp-server"]="typescript:TOMTOM_API_KEY"
     ["winston-mcp-server"]="typescript:"
+    ["wolfram-mcp-server"]="typescript:WOLFRAM_MCP_API_KEY"
 )
 
 # Load .env file
