@@ -3,7 +3,7 @@
     "actorSpecification": 1,
     "name": "wolfram-mcp-server",
     "title": "Wolfram MCP Server",
-    "description": "The Wolfram MCP Service provides immediate consumer-level access to Wolfram's sophisticated computations and trusted knowledgebase.",
+    "description": "The Wolfram MCP Service provides immediate consumer-level access to Wolfram's sophisticated computations and trusted knowledge base.",
     "version": "0.0",
     "buildTag": "latest",
     "usesStandbyMode": true,
