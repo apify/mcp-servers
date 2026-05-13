@@ -1,6 +1,6 @@
-# MCP Servers Monorepo
+# MCP server Actors monorepo
 
-A curated collection of production-ready Model Context Protocol (MCP) servers published on Apify. These are wrappers around open-source MCP servers — **credits go to the original developers**.
+A curated collection of production-ready Model Context Protocol (MCP) servers [published as Actors on Apify](https://apify.com/store/categories/mcp-servers). These are wrappers around open-source stdio MCP servers or remote HTTP servers — **credits go to the original developers**.
 
 - **Monetize** your MCP servers via pay-per-use pricing
 - **Reach** a global developer and business audience
@@ -28,6 +28,8 @@ A curated collection of production-ready Model Context Protocol (MCP) servers pu
 | **[National Parks MCP Server](./national-parks/)** | Geographic and park information | [![National Parks MCP Server](https://apify.com/actor-badge?actor=agentify/national-parks-mcp-server)](https://apify.com/agentify/national-parks-mcp-server)       | [KyrieTangSheng](https://github.com/KyrieTangSheng/mcp-server-nationalparks) |
 | **[Context7 MCP Server](./context7-mcp-server/)** | Up-to-date code docs for any programming library | [![Context7 MCP Server](https://apify.com/actor-badge?actor=agentify/context7-mcp-server)](https://apify.com/agentify/context7-mcp-server)                         | [Upstash](https://github.com/upstash/context7) |
 | **[DeepL MCP Server](./deepl-mcp-server/)** | Translation capabilities using the DeepL API | [![DeepL MCP Server](https://apify.com/actor-badge?actor=agentify/deepl-mcp-server)](https://apify.com/agentify/deepl-mcp-server)                                  | [DeepLcom](https://github.com/DeepLcom/deepl-mcp-server) |
+
+...and many more.
 
 ## 🙏 Credits
 These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, Microsoft, and others.
@@ -130,10 +132,10 @@ It supports OAuth, so you can connect from clients like Claude.ai or Visual Stud
 
 Learn how to build and monetize MCP servers on Apify:
 
-- **[Webinar: Building and Monetizing MCP Servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)**
+- **[Blog post: Build and monetize MCP servers on Apify](https://blog.apify.com/build-and-deploy-mcp-servers-typescript/)**
+- **[Webinar: Build and monetize MCP servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)**
 - **[How to build and monetize an AI agent on Apify](https://blog.apify.com/how-to-build-an-ai-agent/)**
 - **[What is MCP and why does it matter?](https://blog.apify.com/what-is-model-context-protocol/)**
-- **[Build and deploy MCP servers in TypeScript](https://blog.apify.com/build-and-deploy-mcp-servers-typescript/)**
 
 ---
 
