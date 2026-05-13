@@ -133,6 +133,7 @@ Learn how to build and monetize MCP servers on Apify:
 - **[Webinar: Building and Monetizing MCP Servers on Apify](https://www.youtube.com/watch?v=w3AH3jIrXXo)**
 - **[How to build and monetize an AI agent on Apify](https://blog.apify.com/how-to-build-an-ai-agent/)**
 - **[What is MCP and why does it matter?](https://blog.apify.com/what-is-model-context-protocol/)**
+- **[Build and deploy MCP servers in TypeScript](https://blog.apify.com/build-and-deploy-mcp-servers-typescript/)**
 
 ---
 
