@@ -1,0 +1,23 @@
+{
+    "$schema": "https://apify.com/schemas/v1/actor.ide.json",
+    "actorSpecification": 1,
+    "name": "wolfram-mcp-server",
+    "title": "Wolfram MCP Server",
+    "description": "The Wolfram MCP Service provides immediate consumer-level access to Wolfram's sophisticated computations and trusted knowledge base.",
+    "version": "0.0",
+    "buildTag": "latest",
+    "usesStandbyMode": true,
+    "meta": {
+        "templateId": "ts-mcp-proxy"
+    },
+    "input": {
+        "title": "Actor input schema",
+        "description": "This is Actor input schema",
+        "type": "object",
+        "schemaVersion": 1,
+        "properties": {},
+        "required": []
+    },
+    "dockerfile": "../Dockerfile",
+    "webServerMcpPath": "/mcp"
+}
