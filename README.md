@@ -31,7 +31,7 @@ A curated collection of production-ready Model Context Protocol (MCP) servers [p
 | **[Wolfram MCP Server](./wolfram-mcp-server/)** | Wolfram\|Alpha, Wolfram Language kernel, and Knowledgebase access | [![Wolfram MCP Server](https://apify.com/actor-badge?actor=agentify/wolfram-mcp-server)](https://apify.com/agentify/wolfram-mcp-server) | [Wolfram](https://www.wolfram.com/artificial-intelligence/mcp-service/) |
 
 ...and many more.
-
+- [Helium MCP](https://github.com/connerlambden/helium-mcp) — Real-time news with 37-dimension bias scoring, ML options pricing, and live market data. [Interactive demo](https://connerlambden.github.io/helium-news-explorer/) · [REST API](https://heliumtrades.com/mcp-page/)
 ## 🙏 Credits
 These are wrappers—original code by: Brave Software, Perplexity AI, Mendable AI, SlideSpeak, Translated, Githejie, Kiwi.com, KyrieTangSheng, Upstash, Financial Datasets, Microsoft, Wolfram, and others.
 
