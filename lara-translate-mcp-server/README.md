@@ -1,6 +1,6 @@
 ## Lara Translate MCP Server
 
-A Model Context Protocol (MCP) Server for Lara Translate API, enabling powerful translation capabilities with support for language detection, context-aware translations and translation memories.
+A Model Context Protocol (MCP) server for the [Lara Translate](https://laratranslate.com/) API, enabling professional translation capabilities with support for language detection, context-aware translations, and translation memories.
 
 **About this MCP Server:** To understand how to connect to and utilize this MCP server, please refer to the official Model Context Protocol documentation at [mcp.apify.com](https://mcp.apify.com).
 
@@ -52,7 +52,7 @@ A Model Context Protocol (MCP) Server for Lara Translate API, enabling powerful 
 
 #### 📋 Requirements
 
-* **Lara Translate API Credentials** (refer to the [Official Documentation](https://laratranslate.com/docs))
+* **Lara Translate API Credentials** (refer to the [Official Documentation](https://developers.laratranslate.com/))
 * An **LLM client that supports Model Context Protocol (MCP)**, such as Claude Desktop, Cursors, or GitHub Copilot
 * **NPX or Docker** (depending on your preferred installation method)
 
@@ -84,7 +84,7 @@ The installation process is standardized across all MCP clients. It involves man
     }
     ```
 
-2.  **Step 2:** Replace `<YOUR_ACCESS_KEY_ID>` and `<YOUR_ACCESS_KEY_SECRET>` with your Lara Translate API credentials (refer to the [Official Documentation](https://laratranslate.com/docs) for details).
+2.  **Step 2:** Replace `<YOUR_ACCESS_KEY_ID>` and `<YOUR_ACCESS_KEY_SECRET>` with your Lara Translate API credentials (refer to the [Official Documentation](https://developers.laratranslate.com/) for details).
 3.  **Step 3:** **Restart your MCP client.**
 
 **Verify Installation**
@@ -212,10 +212,6 @@ For a complete list of MCP clients and their feature support, visit the [officia
 
 ---
 
-## 🚩 Claim this MCP server. Contact info.
+## Maintainer
 
-All credits to the original authors of [https://github.com/translated/lara-mcp](https://github.com/translated/lara-mcp)
-
-Write to [ai@apify.com](mailto:ai@apify.com)
-
-**Original project URL:** [https://github.com/translated/lara-mcp](https://github.com/translated/lara-mcp)
+This Actor is maintained by the Lara Translate team at Translated and is based on the [official Lara MCP repository](https://github.com/translated/lara-mcp).
